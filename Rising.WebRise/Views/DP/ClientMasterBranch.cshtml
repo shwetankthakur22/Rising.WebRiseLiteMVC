@@ -1,0 +1,292 @@
+﻿
+@{
+    ViewBag.Title = "ClientMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<style>
+    .text-table-decoration {
+        text-align: start;
+        width: 182px;
+        font-size: 12px !important;
+    }
+</style>
+}
+
+
+<!-- Page Content-->
+<div class="page-content" style="margin-top: 115px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+
+
+                <div class="card">
+                    <div class="card-header" style="background-color: #eb2c2e;height: 30px;">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 style="color:white;margin-top: 3px;">R K STOCKHOLDING(P) LIMITED</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body" style="padding: 0.15rem !important">
+
+                        <div class="dastyle-profile" style="border: 1px solid #eaf0f9;background-color:#f1f5fa;">
+                            <div class="row">
+
+                                <!--end col-->
+                                <div class="col-lg-12 ml-auto align-self-center media new-message">
+                                    <div class="bottom_box" style="width: 100%;">
+
+                                        <div class="user_info">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                                    @*<ul class="nav nav-pills-custom nav-pills mb-0" id="pills-tab" role="tablist">
+                                                            <li class="nav-item mr-1"><a class="nav-link active" role="tab">CLIENT ID:-@Model.ds.Tables[0].Rows[0]["CLIENTID"]</a></li>
+                                                            <li class="nav-item mr-1"><a class="nav-link active" role="tab">NAME:-@Model.ds.Tables[0].Rows[0]["NAME"]</a></li>
+                                                        </ul>*@
+
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                                    <div style="float:right;padding:3px 3px 3px 3px">
+                                                        @using (Html.BeginForm("ExportPdf_NoHeader_LandScape", "ReportExport", new { @rtype = "PdfLedger" }, FormMethod.Post))
+                                                        {
+                                                            <input type="hidden" name="GridHtml" />
+                                                            <button type="submit" class="btn btn-danger" id="btnSubmitDash99"><i class="fa fa-file-pdf"></i></button>
+                                                        }
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="row" id="ExportedGrid1">
+                                                @*<div class="info_table table-responsive col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                        <table class="table table-bordered dataTable" style="width: 100%;">
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;color: white;background-color: #6494d6;" colspan="6">Account & Other Details</th>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th class="title" style=" text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD">A/c Opening Date</th>
+                                                                    <td style="width:200px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["OPENDATE"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">A/c Category</th>
+                                                                    <td style="width: 165px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["CATGDETAIL"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">Account Status</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["AC_STATUS"]</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="title" style=" text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD">BO Status</th>
+                                                                    <td style="width:200px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["TYPEDETAIL"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">BO Sub Status</th>
+                                                                    <td style="width: 165px;font-size:11px;border: 1px solid #e3e3e3;"></td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">DP Int. Ref.</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width: 200px;"></td>
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <th class="title" style="text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD">A/C Cl./Susp. Date</th>
+                                                                    <td style="width:200px;font-size:11px;border: 1px solid #e3e3e3;"></td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">Mobile No</th>
+                                                                    <td style="width: 165px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["MOBILE"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">Email Address</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["EMAIL"]</td>
+                                                                </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                        <table class="table table-bordered dataTable" style="width: 100%;">
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;color: white;background-color: #6494d6;" colspan="6">Holder & Nominee Details</th>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD">First Holder Name</th>
+                                                                    <td style="width:200px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["NAME"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">First Holder Pan</th>
+                                                                    <td style="width: 165px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["PANNO2"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">DOB</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["DOB"]</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD">Second Holder Name</th>
+                                                                    <td style="width:200px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["NAME2"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">Second Holder Pan</th>
+                                                                    <td style="width: 165px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["PANNO2"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">DOB</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width:200px;">@Model.ds.Tables[0].Rows[0]["DOB2"]</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD">Third Holder Name</th>
+                                                                    <td style="width:200px;font-size:10px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["NAME3"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">Third Holder Pan </th>
+                                                                    <td style="width: 165px;font-size:10px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["PANNO3"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">DOB</th>
+                                                                    <td style="font-size:10px;border: 1px solid #e3e3e3;width:200px;">@Model.ds.Tables[0].Rows[0]["DOB3"]</td>
+                                                                </tr>
+
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                        <table class="table table-bordered dataTable" style="width: 100%;">
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;color: white;background-color: #6494d6;" colspan="6">Client Bank & Other Details</th>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD" rowspan="4">Bank Address</th>
+                                                                    <td style="width:200px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["BADD1"]</td>
+
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">Bank A/c No.</th>
+                                                                    <td style="width:165px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["BKACNO"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">Bank A/c Type</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["DES"]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="width:200px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["BADD2"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">Bank Name</th>
+                                                                    <td style="width: 165px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["BNAME"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">RBI Approval Dt</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width: 200px;"></td>
+
+                                                                </tr>
+
+
+
+                                                                <tr>
+                                                                    <td style="width:200px;font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["BADD2"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">BackOffice Code</th>
+                                                                    <td style="width: 165px;font-size:11px;border: 1px solid #e3e3e3;"></td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">IFSC Code</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["IFSCCODE"]</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["BADD2"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">Branch Code</th>
+                                                                    <td style="width: 165px;font-size:11px;border: 1px solid #e3e3e3;"></td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">Introducer</th>
+                                                                    <td style="font-size:11px;border: 1px solid #e3e3e3;width: 200px;"></td>
+                                                                </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                        <table class="table table-bordered dataTable" style="width: 100%;">
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;color: white;background-color: #6494d6;" colspan="6">Nominee & POA Details</th>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD">Nominee Name</th>
+                                                                    <td style="width:200px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["NOM1"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">Nominee Percent</th>
+                                                                    <td style="width: 165px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["PER1"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">Residual Flag</th>
+                                                                    <td style="font-size: 11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["RESIDUAL_SEC_FLAG1"]</td>
+
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD">POA Master Id</th>
+                                                                    <td style="width: 200px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["POAID"]</td>
+                                                                    <th class="title" style="text-align: start;width: 192px;font-size: 12px !important;background-color: #DDDDDD">POA Name</th>
+                                                                    <td style="width: 165px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["POANAME"]</td>
+                                                                    <th class="title" style="text-align: start;width: 130px;font-size: 12px !important;background-color: #DDDDDD">POA Reference</th>
+                                                                    <td style="font-size: 11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["IFSCCODE"]</td>
+                                                                </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                        <table class="table table-bordered dataTable" style="width:100%">
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;color: white;background-color: #6494d6;" colspan="6">Address Details</th>
+
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <th class="title" style="text-align: start;width: 182px;font-size: 12px !important;background-color: #DDDDDD" rowspan="3">Correspondance Address</th>
+                                                                    <td style="width:200px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["CADD1"]</td>
+                                                                    <th class="title" style="text-align: start;font-size: 12px !important;width:192px;background-color: #DDDDDD" rowspan="3">Permanent Address</th>
+                                                                    <td style="width: 165px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["LADD1"]</td>
+                                                                    <th class="title" style="text-align: start;font-size: 12px !important;width:130px;background-color: #DDDDDD" rowspan="3">Nominee Address</th>
+                                                                    <td style="font-size: 11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["NADD1"]</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="width:200px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["CADD2"],@Model.ds.Tables[0].Rows[0]["CADD3"]</td>
+                                                                    <td style="width: 165px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["LADD2"],@Model.ds.Tables[0].Rows[0]["LADD3"]</td>
+                                                                    <td style="font-size: 11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["NADD2"],@Model.ds.Tables[0].Rows[0]["NADD3"]</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="width:200px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["CADD4"]</td>
+                                                                    <td style="width: 165px;font-size: 11px;border: 1px solid #e3e3e3;">@Model.ds.Tables[0].Rows[0]["LADD4"]</td>
+                                                                    <td style="font-size: 11px;border: 1px solid #e3e3e3;width: 200px;">@Model.ds.Tables[0].Rows[0]["NADD4"]</td>
+                                                                </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+
+
+                                                    </div>*@
+
+                                            </div>
+                                            <div class="clearfix"></div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+
+
+                                </div>
+                                <!--end row-->
+                            </div>
+                            <!--end f_profile-->
+                        </div>
+                        <!--end card-body-->
+                    </div>
+
+
+
+
+                    <!--end card-->
+
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+

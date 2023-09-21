@@ -1,0 +1,64 @@
+﻿@using Rising.WebRise.Models
+@model Transaction
+
+@{
+    ViewBag.Title = "ExpiryUpdate";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">EXPIRY UPDATE</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                                        <!--end card-header-->
+                                        @using (Html.BeginForm("ExpiryUpdate", "Utility", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="row" style="margin-bottom: 15px;">
+                                                        <div class="col-md-2">
+                                                            @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.OldExpDate, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.OldExpDate, null, new { @Value = Model.TrDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            @Html.LabelFor(m => m.IndexList, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.DropDownListFor(model => model.IndexList, (IEnumerable<SelectListItem>)ViewBag.enumIndexList, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.NewExpDate, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.NewExpDate, null, new { @Value = Model.TrDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="box-footer" style="margin-top: 10px;">
+                                                    <input type="submit" value="Update" class="btn btn-primary pull-right" />
+                                                    <input type="submit" value="Click here for Backup" class="btn btn-warning" />
+                                                    <a href="javascript:void(0);" class="btn btn-primary" onclick="history.go(-1);">Back</a>
+                                                </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>

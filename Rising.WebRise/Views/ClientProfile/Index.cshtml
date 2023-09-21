@@ -1,0 +1,182 @@
+﻿@using Rising.WebRise.Models
+@model CodeSearchFilter
+
+@{
+    ViewBag.Title = "Client Profile";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content" style="margin-top: 25px">
+
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+
+        @if ((Session["CodeSearchFilterType"] as List<string>).Count > 0 && Model.ds == null)
+        {
+            <section id="Ledger">
+                @using (Html.BeginForm("Index", "ClientProfile", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+
+                        <div class="col-md-4 col-lg-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control" })
+                                    <span class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#CodeFrom"><i class="fa fa-user"></i></button>&nbsp;
+                                        <input type="submit" value="View" class="btn btn-primary" style="background-color:#088d9c" />
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="card-footer text-right">
+
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </section>
+        }
+        else
+        {
+
+            <div class="row">
+                <div class="card" id="ExportedGrid">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">My Profile</h3>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="media mt-1 pb-2">
+                                    <div class="mediaicon">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="media-body ml-5 mt-1">
+                                        <h6 class="mediafont text-dark">@Model.ds.Tables[0].Rows[0]["PAR_NAME"]</h6><span class="d-block"></span>
+                                    </div>
+                                    <!-- media-body -->
+                                </div>
+                                <div class="media mt-1 pb-2">
+                                    <div class="mediaicon">
+                                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="media-body ml-5 mt-1">
+                                        <h6 class="mediafont text-dark">Email Address</h6><span class="d-block">@Model.ds.Tables[0].Rows[0]["emailno"]</span>
+                                    </div>
+                                    <!-- media-body -->
+                                </div>
+                                <div class="media mt-1 pb-2">
+                                    <div class="mediaicon">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="media-body ml-5 mt-1">
+                                        <h6 class="mediafont text-dark">Phone No</h6><span class="d-block">@Model.ds.Tables[0].Rows[0]["phnos"]</span>
+                                    </div>
+                                    <!-- media-body -->
+                                </div>
+                                <div class="media mt-1 pb-2">
+                                    <div class="mediaicon">
+                                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="media-body ml-5 mt-1">
+                                        <h6 class="mediafont text-dark">Address</h6><span class="d-block">
+                                            @Model.ds.Tables[0].Rows[0]["PAR_add1"], @Model.ds.Tables[0].Rows[0]["PAR_add2"],
+                                            @Model.ds.Tables[0].Rows[0]["PAR_add3"], @Model.ds.Tables[0].Rows[0]["PAR_add4"],@Model.ds.Tables[0].Rows[0]["pincode"]
+                                        </span>
+                                    </div>
+                                    <!-- media-body -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Details</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class=" " id="profile-log-switch">
+                                    <div class="fade show active ">
+                                        <div class="table-responsive border ">
+                                            <table class="table table-bordered ">
+                                                <tbody class="col-lg-6 p-0">
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">Client Code</strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["PAR_CODE"]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">Pan </strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["itaxno"].ToString().Substring(0, 2)******@Model.ds.Tables[0].Rows[0]["itaxno"].ToString().Substring(Model.ds.Tables[0].Rows[0]["itaxno"].ToString().Length - 2, 2)</td>
+                                                    </tr>.
+
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">DP Code </strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["dpcode"]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">Bank Name </strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["bankname1"]</td>
+                                                    </tr>
+
+                                                </tbody>
+                                                <tbody class="col-lg-6 p-0">
+
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">Open Date </strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["introdate"]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">DP Account No </strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["dpaccountno"]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">Bank Address </strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["bankadd11"], @Model.ds.Tables[0].Rows[0]["bankadd12"]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">MICR No </strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["micrno"]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;"><strong class="mediafont text-dark">IFSC </strong></td>
+                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@Model.ds.Tables[0].Rows[0]["ifsccode"]</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>

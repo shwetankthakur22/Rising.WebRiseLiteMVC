@@ -1,0 +1,1946 @@
+﻿-------------------------
+CREATE TABLE SYSTEM.WEBUSER
+(
+  USERID                  VARCHAR2(50 BYTE)     NOT NULL,
+  USERNAME                VARCHAR2(200 BYTE),
+  EMAILID                 VARCHAR2(500 BYTE),
+  MOBILENO                VARCHAR2(100 BYTE),
+  DISABLESTATUS           CHAR(1 BYTE)          DEFAULT 0,
+  ALLOWMULTILOGIN         CHAR(1 BYTE)          DEFAULT 0,
+  LOGINSTATUS             CHAR(1 BYTE)          DEFAULT 0,
+  USERTYPE                VARCHAR2(10 BYTE),
+  MACHINENAME             VARCHAR2(50 BYTE),
+  PASSWORD1               VARCHAR2(100 BYTE),
+  PASSWORD1DATE           DATE,
+  PASSWORD2               VARCHAR2(100 BYTE),
+  PASSWORD3               VARCHAR2(100 BYTE),
+  RESETPASSWORD           VARCHAR2(100 BYTE),
+  RESETSTATUS             CHAR(1 BYTE)          DEFAULT 0,
+  RESETDATE               DATE,
+  REQUIREDPASSWORDPOLICY  CHAR(1 BYTE)          DEFAULT 0,
+  DISABLEDATE             DATE                  DEFAULT NULL,
+  USERRIGHTS              VARCHAR2(4000 BYTE),
+  REMARKS                 VARCHAR2(4000 BYTE),
+  REGION                  VARCHAR2(50 BYTE),
+  BRANCH                  VARCHAR2(50 BYTE),
+  SUBBRANCH               VARCHAR2(50 BYTE),
+  RMCODE                  VARCHAR2(50 BYTE),
+  GROUPCODE               VARCHAR2(50 BYTE)
+)
+
+
+
+------------------------------
+create table sysadm.MARKET_31JAN2018 as 
+select RATE_SYMBOL TRN_SCRIP, CLOS MRATE from sysadm.ratefile where rate_settno='NN8022';
+
+
+CREATE OR REPLACE PROCEDURE N$CAP_LONG_SHORT_TP (CODE IN VARCHAR2,  
+                                                   DATEFROM   IN DATE,   
+                                                   DATETO     IN DATE)   
+ AS    
+ ONMKTRATE VARCHAR(1):= 'N'; 
+ PROCEDURE DELIVERY (CODE IN VARCHAR2, DATEFROM IN DATE, DATETO IN DATE)   
+    AS   
+      DEL_CURR1        SYS_REFCURSOR;   
+      DEL_CURR2        SYS_REFCURSOR;   
+      DEL_CURR3        SYS_REFCURSOR;   
+      DEL_CURR4        SYS_REFCURSOR;   
+      SQL_TEXT         VARCHAR2 (4000) := '';   
+      TRN_SCRIP_B      N$LONGTERMTEMP.TRN_SCRIP%TYPE;   
+      TRN_SYMBOL_B     N$LONGTERMTEMP.TRN_SYMBOL%TYPE;   
+      TRN_DATE_B       N$LONGTERMTEMP.TRN_DATE%TYPE;     
+      TRN_CLIENTCD_B   N$LONGTERMTEMP.TRN_CLIENTCD%TYPE;     
+      TRN_QTY_B        N$LONGTERMTEMP.TRN_QTY%TYPE;     
+      TRN_MKTRATE_B    N$LONGTERMTEMP.TRN_MKTRATE%TYPE;     
+      TRN_BALQTY_B     N$LONGTERMTEMP.TRN_BALQTY%TYPE;     
+      BADLA_RATE_B     N$LONGTERMTEMP.BADLA_RATE%TYPE;     
+      TRN_SDATE_B      N$LONGTERMTEMP.TRN_SDATE%TYPE;     
+      RWID_B           ROWID;     
+      TRANS_FLAG_B     N$LONGTERMTEMP.TRANS_FLAG%TYPE;     
+      BROKTYPE_B       N$LONGTERMTEMP.BROKTYPE%TYPE;     
+      TRN_SCRIP_S      N$LONGTERMTEMP.TRN_SCRIP%TYPE;     
+      TRN_SYMBOL_S     N$LONGTERMTEMP.TRN_SYMBOL%TYPE;     
+      TRN_DATE_S       N$LONGTERMTEMP.TRN_DATE%TYPE;     
+      TRN_CLIENTCD_S   N$LONGTERMTEMP.TRN_CLIENTCD%TYPE;     
+      TRN_QTY_S        N$LONGTERMTEMP.TRN_QTY%TYPE;     
+      TRN_MKTRATE_S    N$LONGTERMTEMP.TRN_MKTRATE%TYPE;     
+      TRN_BALQTY_S     N$LONGTERMTEMP.TRN_BALQTY%TYPE;     
+      BADLA_RATE_S     N$LONGTERMTEMP.BADLA_RATE%TYPE;     
+      TRN_SDATE_S      N$LONGTERMTEMP.TRN_SDATE%TYPE;     
+      RWID_S           ROWID;     
+      TRANS_FLAG_S     N$LONGTERMTEMP.TRANS_FLAG%TYPE;     
+      BROKTYPE_S       N$LONGTERMTEMP.BROKTYPE%TYPE;     
+      TRN_DSQTY        N$LONGTERMTEMP.TRN_QTY%TYPE := 0;     
+      TRN_TPQTY        N$LONGTERMTEMP.TRN_QTY%TYPE := 0;     
+      TRN_TSQTY        N$LONGTERMTEMP.TRN_QTY%TYPE := 0;     
+      ERROR_FLAG       PLS_INTEGER := 0;     
+BEGIN   
+   SQL_TEXT :=     
+         'SELECT TRN_SCRIP,TRN_CLIENTCD,TRN_DATE,TRN_QTY,TRN_MKTRATE,ROWID FROM N$LONGTERMTEMP WHERE 
+        TRN_QTY>0 AND FLG1=''O'' AND BROKTYPE=''DL'' ORDER BY TRN_SCRIP,TRN_DATE,TRN_MKTRATE';   
+   OPEN DEL_CURR1 FOR SQL_TEXT;   
+       LOOP   
+           FETCH DEL_CURR1    
+           INTO TRN_SCRIP_B, TRN_CLIENTCD_B,TRN_DATE_B,TRN_QTY_B,TRN_MKTRATE_B,RWID_B;  
+           EXIT WHEN DEL_CURR1%NOTFOUND;     
+           SQL_TEXT:=   
+           'SELECT TRN_SCRIP,TRN_DATE,TRN_QTY,TRN_MKTRATE,ROWID FROM N$LONGTERMTEMP  
+           WHERE TRN_QTY<0 AND FLG1=''O'' AND FLG2=''N'' AND BROKTYPE=''DL'' AND TRN_SCRIP=:TRN_SCRIP_B AND TRN_DATE>=:TRN_DATE_B  
+           ORDER BY TRN_SCRIP,TRN_DATE,TRN_MKTRATE';   
+           OPEN DEL_CURR2 FOR SQL_TEXT USING  TRN_SCRIP_B,TRN_DATE_B;   
+           LOOP   
+               FETCH DEL_CURR2   
+               INTO TRN_SCRIP_S,TRN_DATE_S,TRN_QTY_S,TRN_MKTRATE_S,RWID_S;   
+               EXIT WHEN DEL_CURR2%NOTFOUND;   
+               EXIT WHEN NVL (TRN_QTY_B, 0) = 0;       
+           IF TRN_QTY_B= ABS(TRN_QTY_S) THEN   
+               INSERT INTO N$LONGTERMTEMP  
+               (TRN_CLIENTCD,trn_scrip,trn_date,trn_qty,trn_mktrate,trn_balqty,badla_rate,trn_sdate,FLG1)  
+               VALUES   
+               (TRN_CLIENTCD_B ,TRN_SCRIP_B, TRN_DATE_B,TRN_QTY_B,TRN_MKTRATE_B,ABS(TRN_QTY_S),TRN_MKTRATE_S,TRN_DATE_S,'NW');  
+               UPDATE N$LONGTERMTEMP SET FLG2='Y' WHERE ROWID=RWID_B;   
+               UPDATE N$LONGTERMTEMP SET FLG2='Y' WHERE ROWID=RWID_S;   
+               TRN_QTY_B := 0;   
+           ELSE   
+               IF TRN_QTY_B> ABS(TRN_QTY_S) THEN   
+                   TRN_QTY_B := TRN_QTY_B - ABS(TRN_QTY_S);   
+                   UPDATE N$LONGTERMTEMP SET FLG2='Y' WHERE ROWID=RWID_S;   
+                   INSERT INTO N$LONGTERMTEMP  
+                   (TRN_CLIENTCD,trn_scrip,trn_date,trn_qty,trn_mktrate,trn_balqty,badla_rate,trn_sdate,FLG1)    
+                   VALUES   
+                   (TRN_CLIENTCD_B ,TRN_SCRIP_B, TRN_DATE_B,ABS(TRN_QTY_S),TRN_MKTRATE_B,ABS(TRN_QTY_S),TRN_MKTRATE_S,TRN_DATE_S,'NW');   
+                   UPDATE N$LONGTERMTEMP SET TRN_QTY=TRN_QTY_B WHERE ROWID=RWID_B;  
+               ELSE   
+                   INSERT INTO N$LONGTERMTEMP  
+                   (TRN_CLIENTCD,trn_scrip,trn_date,trn_qty,trn_mktrate,trn_balqty,badla_rate,trn_sdate,FLG1)   
+                   VALUES   
+                   (TRN_CLIENTCD_B ,TRN_SCRIP_B, TRN_DATE_B,TRN_QTY_B,TRN_MKTRATE_B,TRN_QTY_B,TRN_MKTRATE_S,TRN_DATE_S,'NW');  
+                   UPDATE N$LONGTERMTEMP SET FLG2='Y' WHERE ROWID=RWID_B;   
+                   TRN_TSQTY  := TRN_QTY_B + TRN_QTY_S;   
+                   UPDATE N$LONGTERMTEMP SET TRN_QTY=TRN_TSQTY WHERE ROWID=RWID_S;  
+                   TRN_QTY_B := 0;   
+               END IF;   
+           END IF;   
+           END LOOP;   
+           CLOSE DEL_CURR2;   
+       END LOOP;   
+   CLOSE DEL_CURR1;   
+END DELIVERY;   
+BEGIN     
+   DELETE FROM N$LONGTERMTEMP;    
+   INSERT INTO N$LONGTERMTEMP (trn_scrip,     
+                             trn_symbol,     
+                             trn_date,   
+                             AUC_DATE,   
+                             trn_clientcd,     
+                             trn_qty,     
+                             trn_mktrate,     
+                             trn_balqty,     
+                             badla_rate,     
+                             trans_flag,     
+                             broktype,     
+                             trn_settno,     
+                             trn_sdate)     
+      SELECT trn_scrip,     
+             trn_symbol,     
+             trn_date, trn_date AS auc_date,      
+             trn_clientcd,     
+             trn_qty,     
+             DECODE(NVL(ONMKTRATE,'Y'),'Y',trn_mktrate,trn_netrate) rate,     
+             0,     
+             0,     
+             trans_flag,     
+             'DL' trn_broktype,trn_settno,     
+             NULL     
+        FROM SYSADM.trnmast       
+       WHERE     trn_date >= DATEFROM     
+             AND trn_date <= DATETO     
+             AND trn_clientcd = CODE     
+             AND substr(trn_delvsettno,2,1) not in ('N','R','A')     
+      UNION ALL     
+      SELECT trn_scrip,     
+             trn_symbol,     
+             trn_date, trn_date AS auc_date,    
+             trn_clientcd,     
+             trn_qty,     
+             DECODE(NVL(ONMKTRATE,'Y'),'Y',trn_mktrate,trn_netrate),     
+             0,     
+             0,     
+             trans_flag,     
+             trn_broktype,trn_settno,    
+             NULL     
+        FROM SYSADM.trnmast      
+       WHERE     trn_date >= DATEFROM     
+             AND trn_date <= DATETO     
+             AND trn_clientcd = CODE     
+             AND trn_broktype = 'DL'             
+             AND substr(trn_delvsettno,2,1) in ('N','R')     
+      UNION ALL     
+      SELECT A.trn_scrip,     
+             A.trn_symbol,     
+             A.trn_date, trn_date AS auc_date,    
+             A.trn_clientcd,     
+             A.trn_qty,     
+             DECODE(NVL(ONMKTRATE,'Y'),'Y',a.trn_mktrate,a.trn_netrate),     
+             0,     
+             0,     
+             A.trans_flag,     
+             'DL' trn_broktype,trn_settno,     
+             NULL     
+        FROM SYSADM.trnmast A,SYSADM.SETTFILE B       
+       WHERE  a.trn_date >= DATEFROM     
+             AND a.trn_date <= DATETO     
+             AND a.trn_clientcd = CODE     
+        AND a.trn_QTY<0   
+             AND decode(substr(a.trn_delvsettno,1,2),'NA','NN','BA','BR','MN')||SUBSTR(A.TRN_DELVSETTNO,3,4) = B.SETTNO     
+             AND substr(a.trn_delvsettno,2,1) in ('A')     
+  UNION ALL     
+      SELECT A.trn_scrip,   
+             A.trn_symbol,     
+             B.periodfrom trn_date, trn_date AS auc_date,    
+             A.trn_clientcd,     
+             A.trn_qty,     
+             DECODE(NVL(ONMKTRATE,'Y'),'Y',a.trn_mktrate,a.trn_netrate),       
+             0,     
+             0,     
+             A.trans_flag,     
+             'DL' trn_broktype,trn_settno,     
+             NULL     
+        FROM SYSADM.trnmast A,SYSADM.SETTFILE B      
+       WHERE     a.trn_date >= DATEFROM     
+             AND a.trn_date <= DATETO     
+             AND a.trn_clientcd = CODE     
+        AND a.trn_QTY>0   
+             AND decode(substr(a.trn_delvsettno,1,2),'NA','NN','BA','BR','MN')||SUBSTR(A.TRN_DELVSETTNO,3,4) = B.SETTNO      
+             AND substr(a.trn_delvsettno,2,1) in ('A')     
+      UNION ALL     
+  SELECT TRN_SCRIP,'' TRN_SYMBOL,TRN_DATE, auc_date, TRN_CLIENTCD,       
+      ABS(SUM(DECODE(SIGN(QTY),-1,QTY,0))) SQTY,ABS(ROUND(SUM(DECODE(SIGN(QTY),-1,RATE,0)),4)) SA_RATE,     
+      SUM(DECODE(SIGN(QTY),1,QTY,0)) BQTY,ROUND(SUM(DECODE(SIGN(QTY),1,RATE,0)),4) BA_RATE,       
+      TRANS_FLAG,TRN_BROKTYPE,'NN',TRN_DATE FROM (                                         
+      SELECT TRN_SCRIP,TRN_DATE,trn_date AS auc_date,TRN_CLIENTCD,SUM(TRN_QTY) QTY, SUM(TRN_QTY*DECODE(NVL(ONMKTRATE,'Y'),'Y',trn_mktrate,trn_netrate))/SUM(TRN_QTY) AS RATE,         
+      TRANS_FLAG,TRN_BROKTYPE        
+      FROM SYSADM.TRNMAST WHERE TRN_CLIENTCD = CODE AND TRN_BROKTYPE = 'NN' AND TRN_DATE BETWEEN DATEFROM AND DATETO AND TRN_QTY>0       
+      GROUP BY TRN_SCRIP,TRN_CLIENTCD,TRN_DATE,TRN_DATE,TRANS_FLAG,TRN_BROKTYPE      
+      UNION ALL     
+      SELECT TRN_SCRIP,TRN_DATE,trn_date AS auc_date,TRN_CLIENTCD,SUM(TRN_QTY) BQTY, SUM(TRN_QTY*DECODE(NVL(ONMKTRATE,'Y'),'Y',trn_mktrate,trn_netrate))/SUM(TRN_QTY) AS BA_RATE,     
+      TRANS_FLAG,TRN_BROKTYPE      
+      FROM SYSADM.TRNMAST WHERE TRN_CLIENTCD = CODE AND TRN_BROKTYPE = 'NN' AND TRN_DATE BETWEEN DATEFROM AND DATETO AND TRN_QTY<0    
+      GROUP BY TRN_SCRIP,TRN_CLIENTCD,TRN_DATE,trn_date,TRANS_FLAG,TRN_BROKTYPE      
+      ) GROUP BY TRN_SCRIP,TRN_CLIENTCD,TRN_DATE,AUC_DATE,TRANS_FLAG,TRN_BROKTYPE       
+      UNION ALL     
+      SELECT trn_scrip,     
+             trn_symbol,     
+             trn_date,  trn_date AS auc_date,   
+             trn_clientcd,     
+             trn_qty,     
+             trn_NETRATE,     
+             trn_balqty,     
+             badla_rate,     
+             trans_flag,     
+             'DL' trn_broktype,TRN_SETTNO,     
+             NULL     
+        FROM SYSADM.trnmast_opn     
+       WHERE trn_clientcd = CODE;     
+   UPDATE N$LONGTERMTEMP SET FLG1='O',FLG2='N',QTY=TRN_QTY;   
+   DELIVERY (CODE, DATEFROM, DATETO);     
+     COMMIT;     
+END;
+/
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_ALLWEBUSERS
+(USRID IN VARCHAR2,P_RECORDSET OUT SYS_REFCURSOR) 
+AS BEGIN OPEN P_RECORDSET FOR 
+SELECT USERID,
+  USERNAME ,
+  EMAILID,
+  MOBILENO  ,
+  DISABLESTATUS   ,
+  DISABLEDATE,
+  ALLOWMULTILOGIN                ,
+  LOGINSTATUS          ,
+  USERTYPE                ,
+  MACHINENAME  ,
+  PASSWORD1   ,
+  PASSWORD1DATE  ,
+  PASSWORD2  ,
+  PASSWORD3 ,
+  RESETPASSWORD  ,
+  RESETSTATUS ,
+  RESETDATE ,
+  REQUIREDPASSWORDPOLICY,
+  USERRIGHTS             ,
+  REMARKS           
+  FROM SYSTEM.WEBUSER WHERE UPPER(USERID) LIKE '%' ||  UPPER(USRID) || '%';
+
+END;
+/
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_BILLDETAILS
+(     clientcode_ IN VARCHAR2, 
+       billno_     IN VARCHAR2, 
+       billtype_   IN VARCHAR2, 
+       instype_   IN VARCHAR2, 
+       tradedate_  IN DATE, 
+       EXCHANGES_ IN VARCHAR2,
+       p_recordset OUT SYS_REFCURSOR 
+) 
+AS 
+BEGIN 
+    IF billtype_ = 'DLV' THEN 
+      OPEN p_recordset FOR 
+       SELECT trn_date TrnDate, trn_delvsettno TrnDelvSettno, billno BillNo, par_code ClientCode, par_name ClientName, par_add1 ClientAddress1, par_add2 ClientAddress2, 
+       par_add3 ClientAddress3, par_add4 ClientAddress4, SUM(Decode(Sign(trn_qty), -1, Abs(trn_qty * trn_mktrate + Nvl(trn_brok, 0)), 0))  AS SaleValue, 
+       SUM(Decode(Sign(trn_qty), -1, Abs(trn_qty), 0))  AS SaleQty , Decode(Sign(trn_qty), -1, trn_mktrate, 0)   AS SaleMktRate, 
+       Decode(Sign(trn_qty), -1, trn_netrate, 0)   AS SaleNetRate, Decode(newbroktype, 'DL', 'D', Decode(trn_broktype, 'DL', 'D', 'J')) AS Flag, S.sh_name  AS ScripName , 
+       SUM(Decode(Sign(trn_qty), 1, trn_qty * trn_mktrate + Nvl(trn_brok, 0), 0))  AS PurValue, 
+       SUM(Decode(Sign(trn_qty), 1, trn_qty, 0))  AS PurQty, Decode(Sign(trn_qty), 1, trn_mktrate, 0)   AS PurMktRate , 
+       Decode(Sign(trn_qty), 1, trn_netrate, 0)   AS PurNetRate , trn_scrip ScripCode, Nvl(D.stax, 0) AS STAX, Nvl(d.nsetax, 0)   AS NSETax, 
+       balance NetBalance, D.delvdate DelvDate, Nvl(D.sttamt, 0) STTAmt , Nvl(d.dematchrg, 0) Demat, Nvl(d.stax_demat, 0) STaxDemat , 
+       Nvl(d.stampduty, 0) StampDuty, Nvl(d.stax_brok, 0) STaxBrok, Nvl(d.stax_nsetax, 0) STaxNSETax, Nvl(d.stax_stamp, 0) STaxStampDuty , 
+       Nvl(d.dbrok, 0) Brok, 'Y' PrintNetRate, Nvl(d.tax1, 0) Tax1, Nvl(d.stax_tax1, 0) STaxTax1, Nvl(d.tax2, 0) Tax2, Nvl(d.stax_tax2, 0) STaxTax2, 
+       '--' Tax1Narration, '--' Tax2Narration, '' TotMinBrok_Narr, Nvl(d.totminbrok, 0) totminbrok , Nvl(stax_totminbrok, 0) stax_totminbrok, 
+       'Net Obligation Bill' Header, Nvl(stm.stampduty_narr, Nvl(pa.stampdutynarrcap, 'Stampduty')) StampDutyNarration , 
+       'CLG CHRG' Tax3Narration, Nvl(d.tax3, 0) Tax3, Nvl(d.stax_tax3, 0) STaxTax3, 'N' Incl_trn , Nvl(d.sbc_stax, 0) SBC_STAX, Nvl(d.kkc_stax, 0) KKC_STAX , 
+       T.TYPE, Nvl(D.cgst, 0) CGST, Nvl(D.sgst, 0) SGST, Nvl(D.igst, 0) IGST, Nvl(D.utt, 0) UTT, Nvl(fund_flag, 'N') FUND_FLAG 
+       FROM   sysadm.trnmast T, sysadm.sharemst S, sysadm.partymst p, sysadm.delv100 d, sysadm.staxfile st, sysadm.statemst stm, sysadm.para pa 
+       WHERE  st.clientcd = trn_clientcd AND stm.code(+) = p.statecode AND st.station = Substr(trn_delvsettno, 1, 1) AND trn_mktrate != 0 
+       AND par_code = t.trn_clientcd AND t.trn_scrip = s.sh_code AND d.clientcd = par_code AND t.trn_clientcd = d.clientcd AND Nvl(p.delvbillprint, 'Y') = 'Y' 
+       AND d.settno = trn_settno AND d.pending IS NULL AND trn_settno = billno_ AND par_code >= clientcode_ AND par_code <= clientcode_ 
+       GROUP  BY trn_date, trn_delvsettno, billno, par_code, Nvl(p.branchind, 'HO'), p.groupclient, par_name, par_add1, par_add2, par_add3, par_add4, 
+       Decode(newbroktype, 'DL', 'D', Decode(trn_broktype, 'DL', 'D', 'J')), S.sh_name, trn_scrip, D.stax, D.nsetax, balance, D.delvdate, D.sttamt, 
+       d.dematchrg, D.stax_demat, D.stampduty, Decode(Sign(trn_qty), -1, trn_mktrate, 0), Decode(Sign(trn_qty), -1, trn_netrate, 0), 
+       Decode(Sign(trn_qty), 1, trn_mktrate, 0), Decode(Sign(trn_qty), 1, trn_netrate, 0), d.stax_brok, d.stax_nsetax, d.stax_stamp, d.dbrok, d.tax1, 
+       d.tax2, d.tax3, d.stax_tax1, d.stax_tax2, Nvl(d.totminbrok, 0), Nvl(stax_totminbrok, 0), d.stax_tax3, 
+       Nvl(stm.stampduty_narr, Nvl(pa.stampdutynarrcap, 'Stampduty')), Nvl(D.sbc_stax, 0), Nvl(D.kkc_stax, 0), T.TYPE, Nvl(D.cgst, 0), Nvl(D.sgst, 0), Nvl(D.igst, 0), 
+       Nvl(D.utt, 0), Nvl(fund_flag, 'N') ORDER  BY Nvl(p.branchind, 'HO'), p.groupclient, p.par_name, sh_name;
+    ELSE 
+        IF EXCHANGES_  LIKE '%NFO%' OR EXCHANGES_   LIKE '%BFO%' OR EXCHANGES_  LIKE '%MFO%'  OR EXCHANGES_  LIKE '%NCOM%' OR EXCHANGES_  LIKE '%BCOM%'  THEN
+              OPEN p_recordset FOR 
+               select pa.company, pa.add1 ADD1, pa.add2 ADD2, pa.add3 ADD3, pa.add4 ADD4, par_code ClientCode, p.par_name ClientName, par_add1 ClientAddress1, 
+               par_add2 ClientAddress2, par_add3 ClientAddress3, par_add4 ClientAddress4, itaxno, billdate   DelvDate, '' TrnDelvSettno,
+                f.instrument_type ||f.symbol ||To_char(f.expirydate, 'ddMONyyyy')  || ' - ' ||F.optiontype AS ScripName, trade_date   TrnDate, F.optiontype , 
+                '' ScripCode , abs( Decode(Sign(trn_qty), -1, trn_qty ,0)) SaleQty, ABS(Decode(Sign(trn_qty), -1, tradeprice ,0)) SaleMktRate, 
+                ABS(Decode(Sign(trn_qty), -1, netprice ,0)) SaleNetRate, Decode(Sign(trn_qty), 1, trn_qty ,0) PurQty, Decode(Sign(trn_qty), 1, tradeprice ,0) PurMktRate, 
+                Decode(Sign(trn_qty), 1, netprice ,0) PurNetRate, tradeprice, netprice, tradestatus flag, Nvl(trn_brok, 0)   AS Brok1 , Nvl(stax_brok, 0) STaxBrok, 
+                Nvl(D.nsetax, 0) NSETax , Nvl(D.stax_nsetax, 0) STaxNSETax, Nvl(D.stamp, 0) StampDuty, Nvl(D.stax_stamp, 0) STaxStampDuty , Nvl(D.brok, 0) BROK, 
+                Nvl(sttamt, 0) STTAmt , Nvl(D.tax1, 0) Tax1, Nvl(D.stax_tax1, 0) STaxTax1, Nvl(D.tax2, 0) Tax2, Nvl(D.stax_tax2, 0) STaxTax2, 
+                Nvl(stax_brok, 0) + Nvl(d.stax_nsetax, 0) + Nvl(stax_stamp, 0) + Nvl(stax_tax1, 0) + Nvl(stax_tax2, 0) + Nvl(stax_tax3, 0) + Nvl(stax_totminbrok, 0) STAX, 
+                Nvl(totminbrok, 0) TOTMINBROK , Nvl(stax_totminbrok, 0) STAX_TOTMINBROK, 
+                ABS( Round(Decode(Sign(trn_qty), 1, trn_qty * tradeprice * Nvl(fmultiplier, 1) + Nvl( trn_brok, 0), 0), 2)   )  AS PurValue, 
+                ABS( Round(Decode(Sign(trn_qty), -1, trn_qty * tradeprice * Nvl(fmultiplier, 1) + Nvl ( trn_brok, 0), 0), 2)) AS SaleValue, pa.staxcd, PA.nsetaxcd, 
+                PA.stampdutycontrol, PA.sttcontrolaccount, f.strikeprice, billno, '' TRN_DELVSETTNO, Nvl(stampdutynarr, 'Stampduty') StampDutyNarration , 
+                'SEBI FEES' Tax1Narration, 'CLG ' Tax2Narration, 'A' TOTMIN_NARR, Decode(tradestatus, 'BF', 1, 'CF', 3, 2) Slno, 
+                Round(Decode(tradestatus, 'BF', 0, 'CF', 0, Decode(Sign(trn_qty), 1, Abs(trn_qty), 0) * Decode(tradestatus, 'EX', strikeprice, 'AS', strikeprice, tradeprice)), 2) Buy_Turn ,
+                 Round(Decode(tradestatus, 'BF', 0, 'CF', 0, Decode(Sign(trn_qty), -1, Abs(trn_qty), 0) * Decode(tradestatus, 'EX', strikeprice, 'AS', strikeprice, tradeprice)), 2) Sale_Turn, 
+                 Nvl(M.margin, 0) + Nvl(M.mtmvalue, 0) MG13_Margin, Nvl(D.tax3, 0) Tax3, 'OTH TAX3' Tax3Narration, 'N' Incl_Trn , Nvl(D.stax_tax3, 0) STaxTax3, Nvl(D.sbc_stax, 0) SBC_stax , 
+                 Nvl(D.kkc_stax, 0) KKC_stax, Nvl(D.cgst, 0) CGST, Nvl(D.sgst, 0) SGST, Nvl(D.igst, 0) IGST, Nvl(D.utt, 0) UTT , 0 Demat, 0 StaxDemat, '' DematNarration,  
+                 'Net Obligation Bill' Header, NETAMT NetBalance FROM   sysadm.fotrnmast f, sysadm.partymst p, sysadm.para pa, sysadm.fobill D, sysadm.fomargin M 
+                 WHERE  f.clientcode = P.par_code AND trade_date >=tradedate_ AND trade_date <= tradedate_ AND Substr(f.instrument_type, 0, 3) = instype_ AND trade_date <> F.expirydate AND 
+                 Nvl(F.exchange, 'NFO') = 'NFO' AND Nvl(F.exchange, 'NFO') = Nvl(M.exchange(+), 'NFO') AND Nvl(F.exchange, 'NFO') = Nvl(D.exchange, 'NFO') AND p.par_code >= clientcode_ 
+                 AND p.par_code <= clientcode_ AND billno LIKE billtype_ || '%' AND D.bdate = trade_date AND clientcode = clientid AND trade_date = M.wdate(+) AND clientcode = M.clientcd(+) 
+                 AND M.filetype(+) = 'MG13' ORDER BY ScripName, DECODE(FLAG,'BF', 1, 'CF', 3, '11',2); 
+        END IF;     
+        
+        
+        IF EXCHANGES_  LIKE '%MCOM%' OR EXCHANGES_   LIKE '%NDEX%' OR EXCHANGES_  LIKE '%ICEX%' THEN
+              OPEN p_recordset FOR 
+               select pa.company, pa.add1 ADD1, pa.add2 ADD2, pa.add3 ADD3, pa.add4 ADD4, par_code ClientCode, p.par_name ClientName, par_add1 ClientAddress1, 
+               par_add2 ClientAddress2, par_add3 ClientAddress3, par_add4 ClientAddress4, itaxno, billdate   DelvDate, '' TrnDelvSettno,
+                f.instrument_type ||f.symbol ||To_char(f.expirydate, 'ddMONyyyy')  || ' - ' ||F.optiontype AS ScripName, trade_date   TrnDate, F.optiontype , 
+                '' ScripCode , abs( Decode(Sign(trn_qty), -1, trn_qty ,0)) SaleQty, ABS(Decode(Sign(trn_qty), -1, tradeprice ,0)) SaleMktRate, 
+                ABS(Decode(Sign(trn_qty), -1, netprice ,0)) SaleNetRate, Decode(Sign(trn_qty), 1, trn_qty ,0) PurQty, Decode(Sign(trn_qty), 1, tradeprice ,0) PurMktRate, 
+                Decode(Sign(trn_qty), 1, netprice ,0) PurNetRate, tradeprice, netprice, tradestatus flag, Nvl(trn_brok, 0)   AS Brok1 ,0 STaxBrok, 
+                Nvl(D.nsetax, 0) NSETax , 0 STaxNSETax, Nvl(D.stamp, 0) StampDuty, Nvl(D.stax_stamp, 0) STaxStampDuty , Nvl(D.brok, 0) BROK, 
+                Nvl(sttamt, 0) STTAmt , Nvl(D.tax1, 0) Tax1, Nvl(D.stax_tax1, 0) STaxTax1, Nvl(D.tax2, 0) Tax2, Nvl(D.stax_tax2, 0) STaxTax2, 
+                0 STAX, 
+                0 TOTMINBROK , Nvl(stax_totminbrok, 0) STAX_TOTMINBROK, 
+                ABS( Round(Decode(Sign(trn_qty), 1, trn_qty * tradeprice * Nvl(multiplier, 1) + Nvl( trn_brok, 0), 0), 2)   )  AS PurValue, 
+                ABS( Round(Decode(Sign(trn_qty), -1, trn_qty * tradeprice * Nvl(multiplier, 1) + Nvl ( trn_brok, 0), 0), 2)) AS SaleValue, pa.staxcd, PA.nsetaxcd, 
+                PA.stampdutycontrol, '' sttcontrolaccount, f.strikeprice, billno, '' TRN_DELVSETTNO, Nvl(stampdutynarr, 'Stampduty') StampDutyNarration , 
+                'SEBI FEES' Tax1Narration, 'CLG ' Tax2Narration, 'A' TOTMIN_NARR, Decode(tradestatus, 'BF', 1, 'CF', 3, 2) Slno, 
+                Round(Decode(tradestatus, 'BF', 0, 'CF', 0, Decode(Sign(trn_qty), 1, Abs(trn_qty), 0) * Decode(tradestatus, 'EX', strikeprice, 'AS', strikeprice, tradeprice)), 2) Buy_Turn ,
+                 Round(Decode(tradestatus, 'BF', 0, 'CF', 0, Decode(Sign(trn_qty), -1, Abs(trn_qty), 0) * Decode(tradestatus, 'EX', strikeprice, 'AS', strikeprice, tradeprice)), 2) Sale_Turn, 
+                 Nvl(M.margin, 0) + Nvl(M.mtmvalue, 0) MG13_Margin, Nvl(D.tax3, 0) Tax3, 'OTH TAX3' Tax3Narration, 'N' Incl_Trn , 0 STaxTax3, Nvl(D.sbc_stax, 0) SBC_stax , 
+                 Nvl(D.kkc_stax, 0) KKC_stax, Nvl(D.cgst, 0) CGST, Nvl(D.sgst, 0) SGST, Nvl(D.igst, 0) IGST, Nvl(D.utt, 0) UTT , 0 Demat, 0 StaxDemat, '' DematNarration,  
+                 'Net Obligation Bill' Header, NETAMT NetBalance FROM   COMM.COtrnmast f, COMM.partymst p, COMM.para pa, COMM.Cobill D, COMM.Comargin M 
+                 WHERE  f.clientcode = P.par_code AND trade_date >=tradedate_ AND trade_date <= tradedate_ AND Substr(f.instrument_type, 0, 3) = instype_ AND trade_date <> F.expirydate AND 
+                 Nvl(F.exchange, 'MCX') = 'MCX' AND Nvl(F.exchange, 'MCX') = Nvl(M.exchange(+), 'MCX') AND Nvl(F.exchange, 'MCX') = Nvl(D.exchange, 'MCX') AND p.par_code >= clientcode_ 
+                 AND p.par_code <= clientcode_ AND billno LIKE billtype_ || '%' AND D.bdate = trade_date AND clientcode = clientid AND trade_date = M.wdate(+) AND clientcode = M.clientcd(+) 
+                 AND M.filetype(+) = 'MG13' ORDER BY ScripName, DECODE(FLAG,'BF', 1, 'CF', 3, '11',2); 
+        END IF;     
+        
+          IF  EXCHANGES_  LIKE '%NCD%' OR EXCHANGES_   LIKE '%BCD%' OR EXCHANGES_  LIKE '%MCD%' THEN
+              OPEN p_recordset FOR 
+               select '' company, '' ADD1, '' ADD2, '' ADD3, '' ADD4, par_code ClientCode, p.par_name ClientName, par_add1 ClientAddress1, 
+               par_add2 ClientAddress2, par_add3 ClientAddress3, par_add4 ClientAddress4, itaxno, billdate   DelvDate, '' TrnDelvSettno,
+                f.instrument_type ||f.symbol ||To_char(f.expirydate, 'ddMONyyyy')  || ' - ' ||F.optiontype AS ScripName, trade_date   TrnDate, F.optiontype , 
+                '' ScripCode , abs( Decode(Sign(trn_qty), -1, trn_qty ,0)) SaleQty, ABS(Decode(Sign(trn_qty), -1, tradeprice ,0)) SaleMktRate, 
+                ABS(Decode(Sign(trn_qty), -1, netprice ,0)) SaleNetRate, Decode(Sign(trn_qty), 1, trn_qty ,0) PurQty, Decode(Sign(trn_qty), 1, tradeprice ,0) PurMktRate, 
+                Decode(Sign(trn_qty), 1, netprice ,0) PurNetRate, tradeprice, netprice, tradestatus flag, Nvl(trn_brok, 0)   AS Brok1 , 0 STaxBrok, 
+                Nvl(D.nsetax, 0) NSETax ,0 STaxNSETax, Nvl(D.stamp, 0) StampDuty, Nvl(D.stax_stamp, 0) STaxStampDuty , Nvl(D.brok, 0) BROK, 
+                Nvl(0, 0) STTAmt , Nvl(D.tax1, 0) Tax1, Nvl(D.stax_tax1, 0) STaxTax1, Nvl(D.tax2, 0) Tax2, Nvl(D.stax_tax2, 0) STaxTax2, 
+                0 STAX, 
+                0 TOTMINBROK ,0 STAX_TOTMINBROK, 
+                ABS( Round(Decode(Sign(trn_qty), 1, trn_qty * tradeprice * Nvl(multiplier, 1) + Nvl( trn_brok, 0), 0), 2)   )  AS PurValue, 
+                ABS( Round(Decode(Sign(trn_qty), -1, trn_qty * tradeprice * Nvl(multiplier, 1) + Nvl ( trn_brok, 0), 0), 2)) AS SaleValue, '' staxcd, '' nsetaxcd, 
+                '' stampdutycontrol, '' sttcontrolaccount, f.strikeprice, billno, '' TRN_DELVSETTNO,  '' StampDutyNarration , 
+                'SEBI FEES' Tax1Narration, 'CLG ' Tax2Narration, 'A' TOTMIN_NARR, Decode(tradestatus, 'BF', 1, 'CF', 3, 2) Slno, 
+                Round(Decode(tradestatus, 'BF', 0, 'CF', 0, Decode(Sign(trn_qty), 1, Abs(trn_qty), 0) * Decode(tradestatus, 'EX', strikeprice, 'AS', strikeprice, tradeprice)), 2) Buy_Turn ,
+                 Round(Decode(tradestatus, 'BF', 0, 'CF', 0, Decode(Sign(trn_qty), -1, Abs(trn_qty), 0) * Decode(tradestatus, 'EX', strikeprice, 'AS', strikeprice, tradeprice)), 2) Sale_Turn, 
+                 Nvl(M.margin, 0) + Nvl(M.mtmvalue, 0) MG13_Margin, Nvl(D.tax3, 0) Tax3, 'OTH TAX3' Tax3Narration, 'N' Incl_Trn , Nvl(D.stax_tax3, 0) STaxTax3, Nvl(D.sbc_stax, 0) SBC_stax , 
+                 Nvl(D.kkc_stax, 0) KKC_stax, Nvl(D.cgst, 0) CGST, Nvl(D.sgst, 0) SGST, Nvl(D.igst, 0) IGST, Nvl(D.utt, 0) UTT , 0 Demat, 0 StaxDemat, '' DematNarration,  
+                 'Net Obligation Bill' Header, NETAMT NetBalance FROM   CURR.CUtrnmast f, CURR.CUpartymst p, CURR.CUbill D, CURR.CUmargin M 
+                 WHERE  f.clientcode = P.par_code AND trade_date >=tradedate_ AND trade_date <= tradedate_ AND Substr(f.instrument_type, 0, 3) = instype_ AND trade_date <> F.expirydate AND 
+                 Nvl(F.exchange, 'NSE') = 'NSE' AND Nvl(F.exchange, 'NSE') = Nvl(M.exchange(+), 'NSE') AND Nvl(F.exchange, 'NSE') = Nvl(D.exchange, 'NSE') AND p.par_code >= clientcode_ 
+                 AND p.par_code <= clientcode_ AND billno LIKE billtype_ || '%' AND D.bdate = trade_date AND clientcode = clientid AND trade_date = M.wdate(+) AND clientcode = M.clientcd(+) 
+                 AND M.filetype(+) = 'MG13' ORDER BY ScripName, DECODE(FLAG,'BF', 1, 'CF', 3, '11',2); 
+        END IF;     
+    END IF; 
+END;
+/
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_CLIENTPROFILE
+( CLIENTCODE_ IN VARCHAR2, 
+USER_ IN VARCHAR2,
+P_RECORDSET OUT SYS_REFCURSOR) 
+AS 
+XXX VARCHAR2(2000):='';
+
+BEGIN 
+ 
+IF USER_ ='SYSADM' THEN
+XXX := '  SELECT PAR_CODE , PAR_NAME, PAR_ADD1, PAR_ADD2, PAR_ADD3, PAR_ADD4, PINCODE, to_char(INTRODATE, ''dd-MM-yyyy'') introdate, PHNOS,emailno, DPACCOUNTNO, DPCODE, ITAXNO,
+BANKNAME1, BANKACNO1, BANKADD11, BANKADD12, IFSCCODE,MICRNO    FROM SYSADM.PARTYMST WHERE PAR_CODE='|| '''' || CLIENTCODE_ || '''' || ' ';
+END IF;
+
+IF USER_ ='COMM' THEN
+XXX := '  SELECT PAR_CODE , PAR_NAME, PAR_ADD1, PAR_ADD2, PAR_ADD3, PAR_ADD4, PINCODE, to_char(INTRODATE, ''dd-MM-yyyy'') introdate, PHNOS,emailno, DPACCOUNTNO, DPCODE, ITAXNO,
+BANKNAME1, BANKACNO1, BANKADD11, BANKADD12, IFSC IFSCCODE,MICRNO    FROM COMM.PARTYMST WHERE PAR_CODE='|| '''' || CLIENTCODE_ || '''' || ' ';
+END IF;
+
+IF USER_ ='CURR' THEN
+XXX := ' SELECT PAR_CODE , PAR_NAME, PAR_ADD1, PAR_ADD2, PAR_ADD3, PAR_ADD4, PINCODE, to_char(INTRODATE, ''dd-MM-yyyy'') introdate, PHNOS,emailno,'' DPACCOUNTNO,'' DPCODE, ITAXNO,
+BANKNAME1, BANKACNO1, BANKADD11, BANKADD12, IFSC,MICRNO    FROM CURR.CUPARTYMST WHERE PAR_CODE='|| '''' || CLIENTCODE_ || '''' || ' ';
+END IF;
+
+OPEN p_recordset  FOR XXX;
+
+END;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_COMPANYDETAILS
+(USER_ IN VARCHAR2,
+P_RECORDSET OUT SYS_REFCURSOR) 
+AS 
+XXX VARCHAR2(200):='';
+
+BEGIN 
+ 
+IF USER_ ='SYSADM' THEN
+XXX := '  SELECT COMPANY,  FINYRFROM, FINYRTO, ADD1, ADD2, ADD3, ADD4, PHNOS, FOSEBIREGNNO, b.comp_off_name AUTHSIGN1 FROM SYSADM.PARA a, sysadm.parameters b';
+END IF;
+
+IF USER_ ='COMM' THEN
+XXX := '  SELECT COMPANY,  FINYRFROM, FINYRTO, ADD1, ADD2, ADD3, ADD4, PHNOS, FOSEBIREGNNO, AUTHSIGN1 FROM COMM.PARA';
+END IF;
+
+IF USER_ ='CURR' THEN
+XXX := '  SELECT COMPANY,  FINYRFROM, FINYRTO, ADD1, ADD2, ADD3, ADD4, PHNOS, FOSEBIREGNNO, AUTHSIGN1 FROM CURR.CUPARA';
+END IF;
+
+OPEN p_recordset  FOR XXX;
+
+END;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_DEMATHOLDING
+(clientcode_ in varchar2,
+AsOnDate_ in date,
+p_recordset out SYS_REFCURSOR) 
+
+as 
+XXX VARCHAR2(20000):='';
+
+NSESETTNO_ varchar2(10);
+BSESETTNO_ varchar2(10);
+NSDLDBNAME_ varchar2(10);
+CDSLDBNAME_ varchar2(10);
+ISNSDL_ INT;
+ISCDSL_ INT;
+
+begin 
+
+SELECT RATE_SETTNO  INTO NSESETTNO_  FROM (  SELECT RATE_SETTNO,PERIODFROM FROM SYSADM.RATEFILE R,SYSADM.SETTFILE S  
+ WHERE RATE_SETTNO=S.SETTNO AND SETTNO LIKE 'NN%' AND PERIODFROM<=AsOnDate_ ORDER BY PERIODFROM DESC ) WHERE ROWNUM<2;
+
+ SELECT RATE_SETTNO  INTO BSESETTNO_  FROM (  SELECT RATE_SETTNO,PERIODFROM FROM SYSADM.RATEFILE R,SYSADM.SETTFILE S  
+ WHERE RATE_SETTNO=S.SETTNO AND SETTNO LIKE 'NN%' AND PERIODFROM<=AsOnDate_ ORDER BY PERIODFROM DESC ) WHERE ROWNUM<2;
+ 
+ SELECT COUNT(*) INTO ISNSDL_ FROM  SYSTEM.DBMAST  WHERE  EXCHANGE='DP';
+ SELECT COUNT(*) INTO ISCDSL_ FROM  SYSTEM.DBMAST  WHERE  EXCHANGE='DPC';
+ SELECT LINKNAME  INTO NSDLDBNAME_  FROM  SYSTEM.DBMAST  WHERE  EXCHANGE='DP';
+ SELECT LINKNAME  INTO CDSLDBNAME_  FROM  SYSTEM.DBMAST  WHERE  EXCHANGE='DPC';
+
+
+XXX := 'select A.VAL,A.VAL1,A.VAL2,A.ONDATE,A.NSESETTNO,A.BSESETTNO,A.BRANCH,A.SUBBRANCH,A.GRP,A.CODE CLIENTCODE,A.NAME CLIENTNAME,A.DPCODE,A.DPACCOUNTNO,A.SCRIPCD SCRIPCODE,A.SCRIPNAME, 
+SUM(A.STOCK) STOCK,SUM(A.MGNSTOCK) MarginStock,SUM(A.FOSECSTOCK) FOSecStock,A.CLOSRATE CLOSERATE,SUM(A.VALUE) VALUE,A.VARIANCE,
+SUM(A.VALUE_VAR) VarValue,0 BAL,A.PLEDGEABLE,A.POAFLAG,SUM(NVL(A.DPHOLDING,0)) DPHOLDING,ISINCODE,a.Reportmsg,A.PAR_ADD1,A.PAR_ADD2,A.PAR_ADD3,
+A.PAR_ADD4,A.CITY,A.STATE,A.PINCODE,A.MOBILENOS FROM ( 
+
+ select A.VAL,A.VAL1,A.VAL2,A.ONDATE,A.NSESETTNO,A.BSESETTNO,A.BRANCH,A.SUBBRANCH,A.GRP,A.CODE,A.NAME,A.DPCODE,A.DPACCOUNTNO,A.SCRIPCD,
+ A.SCRIPNAME, SUM(A.STOCK) STOCK,SUM(A.MGNSTOCK) MGNSTOCK,SUM(A.FOSECSTOCK) FOSECSTOCK,A.CLOSRATE,SUM(A.VALUE) VALUE,A.VARIANCE,
+ SUM(A.VALUE_VAR) VALUE_VAR,0 BAL,A.PLEDGEABLE,A.POAFLAG,SUM(NVL(A.DPHOLDING,0)) DPHOLDING,ISINCODE,a.Reportmsg,A.PAR_ADD1,A.PAR_ADD2,A.PAR_ADD3,
+ A.PAR_ADD4,A.CITY,A.STATE,A.PINCODE,A.MOBILENOS FROM (   
+ 
+ SELECT 0 val,0 val1,0 val2, '|| '''' || AsOnDate_ || '''' || ' ondate,'|| '''' || NSESETTNO_ || '''' || ' nsesettno,'|| '''' || BSESETTNO_ || '''' || ' bsesettno, DECODE(''N'',''Y'',
+ DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND) BRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),P.SUBBRANCHIND) SUBBRANCH, 
+ DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) GRP, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',CLIENTCD),CLIENTCD) CODE, 
+ sh.isincode,DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),substr(P.PAR_NAME,1,30)) NAME,P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,
+ P.CITY,P.STATE,P.PINCODE,P.MOBILENOS, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode) dpcode, 
+ DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno) dpaccountno ,SCRIPCD,sh_name ScripName, Sum(NVL(D.credit,0)-NVL(D.debit,0)) STOCK,
+ 0 MGNSTOCK,0 FOSECSTOCK,nvl(r.clos,nvl(c.clg_rate,0)) ClosRate, nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(D.credit,0)-NVL(D.debit,0)) Value   ,
+ nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100) variance,(nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(D.credit,0)-NVL(D.debit,0)))*nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100)/
+ 100 value_var,0 BAL   ,nvl(PLEDGEABLE,''N'') PLEDGEABLE,nvl(P.POAFLAG,''N'') POAFLAG,0 DPHOLDING,'''' Reportmsg  
+ FROM SYSADM.DEMATLGR D,SYSADM.PARTYMST P,SYSADM.ratefile r,SYSADM.clgrate c,SYSADM.sharemst sh  
+ Where  TRXTYPE=''C'' AND P.PAR_CODE=CLIENTCD  AND D.DDATE<='|| '''' || AsOnDate_ || '''' || ' AND (D.scrollno not like ''PP%'' or D.scrollno is null) 
+ and r.rate_code(+)=d.scripcd and r.rate_settno(+)='|| '''' || NSESETTNO_ || '''' || ' and c.clg_scripcd(+)=d.scripcd and c.clg_settno(+)='|| '''' || BSESETTNO_ || '''' || '  and d.scripcd=sh.sh_code 
+  and d.clientcd='|| '''' || clientcode_ || '''' || ' GROUP BY DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND), 
+  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),P.SUBBRANCHIND), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) , 
+  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',CLIENTCD),CLIENTCD), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),
+  substr(P.PAR_NAME,1,30)),P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS,  
+  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode),  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno)  ,
+  SCRIPCD,nvl(r.clos,nvl(c.clg_rate,0)),sh_name,nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100),sh.isincode  ,nvl(PLEDGEABLE,''N''),nvl(P.POAFLAG,''N'') 
+  Having Sum(NVL(d.credit,0) - NVL(d.debit,0))!= 0  
+  
+  UNION ALL   
+  SELECT 0 val,0 val1,0 val2, '|| '''' || AsOnDate_ || '''' || ' ondate,'|| '''' || NSESETTNO_ || '''' || ' nsesettno,'|| '''' || BSESETTNO_ || '''' || ' bsesettno, 
+  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND) BRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),
+  P.SUBBRANCHIND) SUBBRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) GRP, 
+  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',PAR_CODE),PAR_CODE) CODE, sh.isincode,DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),
+  substr(P.PAR_NAME,1,30)) NAME,P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS, 
+  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode) dpcode, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno) dpaccountno ,
+  SCRIPCD,sh_name ScripName, 0 STOCK,Sum(NVL(D.credit,0)-NVL(D.debit,0)) MGNSTOCK,0 FOSECSTOCK,nvl(r.clos,nvl(c.clg_rate,0)) ClosRate, 
+  nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(D.credit,0)-NVL(D.debit,0)) Value   ,nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100) variance,
+  (nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(D.credit,0)-NVL(D.debit,0)))*nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100)/100 value_var,0 BAL  ,
+  nvl(PLEDGEABLE,''N'') PLEDGEABLE,nvl(P.POAFLAG,''N'') POAFLAG,0 DPHOLDING,'''' Reportmsg  
+  FROM SYSADM.DEMATLGR D,SYSADM.PARTYMST P,SYSADM.ratefile r,SYSADM.clgrate c,SYSADM.sharemst sh  Where  TRXTYPE=''C'' AND P.MGNCODE=CLIENTCD  
+  AND D.DDATE<='|| '''' || AsOnDate_ || '''' || '  AND (D.scrollno not like ''PP%'' or D.scrollno is null) and r.rate_code(+)=d.scripcd and r.rate_settno(+)='|| '''' || NSESETTNO_ || '''' || ' 
+  and c.clg_scripcd(+)=d.scripcd and c.clg_settno(+)='|| '''' || BSESETTNO_ || '''' || ' and d.scripcd=sh.sh_code  and P.PAR_CODE='|| '''' || clientcode_ || '''' || ' 
+  GROUP BY DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),
+  P.SUBBRANCHIND), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) , DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',PAR_CODE),
+  PAR_CODE), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),substr(P.PAR_NAME,1,30)),P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,
+  P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS,  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode),  
+  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno)  ,SCRIPCD,nvl(r.clos,nvl(c.clg_rate,0)),sh_name,
+  nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100),sh.isincode  ,nvl(PLEDGEABLE,''N''),nvl(P.POAFLAG,''N'') Having Sum(NVL(d.credit,0) - NVL(d.debit,0))!= 0  ';  
+  
+    if ISCDSL_='1' then 
+    
+       XXX := XXX || ' UNION ALL   
+      SELECT 0 val,0 val1,0 val2,'|| '''' || AsOnDate_ || '''' || ' ondate,'|| '''' || NSESETTNO_ || '''' || ' nsesettno,'|| '''' || BSESETTNO_ || '''' || ' bsesettno, 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND) BRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),
+      P.SUBBRANCHIND) SUBBRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) GRP, 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',PAR_CODE),PAR_CODE) CODE, sh.isincode,DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),
+      substr(P.PAR_NAME,1,30)) NAME,P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS, 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode) dpcode, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno) dpaccountno ,
+      sh_code SCRIPCD,sh_name ScripName, Sum(NVL(H.HOLDING,0)) STOCK,0 MGNSTOCK,0 FOSECSTOCK,nvl(r.clos,nvl(c.clg_rate,0)) ClosRate, 
+      nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(H.HOLDING,0)) Value  ,nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100) variance, (nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(H.HOLDING,0)))*
+      nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100)/100 value_var,0 BAL  ,nvl(PLEDGEABLE,''N'') PLEDGEABLE,nvl(P.POAFLAG,''N'') POAFLAG,Sum(NVL(H.HOLDING,0)) DPHOLDING,
+      '''' Reportmsg  FROM SYSADM.HOLDINGMST@' || CDSLDBNAME_ || ' H,SYSADM.PARA@' || CDSLDBNAME_ || ' P1,SYSADM.PARTYMST P,SYSADM.ratefile r,SYSADM.clgrate c,SYSADM.sharemst sh  
+      WHERE H.ISINCODE=SH.ISINCODE AND CLIENTID=DPACCOUNTNO AND MAINDPID=DPCODE  AND r.rate_code(+)=sh_code and r.rate_settno(+)='|| '''' || NSESETTNO_ || '''' || ' and 
+      c.clg_scripcd(+)=sh_code and c.clg_settno(+)='|| '''' || BSESETTNO_ || '''' || '  and par_code='|| '''' || clientcode_ || '''' || ' GROUP BY DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND), 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),P.SUBBRANCHIND), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) , 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',PAR_CODE),PAR_CODE), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),
+      substr(P.PAR_NAME,1,30)),P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS,  
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode),  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno)  ,
+      sh_code,nvl(r.clos,nvl(c.clg_rate,0)),sh_name,nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100) ,sh.isincode,nvl(PLEDGEABLE,''N''),nvl(P.POAFLAG,''N'')  
+      Having Sum(NVL(H.HOLDING,0))!= 0 ';       
+    end if;
+    
+  if ISNSDL_='1' then 
+  
+      XXX := XXX || ' UNION ALL   
+      SELECT 0 val,0 val1,0 val2,'|| '''' || AsOnDate_ || '''' || ' ondate,'|| '''' || NSESETTNO_ || '''' || ' nsesettno, '|| '''' || BSESETTNO_ || '''' || ' bsesettno, 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND) BRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),
+      P.SUBBRANCHIND) SUBBRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) GRP, 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',PAR_CODE),PAR_CODE) CODE, sh.isincode,DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),
+      substr(P.PAR_NAME,1,30)) NAME,P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS, 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode) dpcode, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno) dpaccountno ,
+      sh_code SCRIPCD,sh_name ScripName, Sum(NVL(H.HOLDING,0)) STOCK,0 MGNSTOCK,0 FOSECSTOCK,nvl(r.clos,nvl(c.clg_rate,0)) ClosRate, 
+      nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(H.HOLDING,0)) Value  ,nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100) variance, (nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(H.HOLDING,0)))
+      *nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100)/100 value_var,0 BAL ,nvl(PLEDGEABLE,''N'') PLEDGEABLE,nvl(P.POAFLAG,''N'') POAFLAG,Sum(NVL(H.HOLDING,0)) DPHOLDING,
+      '''' Reportmsg  FROM SYSADM.HOLDINGMST@' || NSDLDBNAME_ || ' H,SYSADM.PARA@' || NSDLDBNAME_ || ' P1,SYSADM.PARTYMST P,SYSADM.ratefile r,SYSADM.clgrate c,SYSADM.sharemst sh  
+      WHERE H.ISINCODE=SH.ISINCODE AND CLIENTID=DPACCOUNTNO AND MAINDPID=DPCODE  AND r.rate_code(+)=sh_code and r.rate_settno(+)='|| '''' || NSESETTNO_ || '''' || ' and 
+      c.clg_scripcd(+)=sh_code and c.clg_settno(+)='|| '''' || BSESETTNO_ || '''' || '  and par_code='|| '''' || clientcode_ || '''' || ' GROUP BY DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND), 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),P.SUBBRANCHIND), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) , 
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',PAR_CODE),PAR_CODE), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),
+      substr(P.PAR_NAME,1,30)),P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS,  
+      DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode),  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno)  ,
+      sh_code,nvl(r.clos,nvl(c.clg_rate,0)),sh_name,nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100) ,sh.isincode,nvl(PLEDGEABLE,''N''),nvl(P.POAFLAG,''N'')  
+      Having Sum(NVL(H.HOLDING,0))!= 0 ';     
+  end if;
+  
+   XXX := XXX || ' UNION ALL    
+   SELECT 0 val,0 val1,0 val2,'|| '''' || AsOnDate_ || '''' || ' ondate,'|| '''' || NSESETTNO_ || '''' || ' nsesettno,'|| '''' || BSESETTNO_ || '''' || ' bsesettno, 
+  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND) BRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),
+  P.SUBBRANCHIND) SUBBRANCH, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) GRP,
+   DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',CLIENTCD),CLIENTCD) CODE, sh.isincode,DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),
+   substr(P.PAR_NAME,1,30)) NAME,P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS, 
+   DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode) dpcode, DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno) 
+   dpaccountno ,SCRIPCD,sh_name ScripName, Sum(NVL(D.dqtycredit,0)-NVL(D.dqtydebit,0)) STOCK,0 MGNSTOCK,Sum(NVL(D.dqtycredit,0)-NVL(D.dqtydebit,0))
+    FOSECSTOCK,nvl(r.clos,nvl(c.clg_rate,0)) ClosRate, nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(D.dqtycredit,0)-NVL(D.dqtydebit,0)) Value  ,
+    nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100) variance,(nvl(r.clos,nvl(c.clg_rate,0))*Sum(NVL(D.dqtycredit,0)-NVL(D.dqtydebit,0)))*nvl(NVL(R.RATE_VAR,
+    nvl(C.RATE_VAR,0)),100)/100 value_var,0 BAL  ,nvl(PLEDGEABLE,''N'') PLEDGEABLE,nvl(P.POAFLAG,''N'') POAFLAG,0 DPHOLDING,'''' Reportmsg 
+    FROM SYSADM.SECURITYDEPOSIT D,SYSADM.PARTYMST P,SYSADM.ratefile r,SYSADM.clgrate c,SYSADM.sharemst sh  
+    Where  P.PAR_CODE=CLIENTCD  AND D.trxDATE<='|| '''' || AsOnDate_ || '''' || '   and r.rate_code(+)=d.scripcd and r.rate_settno(+)='|| '''' || NSESETTNO_ || '''' || ' 
+    and c.clg_scripcd(+)=d.scripcd and c.clg_settno(+)='|| '''' || BSESETTNO_ || '''' || '  and d.scripcd=sh.sh_code  and d.clientcd='|| '''' || clientcode_ || '''' || ' 
+    GROUP BY DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'',''HO'',P.BRANCHIND),P.BRANCHIND), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.SUBBRANCHIND),
+    P.SUBBRANCHIND), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.GROUPCLIENT),P.GROUPCLIENT) , 
+    DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',CLIENTCD),CLIENTCD), DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',substr(P.PAR_NAME,1,30)),
+    substr(P.PAR_NAME,1,30)),P.PAR_ADD1,P.PAR_ADD2,P.PAR_ADD3,P.PAR_ADD4,P.CITY,P.STATE,P.PINCODE,P.MOBILENOS,  
+    DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpcode),P.dpcode),  DECODE(''N'',''Y'',DECODE(ACSTATUS,''Disabled'','''',P.dpaccountno),P.dpaccountno)  ,
+    SCRIPCD,nvl(r.clos,nvl(c.clg_rate,0)),sh_name,nvl(NVL(R.RATE_VAR,nvl(C.RATE_VAR,0)),100),sh.isincode  ,nvl(PLEDGEABLE,''N''),nvl(P.POAFLAG,''N'') 
+    Having Sum(NVL(d.dqtycredit,0) - NVL(d.dqtydebit,0))!= 0 
+    
+ ) A  GROUP BY a.val,a.val1,a.val2,A.ONDATE,A.NSESETTNO,A.BSESETTNO,A.BRANCH,A.SUBBRANCH, 
+    A.GRP,A.CODE,A.NAME,A.PAR_ADD1,A.PAR_ADD2,A.PAR_ADD3,A.PAR_ADD4,A.CITY,A.STATE,A.PINCODE,A.MOBILENOS,A.DPCODE,A.DPACCOUNTNO,A.SCRIPCD,
+    A.SCRIPNAME,  a.ClosRate, a.VARIANCE,A.PLEDGEABLE,A.POAFLAG,a.Reportmsg,ISINCODE   having  SUM(STOCK) <>0 
+    
+     ) A  GROUP BY a.val,a.val1,a.val2,A.ONDATE,
+    A.NSESETTNO,A.BSESETTNO,A.BRANCH,A.SUBBRANCH, A.GRP,A.CODE,A.NAME,A.PAR_ADD1,A.PAR_ADD2,A.PAR_ADD3,A.PAR_ADD4,A.CITY,A.STATE,A.PINCODE,
+    A.MOBILENOS,A.DPCODE,A.DPACCOUNTNO,A.SCRIPCD,A.SCRIPNAME,  a.ClosRate, a.VARIANCE,A.PLEDGEABLE,A.POAFLAG,a.Reportmsg,ISINCODE 
+    having (SUM(STOCK)<>0 or SUM(MGNSTOCK)<>0)  order by code,scripNAME';     
+     
+
+     OPEN p_recordset  FOR XXX ;
+     
+end;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_EXPIRYDATELLIST
+( EXCHANGES_ IN VARCHAR2,
+P_RECORDSET OUT SYS_REFCURSOR) 
+AS BEGIN 
+
+ IF EXCHANGES_  LIKE '%NFO%' OR EXCHANGES_   LIKE '%BFO%' OR EXCHANGES_  LIKE '%MFO%'  OR EXCHANGES_  LIKE '%NCOM%' OR EXCHANGES_  LIKE '%BCOM%'  THEN
+OPEN P_RECORDSET FOR  
+SELECT DISTINCT to_char(EXPIRYDATE, 'ddMONyyyy'),EXPIRYDATE SYM FROM SYSADM.CONTRACTS  WHERE EXPIRYDATE>SYSDATE-100 ORDER BY 2;
+END IF;
+
+ IF EXCHANGES_  LIKE '%MCOM%' OR EXCHANGES_   LIKE '%NDEX%' OR EXCHANGES_  LIKE '%ICEX%'  THEN
+ OPEN P_RECORDSET FOR  
+SELECT DISTINCT to_char(EXPIRYDATE, 'ddMONyyyy'), EXPIRYDATE  SYM FROM COMM.COCONTRACTS  WHERE EXPIRYDATE>SYSDATE-100 ORDER BY 2;
+END IF;
+
+ IF EXCHANGES_  LIKE '%NCD%' OR EXCHANGES_   LIKE '%BCD%' OR EXCHANGES_  LIKE '%MCD%'  THEN
+ OPEN P_RECORDSET FOR  
+SELECT DISTINCT to_char(EXPIRYDATE, 'ddMONyyyy'), EXPIRYDATE SYM FROM CURR.CUCONTRACTS  WHERE EXPIRYDATE>SYSDATE-100 ORDER BY 2;
+END IF;
+
+END;
+/
+
+
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_FINLEDGER
+(CLIENTCODEFROM IN VARCHAR2,
+CLIENTCODETO IN VARCHAR2,
+BRANCHCODE IN VARCHAR2,
+SUBBRANCHCODE IN VARCHAR2,
+RMCODE_ IN VARCHAR2,
+GROUPCODE_ IN VARCHAR2,
+DATEFROM IN DATE,
+DATETO IN DATE,
+INCLUDEUNRELEASEVOUCHER IN CHAR,
+EXCLUDEMG13ENTRIES IN CHAR,
+FINANCIALTRANXACTIONTYPE IN VARCHAR2,
+USER_ IN VARCHAR2,
+P_RECORDSET OUT SYS_REFCURSOR) 
+AS BEGIN 
+
+IF USER_ ='SYSADM' THEN
+    OPEN P_RECORDSET FOR 
+     SELECT PARTY_CD,DT, DT1,NARR, BILLNO, X.CHQNO,X.DEBIT, X.CREDIT,
+    RUNBAL, SEGMENT from (
+    SELECT PARTY_CD,DT, DT1,NARR, BILLNO, CHQNO,TO_CHAR(DEBIT, '99,99,99,999.99') DEBIT, TO_CHAR(CREDIT, '99,99,99,999.99') CREDIT,
+    TO_CHAR(SUM(CREDIT-DEBIT) OVER (PARTITION BY PARTY_CD ORDER BY PARTY_CD,DT
+     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), '99,99,99,999.99')  RUNBAL, SEGMENT FROM (
+    SELECT PARTY_CD,DATEFROM-1 DT,DATEFROM-1 DT1,'Opening Balance' NARR,'' BILLNO,NULL CHQNO
+    ,DECODE(SIGN(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),-1,ABS(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),0) DEBIT 
+    ,DECODE(SIGN(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),-1,0,ABS(SUM(NVL(CREDIT,0)-NVL(DEBIT,0)))) CREDIT, '' SEGMENT
+    FROM SYSADM.PARTYTRN WHERE WDATE<DATEFROM    AND 
+    PARTY_CD >= (CASE WHEN CLIENTCODEFROM IS NULL THEN PARTY_CD ELSE CLIENTCODEFROM END) AND PARTY_CD <= (CASE WHEN CLIENTCODETO IS NULL THEN PARTY_CD ELSE CLIENTCODETO END)
+     GROUP BY PARTY_CD
+    UNION ALL
+    SELECT PARTY_CD,WDATE DT, VALUE_DATE DT1,NARR, BILLNO,CHQNO,NVL(DEBIT,0) DEBIT,NVL(CREDIT,0) CREDIT, NVL(SEGMENT, 'NSE') SEGMENT
+    FROM SYSADM.PARTYTRN WHERE WDATE>=DATEFROM AND WDATE<=DATETO AND
+    PARTY_CD >= (CASE WHEN CLIENTCODEFROM IS NULL THEN PARTY_CD ELSE CLIENTCODEFROM END) AND PARTY_CD <= (CASE WHEN CLIENTCODETO IS NULL THEN PARTY_CD ELSE CLIENTCODETO END)  
+    ORDER BY DT, DT1)) X, SYSADM.PARTYMST Y WHERE X.PARTY_CD=Y.PAR_CODE AND Y.GROUPLEVEL1='Sundry Debtors/Creditors' AND  NVL(ACSTATUS,'Enabled')!='Disabled' AND
+     Y.BRANCHIND = (CASE WHEN BRANCHCODE IS NULL THEN Y.BRANCHIND ELSE BRANCHCODE END)  AND
+     NVL(Y.SUBBRANCHIND,'ASASASAS') = (CASE WHEN SUBBRANCHCODE IS NULL THEN NVL(Y.SUBBRANCHIND,'ASASASAS') ELSE SUBBRANCHCODE END)  AND
+      NVL(Y.GROUPCD,'ASASASAS') = (CASE WHEN GROUPCODE_ IS NULL THEN NVL(Y.GROUPCD,'ASASASAS') ELSE GROUPCODE_ END)  AND
+      NVL(Y.RMCODE,'ASASASAS') = (CASE WHEN RMCODE_ IS NULL THEN NVL(Y.RMCODE,'ASASASAS') ELSE RMCODE_  END) ;
+END IF;
+
+IF USER_ ='COMM' THEN
+    OPEN P_RECORDSET FOR 
+    SELECT PARTY_CD,DT, DT1,NARR, BILLNO, CHQNO,TO_CHAR(DEBIT, '99,99,99,999.99') DEBIT, TO_CHAR(CREDIT, '99,99,99,999.99') CREDIT,
+TO_CHAR(SUM(CREDIT-DEBIT) OVER (PARTITION BY PARTY_CD ORDER BY PARTY_CD,DT
+     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), '99,99,99,999.99')  RUNBAL, SEGMENT FROM (
+    SELECT PARTY_CD,DATEFROM-1 DT,DATEFROM-1 DT1,'Opening Balance' NARR,'' BILLNO, NULL CHQNO
+    ,DECODE(SIGN(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),-1,ABS(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),0) DEBIT 
+    ,DECODE(SIGN(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),-1,0,ABS(SUM(NVL(CREDIT,0)-NVL(DEBIT,0)))) CREDIT, '' SEGMENT
+    FROM COMM.PARTYTRN WHERE PARTY_CD>=CLIENTCODEFROM AND PARTY_CD<=CLIENTCODETO AND WDATE<DATEFROM
+    GROUP BY PARTY_CD
+    UNION ALL
+    SELECT PARTY_CD,WDATE DT, VALUE_DATE DT1,NARR, BILLNO,CHQNO,NVL(DEBIT,0) DEBIT,NVL(CREDIT,0) CREDIT, NVL(SEGMENT, 'MCXCOM') SEGMENT
+    FROM COMM.PARTYTRN WHERE PARTY_CD>=CLIENTCODEFROM AND PARTY_CD<=CLIENTCODETO AND WDATE>=DATEFROM AND WDATE<=DATETO   ORDER BY DT, DT1);
+END IF;
+
+IF USER_ ='CURR' THEN
+    OPEN P_RECORDSET FOR 
+    SELECT PARTY_CD,DT, DT1,NARR, BILLNO, CHQNO,TO_CHAR(DEBIT, '99,99,99,999.99') DEBIT, TO_CHAR(CREDIT, '99,99,99,999.99') CREDIT,
+TO_CHAR(SUM(CREDIT-DEBIT) OVER (PARTITION BY PARTY_CD ORDER BY PARTY_CD,DT
+     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW), '99,99,99,999.99')  RUNBAL, SEGMENT FROM (
+    SELECT PARTY_CD,DATEFROM-1 DT,DATEFROM-1 DT1,'Opening Balance' NARR,'' BILLNO, NULL CHQNO
+    ,DECODE(SIGN(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),-1,ABS(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),0) DEBIT 
+    ,DECODE(SIGN(SUM(NVL(CREDIT,0)-NVL(DEBIT,0))),-1,0,ABS(SUM(NVL(CREDIT,0)-NVL(DEBIT,0)))) CREDIT, '' SEGMENT
+    FROM CURR.PARTYTRN WHERE PARTY_CD>=CLIENTCODEFROM AND PARTY_CD<=CLIENTCODETO AND WDATE<DATEFROM
+    GROUP BY PARTY_CD
+    UNION ALL
+    SELECT PARTY_CD,WDATE DT, VALUE_DATE DT1,NARR, BILLNO,CHQNO,NVL(DEBIT,0) DEBIT,NVL(CREDIT,0) CREDIT, NVL(SEGMENT, 'NSE') SEGMENT
+    FROM CURR.PARTYTRN WHERE PARTY_CD>=CLIENTCODEFROM AND PARTY_CD<=CLIENTCODETO AND WDATE>=DATEFROM AND WDATE<=DATETO   ORDER BY DT, DT1);
+END IF;
+END;
+/
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_LongShortTermReport
+(CODE IN VARCHAR2,
+DateFrom IN date,
+DateTo IN date,
+P_RECORDSET1 OUT SYS_REFCURSOR,
+P_RECORDSET2 OUT SYS_REFCURSOR,
+P_RECORDSET3 OUT SYS_REFCURSOR,
+P_RECORDSET4 OUT SYS_REFCURSOR
+) 
+AS BEGIN 
+
+ N$CAP_LONG_SHORT_TP (CODE , DateFrom, DateTo)  ;
+
+OPEN P_RECORDSET1 FOR 
+   
+    select PP.SCRIP ScripCode,substr(NN.SH_NAME,1,20) ScripName ,to_char(PP.BDATE,'dd-mm-yyyy') PurDate,PP.BQTY PurQty,PP.BRATE PurRate,PP.Purvalue PurValue,
+     to_char(SDATE,'dd-mm-yyyy') SaleDate,PP.SQTY SaleQty ,PP.SRATE SaleRate,PP.sellvalue SaleValue,days Days,PP.SPECULATION Speculation,PP.SHORTTERM ShortTerm,PP.LONGTERM LongTerm,
+     CASE WHEN PP.LONGTERM<>0 AND MRATE>BRATE THEN ROUND(SELLVALUE-MRATE*BQTY,2) ELSE PP.LONGTERM END   AS LongTerm1
+     ,CASE WHEN PP.LONGTERM<>0 THEN MRATE ELSE 0 END MktRate,SDATE,PP.BDATE
+     from (
+     SELECT  SCRIP,BDATE,CODE, BQTY, BRATE, ROUND(Purvalue,2)Purvalue,SQTY,SRATE,
+     ROUND(sellvalue,2) sellvalue,SDATE,days,MRATE
+     ,CASE WHEN TERM='ST' AND FLG='JOB' THEN ROUND (sellvalue-Purvalue,2) ELSE 0 END  AS SPECULATION
+     ,CASE WHEN TERM='ST' AND FLG='SQ' THEN ROUND(sellvalue-Purvalue,2) ELSE 0 END   AS SHORTTERM
+     ,CASE WHEN TERM='LT' AND FLG='SQ' THEN ROUND(sellvalue-Purvalue,2) ELSE 0 END   AS LONGTERM
+     FROM(
+    SELECT TRN_SCRIP SCRIP,TRN_DATE BDATE,TRN_CLIENTCD CODE,
+    TRN_BALQTY BQTY,BADLA_RATE BRATE ,(TRN_BALQTY*BADLA_RATE) AS PURVALUE 
+    ,TRN_QTY SQTY,TRN_MKTRATE SRATE ,(TRN_QTY *TRN_MKTRATE) AS SELLVALUE ,TRN_SDATE SDATE
+    ,TRN_SDATE-TRN_DATE as days,'ST' AS TERM,'JOB' AS FLG,0 AS MRATE 
+    FROM  N$LONGTERMTEMP WHERE BROKTYPE<>'DL' AND FLG1='O'
+    ) ORDER BY SCRIP,BDATE,SDATE
+    )PP,(select sh_code AS sh_code,sh_name from SYSADM .sharemst)NN
+    WHERE PP.SCRIP=NN.SH_CODE(+)  
+       ORDER BY sh_name ,PP.BDATE,PP.SDATE,PP.BRATE,PP.SRATE ;
+
+OPEN P_RECORDSET2 FOR 
+select PP.SCRIP ScripCode,NN.SH_NAME ScripName, PP.BQTY PurQty,PP.Pur_value PurValue ,PP.SQTY SaleQty,PP.sellvalue SaleValue,PP.SPECULATION Speculation,
+PP.SHORTTERM ShortTerm,PP.LongTerm LongTerm  from (  
+                     select SCRIP,CODE,sum(BQTY)BQTY,sum(Pur_value)Pur_value,sum(SQTY)SQTY,sum(sellvalue) sellvalue  
+                     ,SUM(CASE WHEN term='LT' then sellvalue-Pur_value else 0 end) LongTerm  
+                     ,SUM(CASE WHEN term='ST' then sellvalue-Pur_value else 0 end) SHORTTERM  
+                     ,SUM(CASE WHEN term='JOB' then sellvalue-Pur_value else 0 end) SPECULATION FROM (  
+                     SELECT  SCRIP,CODE,term, sum(BQTY) BQTY, round(sum(Pur_value),2) Pur_value, 
+                     round(sum(act),2) actPurvalue,sum(SQTY) sqty, ROUND(sum(sellvalue),2) sellvalue FROM( 
+                     SELECT SCRIP,CODE,BQTY, 
+                     CASE WHEN DAYS >365 AND PP.BDATE<TO_DATE('31-JAN-2018','dd/Mon/yyyy') then  
+                     (case when (case when mrate>srate then srate else mrate end)> brate then  
+                     (case when mrate>srate then srate else mrate end) else brate end) else PP.BRATE end as BRATE, 
+                     CASE WHEN DAYS >365 AND PP.BDATE<TO_DATE('31-JAN-2018','dd/Mon/yyyy') then 
+                     (case when (case when mrate>srate then srate else mrate end)> brate then 
+                     (case when mrate>srate then srate else mrate end) else brate end) * BQTY else PP.BRATE*BQTY end as pur_value,  
+                     Purvalue as act,SQTY,sellvalue ,days,TERM ,FLG,MRATE FROM( 
+                     SELECT TRN_SCRIP SCRIP,TRN_DATE BDATE,TRN_CLIENTCD CODE,SUM(TRN_QTY) BQTY,TRN_MKTRATE BRATE,SUM(TRN_QTY*TRN_MKTRATE) as Purvalue, 
+                     SUM(TRN_BALQTY) SQTY,BADLA_RATE SRATE,SUM(TRN_BALQTY*BADLA_RATE) as sellvalue,TRN_SDATE SDATE ,TRN_SDATE-TRN_DATE as days 
+                     ,case when TRN_SDATE-TRN_DATE>365 THEN 'LT' ELSE'ST' END as TERM 
+                     ,'SQ' AS FLG FROM  N$LONGTERMTEMP WHERE FLG1='NW' 
+                     GROUP BY TRN_SCRIP,TRN_DATE ,TRN_CLIENTCD,TRN_MKTRATE,BADLA_RATE,TRN_SDATE 
+                     )PP, SYSADM.MARKET_31JAN2018 MK WHERE PP.SCRIP=MK.TRN_SCRIP(+) 
+                     )group by  SCRIP,CODE,term  
+                     UNION ALL
+          SELECT TRN_SCRIP,TRN_CLIENTCD ,'JOB' AS TERM 
+          ,sum(TRN_BALQTY) BQTY,sum(TRN_BALQTY*BADLA_RATE) AS PURVALUE
+          ,sum(TRN_BALQTY*BADLA_RATE) AS actPURVALUE  
+          ,sum(TRN_QTY) SQTY,sum(TRN_QTY *TRN_MKTRATE) AS SELLVALUE 
+          FROM  N$LONGTERMTEMP WHERE BROKTYPE<>'DL' AND FLG1='O'
+          group by TRN_SCRIP,TRN_CLIENTCD 
+          ) group by SCRIP,CODE
+          )PP,(select sh_code AS sh_code,sh_name from SYSADM .sharemst)NN
+          WHERE PP.SCRIP=NN.SH_CODE(+) ;
+     
+    
+    
+    OPEN P_RECORDSET3 FOR 
+select PP.SCRIP ScripCode,substr(NN.SH_NAME,1,20) ScripName,NVL(TO_CHAR(PP.BDATE,'DD-MM-YYYY'),'') PurDate,PP.BQTY PurQty ,PP.BRATE PurRate,PP.Purvalue PurValue,
+               NVL(TO_CHAR(SDATE,'DD-MM-YYYY'),'') SaleDate,PP.SQTY SaleQty ,PP.SRATE SaleRate,PP.sellvalue SaleValue,days,PP.SPECULATION,PP.SHORTTERM,PP.LONGTERM,
+             CASE WHEN DAYS >365 AND PP.BDATE<TO_DATE('31-JAN-2018','dd/Mon/yyyy') then  
+             srate*SQTY-(case when (case when mrate>srate then srate else mrate end)> brate then
+             (case when mrate>srate then srate else mrate end) else brate end) * BQTY else PP.LONGTERM end as longterm1
+               ,CASE WHEN PP.LONGTERM<>0 THEN MRATE ELSE 0 END MKTRATE,PP.BDATE,PP.SDATE 
+              from (
+               SELECT  SCRIP,BDATE,CODE, BQTY, BRATE, ROUND(Purvalue,2)Purvalue,SQTY,SRATE,
+               ROUND(sellvalue,2) sellvalue,SDATE,days,MRATE
+               ,CASE WHEN TERM='ST' AND FLG='JOB' THEN ROUND (sellvalue-Purvalue,2) ELSE 0 END  AS SPECULATION
+               ,CASE WHEN TERM='ST' AND FLG='SQ' THEN ROUND(sellvalue-Purvalue,2) ELSE 0 END   AS SHORTTERM
+               ,CASE WHEN TERM='LT' AND FLG='SQ' THEN ROUND(sellvalue-Purvalue,2) ELSE 0 END   AS LONGTERM
+               FROM(
+               SELECT SCRIP,BDATE,CODE,BQTY,BRATE,Purvalue,SQTY,SRATE,sellvalue,SDATE ,days
+              ,TERM ,FLG,MRATE FROM( 
+                SELECT TRN_SCRIP SCRIP,TRN_DATE BDATE,TRN_CLIENTCD CODE,SUM(TRN_QTY) BQTY,TRN_MKTRATE BRATE,SUM(TRN_QTY*TRN_MKTRATE) as Purvalue,
+              SUM(TRN_BALQTY) SQTY,BADLA_RATE SRATE,SUM(TRN_BALQTY*BADLA_RATE) as sellvalue,TRN_SDATE SDATE ,TRN_SDATE-TRN_DATE as days
+              ,case when TRN_SDATE-TRN_DATE>365 THEN 'LT' ELSE'ST' END as TERM
+              ,'SQ' AS FLG FROM  N$LONGTERMTEMP WHERE FLG1='NW'
+              GROUP BY TRN_SCRIP,TRN_DATE ,TRN_CLIENTCD,TRN_MKTRATE,BADLA_RATE,TRN_SDATE)PP, sysadm .MARKET_31JAN2018 MK
+              WHERE PP.SCRIP=MK.TRN_SCRIP(+)
+               UNION ALL
+              SELECT TRN_SCRIP,TRN_DATE BDATE,TRN_CLIENTCD CODE,
+              TRN_BALQTY BQTY,BADLA_RATE ,(TRN_BALQTY*BADLA_RATE) AS PURVALUE 
+              ,TRN_QTY SQTY,TRN_MKTRATE SRATE ,(TRN_QTY *TRN_MKTRATE) AS SELLVALUE ,TRN_SDATE
+              ,TRN_SDATE-TRN_DATE as days,'ST' AS TERM,'JOB' AS FLG,0 AS MRATE 
+              FROM  N$LONGTERMTEMP WHERE BROKTYPE<>'DL' AND FLG1='O'
+              ) ORDER BY SCRIP,BDATE,SDATE
+               )PP,(select sh_code AS sh_code,sh_name from sysadm .sharemst)NN
+              WHERE PP.SCRIP=NN.SH_CODE(+) 
+              ORDER BY SH_NAME,BDATE,SDATE,BRATE,SRATE DESC ;
+       
+       
+       OPEN P_RECORDSET4 FOR 
+SELECT PP.SCRIP ScripCode,NN.SH_NAME ScripName,nvl(to_char(PP.BDATE,'dd-mm-yyyy'),' ')  PurDate ,PP.BQTY  PurQty,PP.BVAL PurValue,  
+                     ROUND((CASE WHEN PP.BQTY<>0 AND PP.BVAL<>0 THEN PP.BVAL/PP.BQTY ELSE 0 END),2) AS PurRate  
+                     ,nvl(to_char(PP.SDATE,'dd-mm-yyyy'),' ') SaleDate,PP.SQTY  SaleQty,PP.SVAL SaleValue,  
+                     ROUND((CASE WHEN PP.SQTY<>0 AND PP.SVAL<>0 THEN PP.SVAL/PP.SQTY ELSE 0 END),2) AS SaleRate  
+                     ,PP.FLG FLAG,DAYS,nvl(FAIRRATE,0) FairRate,PP.BDATE,PP.SDATE FROM(  
+                     SELECT SCRIP,BDATE,CODE,BQTY,BVAL,SQTY,SVAL,SDATE,DAYS,FLG,   
+                     (CASE WHEN DAYS>=365 THEN MRATE ELSE 0 END) AS FAIRRATE FROM  
+                     ( SELECT  TRN_SCRIP SCRIP,TRN_DATE BDATE,TRN_CLIENTCD CODE,NVL(sum(TRN_QTY),0) BQTY, 
+                     NVL(sum(TRN_QTY*TRN_MKTRATE),0) BVAL,NVL(SUM(TRN_BALQTY),0) SQTY, 
+                     NVL(SUM(TRN_BALQTY*BADLA_RATE),0)SVAL,TRN_SDATE SDATE, 
+                     trunc(sysdate)-TRN_DATE AS DAYS,'OPB' AS FLG 
+                     FROM  N$LONGTERMTEMP  
+                     WHERE FLG2='N' AND TRN_QTY>0 AND BROKTYPE='DL'  
+                     GROUP BY TRN_SCRIP,TRN_DATE,TRN_CLIENTCD,TRN_SDATE)PK, sysadm .MARKET_31JAN2018 MK  
+                     WHERE PK.SCRIP=MK.TRN_SCRIP(+) 
+                     UNION ALL  
+                     SELECT TRN_SCRIP SCRIP,TRN_SDATE BDATE,TRN_CLIENTCD CODE, NVL(SUM(TRN_BALQTY),0) BQTY,  
+                     NVL(SUM(TRN_BALQTY*BADLA_RATE),0) BVAL,NVL(sum(TRN_QTY),0) SQTY,NVL(sum(TRN_QTY*TRN_MKTRATE),0)SVAL, 
+                     TRN_DATE SDATE,0 AS DAYS,'OPS' AS FLG,NULL AS MRATE  
+                     FROM  N$LONGTERMTEMP WHERE FLG2='N' AND TRN_QTY<0 AND BROKTYPE='DL' 
+                     GROUP BY TRN_SCRIP,TRN_DATE,TRN_CLIENTCD,TRN_SDATE )PP,(select sh_code AS sh_code,sh_name from sysadm .sharemst)NN  
+                     WHERE PP.SCRIP=NN.SH_CODE(+) ORDER BY PP.SCRIP,PP.BDATE,PP.SDATE,PP.BVAL,PP.SVAL ;  
+END;
+/
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_NETPOSITION (
+                                                   CLIENTCODE_ IN VARCHAR2, 
+                                                   DATEFROM_   IN DATE, 
+                                                   DATETO_     IN DATE, 
+                                                   CLOSINGRATEDATE_     IN DATE, 
+                                                   EXPIRYDATE_ IN VARCHAR2, 
+                                                   SYMBOL_ IN VARCHAR2,
+                                                   OPENPOSITION_ IN VARCHAR2, 
+                                                   REPORTTYPE_ IN VARCHAR2, 
+                                                   EXCHANGES_ IN VARCHAR2,
+                                                   P_RECORDSET OUT SYS_REFCURSOR 
+) 
+AS 
+
+        XXX VARCHAR2(20000):='';
+         
+BEGIN    
+    
+IF REPORTTYPE_='DATERANGE' THEN        
+    
+   IF EXCHANGES_  LIKE '%NSE%' OR EXCHANGES_   LIKE '%BSE%' OR EXCHANGES_  LIKE '%MCX%'   THEN
+            XXX := 'SELECT CODE CLIENTCODE,NAME CLIENTNAME,EXCHANGE FLAG ,SYMBOL SCRIPCODE , SH_NAME  SCRIPNAME,BF_QTY BFQTY,BF_RATE BFAVGRATE,BF_VALUE BFVALUE ,PURQTY,PUR_AVG_RATE  PURAVGRATE,
+            ROUND(PUR_VALUE,2) PURVALUE,SALEQTY,SALE_AVG_RATE SALEAVGRATE,ROUND(SALE_VALUE,2)SALEVALUE,
+            NET_QTY NETQTY,AVGRATE NETAVGRATE,ROUND(NET_VALUE,2) NETVALUE,CLOSE_RATE CLOSERATE,ROUND(MTM,2) MTM,
+            DECODE(NET_QTY,0,0,ROUND(NVL(MTM_NOTIONAL,0),2)) MTM_NOTIONAL   ,BROK  , NSETAX, 0 DEMAT,
+            TOTALSTT STTAMT,STAMP STAMPDUTY, TAX1, TAX2,TAX3,ROUND(CGST,2) CGST,ROUND(SGST,2) SGST,ROUND(IGST,2) IGST,UTT,TOTMINBROK FROM  (              
+            SELECT  EXCHANGE,A.CODE,A.NAME,A.SYMBOL,BF_QTY,
+            BF_VALUE,BF_RATE,A.PURQTY, PUR_VALUE,SALEQTY,SALE_VALUE,NET_QTY,NET_VALUE,
+            AVGRATE,A.PUR_AVG_RATE,   A.SALE_AVG_RATE, CLOSE_RATE,MTM MTM,MTM_NOTIONAL,BROK 
+             ,NVL(NSETAX,0) NSETAX,NVL(TOTALSTT,0) TOTALSTT,NVL(STAMP,0) STAMP,TAX1, TAX2,
+            TAX3,CGST,SGST,IGST,UTT,TOTMINBROK  FROM  (  
+            SELECT NULL EXCHANGE, NULL CODE,NULL NAME,
+            NULL SYMBOL,0 BF_QTY,
+            0 BF_VALUE,0 BF_RATE,0 PURQTY, 
+            0 PUR_VALUE,0 SALEQTY,   0 SALE_VALUE, 0 NET_QTY,0 BFQTY,0 NET_VALUE, 
+            0 AVGRATE, 0 CLOSE_RATE,   0 MTM ,0 MTM_NOTIONAL,  0  PUR_AVG_RATE, 
+            0   SALE_AVG_RATE  FROM DUAL  ';     
+             
+             FOR REC IN  (SELECT REGEXP_SUBSTR(EXCHANGES_,'[^,]+', 1, LEVEL) EXCH FROM DUAL   CONNECT BY REGEXP_SUBSTR(EXCHANGES_, '[^,]+', 1, LEVEL) IS NOT NULL)
+            LOOP
+            XXX := XXX || '   UNION ALL  SELECT '|| '''' || REC.EXCH || '''' ||' EXCHANGE,A.CODE,A.NAME,
+            A.SYMBOL,SUM(BF_QTY) BF_QTY,
+            SUM(BF_VALUE) BF_VALUE,ABS(ROUND(DECODE(SUM(BF_QTY),0,0,
+            SUM(BF_VALUE)/SUM(BF_QTY)),2)) BF_RATE,SUM(A.PURQTY) AS PURQTY, 
+            SUM(A.PUR_VALUE) AS PUR_VALUE,SUM(A.SALEQTY) AS SALEQTY,   SUM(A.SALE_VALUE) AS 
+            SALE_VALUE, SUM(A.NET_QTY)AS NET_QTY,0 BFQTY,SUM(A.NET_VALUE) AS NET_VALUE, 
+            DECODE(SUM(A.NET_QTY),0,0,ROUND(ABS(SUM(A.NET_VALUE))/ABS(SUM(A.NET_QTY)),2)) 
+            AS AVGRATE, NVL(R.CLOS,0) AS CLOSE_RATE,  0 AS MTM ,SUM(A.NET_QTY)* 
+            NVL(R.CLOS,0) + SUM(A.NET_VALUE) AS MTM_NOTIONAL,  DECODE(SUM(A.PURQTY),0,
+            0,ROUND(ABS(SUM(A.PUR_VALUE))/ABS(SUM(A.PURQTY)),2))  PUR_AVG_RATE, 
+            DECODE(SUM(A.SALEQTY),0,0,ROUND(ABS(SUM(A.SALE_VALUE))/ABS(SUM(A.SALEQTY)),2)) 
+            SALE_AVG_RATE  FROM (                 
+           
+                 SELECT TRN_CLIENTCD  AS CODE,P.PAR_NAME AS  NAME,T.TRN_SCRIP SYMBOL ,
+            0 BF_QTY,0 BF_VALUE,  SUM(DECODE(SIGN(TRN_QTY),1,
+            TRN_QTY,0))  AS PURQTY,SUM(DECODE(SIGN(TRN_QTY),-1,(ABS(TRN_QTY)),0)) AS  
+            SALEQTY,SUM(TRN_QTY) AS  NET_QTY,  SUM( DECODE(SIGN(TRN_QTY),1,
+            (TRN_QTY*TRN_NETRATE),0) ) PUR_VALUE, SUM( ABS(DECODE(SIGN(TRN_QTY),-1,
+            (TRN_QTY*TRN_NETRATE),0)) )  AS SALE_VALUE,  SUM( 0-(TRN_QTY*TRN_NETRATE) )  AS 
+            NET_VALUE  FROM SYSADM.TRNMAST_SUMM 
+            T,SYSADM.PARTYMST P  WHERE T.TRN_CLIENTCD = P.PAR_CODE AND T.TRN_DATE>='|| '''' || DATEFROM_ || '''' || ' AND 
+            T.TRN_DATE<='|| '''' || DATETO_ || '''' || '  AND T.TRN_CLIENTCD>='|| '''' || CLIENTCODE_ || '''' ||'             
+            AND T.TRN_CLIENTCD<='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY TRN_CLIENTCD,P.PAR_NAME,T.TRN_SCRIP                                  
+             ) A ,SYSADM.RATEFILE R WHERE R.RDATE (+) ='|| '''' || DATETO_ || '''' || '  AND A.SYMBOL=R.RATE_CODE  AND A.CODE='|| '''' || CLIENTCODE_ || '''' ||'  GROUP BY A.CODE,
+            A.NAME,A.SYMBOL,R.CLOS ';
+         
+            END LOOP;
+            XXX := XXX || '              ) A ,
+            (SELECT CLIENTCD,SUM(NVL(STAX,0)) STAX,SUM(NVL(BROK,0)) BROK,SUM(NVL(NSETAX,0)) 
+            NSETAX,SUM(NVL(STTAMT,0)) TOTALSTT,SUM(NVL(STAMP,0)) STAMP,  
+            SUM(NVL(STAX_NSETAX,0)) STAX_NSETAX,SUM(NVL(STAX_STAMP,0)) STAX_STAMP,
+            SUM(NVL(TAX1,0)) TAX1,SUM(NVL(STAX_TAX1,0)) STAX_TAX1,  SUM(NVL(TAX2,0)) TAX2,
+            SUM(NVL(STAX_TAX2,0)) STAX_TAX2,SUM(NVL(TAX3,0)) TAX3,SUM(NVL(STAX_TAX3,0)) 
+            STAX_TAX3  ,SUM(NVL(SBC_STAX,0)) SBC,  SUM(NVL(KKC_STAX,0)) KKC,SUM(NVL(CGST,
+            0)) CGST,SUM(NVL(SGST,0)) SGST,SUM(NVL(IGST,0)) IGST,SUM(NVL(UTT,0)) UTT,
+            SUM(NVL(TOTMINBROK,0)) TOTMINBROK,  SUM(NVL(STAX_TOTMINBROK,0)) STAX_TOTMINBROK 
+             FROM  SYSADM.DELV100 D WHERE   TDATE>='|| '''' || DATEFROM_ || '''' || '  AND 
+            TDATE<='|| '''' || DATETO_ || '''' || '    AND CLIENTCD>='|| '''' || CLIENTCODE_ || '''' ||'   AND 
+            CLIENTCD<='|| '''' || CLIENTCODE_ || '''' ||'  GROUP BY CLIENTCD  ) B  WHERE A.CODE=B.CLIENTCD(+)                
+             ) X, SYSADM.SHAREMST Z  WHERE SH_CODE=SYMBOL AND CODE='|| '''' || CLIENTCODE_ || '''' ||'    
+             ORDER BY CODE,SYMBOL  ';
+    
+    END IF; 
+               
+               
+                       
+      
+    
+   
+   
+    IF EXCHANGES_  LIKE '%NFO%' OR EXCHANGES_   LIKE '%BFO%' OR EXCHANGES_  LIKE '%MFO%'  OR EXCHANGES_  LIKE '%NCOM%' OR EXCHANGES_  LIKE '%BCOM%'  THEN
+            XXX :=  '  SELECT CODE CLIENTCODE,NAME CLIENTNAME,EXCHANGE FLAG ,SYMBOL SCRIPCODE , SYMBOL || ''-'' || TO_CHAR(EXPIRYDATE,''dd/MM/yyyy'') || ''-'' || 
+            STRIKEPRICE || ''-'' ||OPTIONTYPE SCRIPNAME,BF_QTY BFQTY,BF_RATE BFAVGRATE,BF_VALUE BFVALUE ,PURQTY,PUR_AVG_RATE  PURAVGRATE,
+            ROUND(PUR_VALUE,2) PURVALUE,SALEQTY,SALE_AVG_RATE SALEAVGRATE,ROUND(SALE_VALUE,2)SALEVALUE,
+            NET_QTY NETQTY,AVGRATE NETAVGRATE,ROUND(NET_VALUE,2) NETVALUE,CLOSE_RATE CLOSERATE,ROUND(MTM,2) MTM,
+            DECODE(NET_QTY,0,0,ROUND(NVL(MTM_NOTIONAL,0),2)) MTM_NOTIONAL   ,BROK  , NSETAX, 0 DEMAT,
+            TOTALSTT STTAMT,STAMP STAMPDUTY, TAX1, TAX2,TAX3,CGST,SGST,IGST,UTT,TOTMINBROK FROM  (   
+           
+            SELECT  EXCHANGE,A.CODE,A.NAME,A.SYMBOL ,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,BF_QTY,
+            BF_VALUE,BF_RATE,A.PURQTY, PUR_VALUE,SALEQTY,SALE_VALUE,NET_QTY,NET_VALUE,
+            AVGRATE,A.PUR_AVG_RATE,   A.SALE_AVG_RATE, CLOSE_RATE,MTM MTM,MTM_NOTIONAL,BROK 
+             ,NVL(NSETAX,0) NSETAX,NVL(TOTALSTT,0) TOTALSTT,NVL(STAMP,0) STAMP,TAX1, TAX2,
+            TAX3,CGST,SGST,IGST,UTT,TOTMINBROK  FROM  (           
+            
+            SELECT NULL EXCHANGE, NULL CODE,NULL NAME,
+            NULL SYMBOL, NULL EXPIRYDATE,NULL STRIKEPRICE,NULL OPTIONTYPE,0 BF_QTY,
+            0 BF_VALUE,0 BF_RATE,0 PURQTY, 
+            0 PUR_VALUE,0 SALEQTY,   0 SALE_VALUE, 0 NET_QTY,0 BFQTY,0 NET_VALUE, 
+            0 AVGRATE, 0 CLOSE_RATE,   0 MTM ,0 MTM_NOTIONAL,  0  PUR_AVG_RATE, 
+            0   SALE_AVG_RATE  FROM DUAL  ';     
+             
+             FOR REC IN  (SELECT REGEXP_SUBSTR(EXCHANGES_,'[^,]+', 1, LEVEL) EXCH FROM DUAL   CONNECT BY REGEXP_SUBSTR(EXCHANGES_, '[^,]+', 1, LEVEL) IS NOT NULL)
+            LOOP
+            XXX := XXX || '  UNION ALL  SELECT A.EXCHANGE,A.CODE,A.NAME,
+            A.SYMBOL,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,SUM(BF_QTY) BF_QTY,
+            SUM(BF_VALUE) BF_VALUE,ABS(ROUND(DECODE(SUM(BF_QTY),0,0,
+            SUM(BF_VALUE)/SUM(BF_QTY)),2)) BF_RATE,SUM(A.PURQTY) AS PURQTY, 
+            SUM(A.PUR_VALUE) AS PUR_VALUE,SUM(A.SALEQTY) AS SALEQTY,   SUM(A.SALE_VALUE) AS 
+            SALE_VALUE, SUM(A.NET_QTY)AS NET_QTY,0 BFQTY,SUM(A.NET_VALUE) AS NET_VALUE, 
+            DECODE(SUM(A.NET_QTY),0,0,ROUND(ABS(SUM(A.NET_VALUE))/ABS(SUM(A.NET_QTY)),2)) 
+            AS AVGRATE, NVL(R.CLOSPRICE,0) AS CLOSE_RATE,   DECODE(A.OPTIONTYPE,''FX'',
+            SUM(A.NET_QTY)* DECODE(NVL(A.STRIKEPRICE,0),0,NVL(R.CLOSPRICE,0),0) + 
+            SUM(A.NET_VALUE),(SUM(SALE_VALUE-PUR_VALUE)) ) AS MTM ,SUM(A.NET_QTY)* 
+            NVL(R.CLOSPRICE,0) + SUM(A.NET_VALUE) AS MTM_NOTIONAL,  DECODE(SUM(A.PURQTY),0,
+            0,ROUND(ABS(SUM(A.PUR_VALUE))/ABS(SUM(A.PURQTY)),2))  PUR_AVG_RATE, 
+            DECODE(SUM(A.SALEQTY),0,0,ROUND(ABS(SUM(A.SALE_VALUE))/ABS(SUM(A.SALEQTY)),2)) 
+            SALE_AVG_RATE  FROM (   
+                        
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,
+            T.SYMBOL ,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,SUM(TRN_QTY) AS  BF_QTY,SUM( 
+            0-(TRN_QTY*TRADEPRICE) )  AS BF_VALUE,   0  AS PURQTY,0 AS  SALEQTY,
+            SUM(TRN_QTY) AS  NET_QTY, 0  PUR_VALUE, 0  AS SALE_VALUE, SUM( 
+            0-(TRN_QTY*TRADEPRICE) )  AS NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE FROM SYSADM.FOTRNMAST_SUMM T,SYSADM.PARTYMST P   WHERE T.CLIENTCODE 
+            = P.PAR_CODE  AND T.TRADESTATUS=''BF''  AND T.TRADE_DATE='|| '''' || DATEFROM_ || '''' || '
+              AND INSTRUMENT_TYPE LIKE ''FUT%''    AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||'  AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL) 
+              AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+            AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY CLIENTCODE,P.PAR_NAME,T.SYMBOL,
+            T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE  
+
+            UNION ALL   
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,T.SYMBOL 
+            ,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,SUM(TRN_QTY) BF_QTY,SUM( 
+            0-(TRN_QTY*CLOSPRICE) ) BF_VALUE,  0  AS PURQTY,0 AS  SALEQTY,SUM(TRN_QTY) AS  
+            NET_QTY,0  PUR_VALUE,0  AS SALE_VALUE,SUM( 0-(TRN_QTY*CLOSPRICE) )  AS 
+            NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE  FROM 
+            SYSADM.FOTRNMAST_SUMM T,SYSADM.PARTYMST P ,SYSADM.FODAILYPRICE R WHERE R.WDATE 
+            (+) ='|| '''' || DATEFROM_ || '''' || ' AND R.CONTNAME (+) = T.SECURITYNAME  
+            AND NVL(R.STRIKEPRICE(+),0)=NVL(T.STRIKEPRICE,0)  AND 
+            DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',
+            T.OPTIONTYPE)=DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',R.OPTIONTYPE(+)) 
+            AND NVL(T.EXCHANGE,''NFO'')=NVL(R.EXCHANGE(+),''NFO'')  AND T.CLIENTCODE=P.PAR_CODE 
+            AND T.INSTRUMENT_TYPE LIKE ''OPT%'' AND T.TRADE_DATE<'|| '''' || DATETO_ || '''' || '  
+            AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||'   AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)
+             AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+            AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY 
+            CLIENTCODE,P.PAR_NAME,T.SYMBOL,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,
+            T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE HAVING SUM(TRN_QTY)!=0 
+
+             UNION ALL  
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,T.SYMBOL ,T.EXPIRYDATE,
+            T.STRIKEPRICE,T.OPTIONTYPE,0 BF_QTY,0 BF_VALUE,  SUM(DECODE(SIGN(TRN_QTY),1,
+            TRN_QTY,0))  AS PURQTY,SUM(DECODE(SIGN(TRN_QTY),-1,(ABS(TRN_QTY)),0)) AS  
+            SALEQTY,SUM(TRN_QTY) AS  NET_QTY,  SUM( DECODE(SIGN(TRN_QTY),1,
+            (TRN_QTY*TRADEPRICE),0) ) PUR_VALUE, SUM( ABS(DECODE(SIGN(TRN_QTY),-1,
+            (TRN_QTY*TRADEPRICE),0)) )  AS SALE_VALUE,  SUM( 0-(TRN_QTY*TRADEPRICE) )  AS 
+            NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE FROM SYSADM.FOTRNMAST_SUMM 
+            T,SYSADM.PARTYMST P  WHERE T.CLIENTCODE = P.PAR_CODE AND T.TRADESTATUS NOT IN 
+            (''BF'',''CF'') AND T.TRADE_DATE>='|| '''' || DATEFROM_ || '''' || ' AND 
+            T.TRADE_DATE<='|| '''' || DATETO_ || '''' || ' AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||'  
+            AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+            AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY CLIENTCODE,P.PAR_NAME,T.SYMBOL,
+            T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE                   
+                                  
+             ) A ,SYSADM.FODAILYPRICE R WHERE R.WDATE (+) = '|| '''' || CLOSINGRATEDATE_ || '''' || ' AND R.CONTNAME (+) = A.SECURITYNAME  AND NVL(R.STRIKEPRICE(+),
+            0)=NVL(A.STRIKEPRICE,0)  AND DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',
+            A.OPTIONTYPE)=DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',R.OPTIONTYPE(+))  
+            AND NVL(A.EXCHANGE,''NFO'')=NVL(R.EXCHANGE(+),''NFO'') AND A.EXCHANGE='|| '''' || REC.EXCH || '''' ||' AND A.CODE='|| '''' || CLIENTCODE_ || '''' ||'  GROUP BY A.EXCHANGE,A.CODE,
+            A.NAME,A.SYMBOL,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,R.CLOSPRICE  ';
+         
+            END LOOP;
+            XXX := XXX || '  ) A ,
+            (SELECT CLIENTID,SUM(NVL(STAX,0)) STAX,SUM(NVL(BROK,0)) BROK,SUM(NVL(NSETAX,0)) 
+            NSETAX,SUM(NVL(STTAMT,0)) TOTALSTT,SUM(NVL(STAMP,0)) STAMP,  
+            SUM(NVL(STAX_NSETAX,0)) STAX_NSETAX,SUM(NVL(STAX_STAMP,0)) STAX_STAMP,
+            SUM(NVL(TAX1,0)) TAX1,SUM(NVL(STAX_TAX1,0)) STAX_TAX1,  SUM(NVL(TAX2,0)) TAX2,
+            SUM(NVL(STAX_TAX2,0)) STAX_TAX2,SUM(NVL(TAX3,0)) TAX3,SUM(NVL(STAX_TAX3,0)) 
+            STAX_TAX3  ,SUM(NVL(SBC_STAX,0)) SBC,  SUM(NVL(KKC_STAX,0)) KKC,SUM(NVL(CGST,
+            0)) CGST,SUM(NVL(SGST,0)) SGST,SUM(NVL(IGST,0)) IGST,SUM(NVL(UTT,0)) UTT,
+            SUM(NVL(TOTMINBROK,0)) TOTMINBROK,  SUM(NVL(STAX_TOTMINBROK,0)) STAX_TOTMINBROK 
+             FROM  SYSADM.FOBILL D WHERE   BDATE>='|| '''' || DATEFROM_ || '''' || '  AND 
+            BDATE<='|| '''' || DATETO_ || '''' || '   AND CLIENTID>='|| '''' || CLIENTCODE_ || '''' ||'   AND 
+            CLIENTID<='|| '''' || CLIENTCODE_ || '''' ||'  GROUP BY CLIENTID  ) B  WHERE A.CODE=B.CLIENTID(+)            
+             )  WHERE CODE='|| '''' || CLIENTCODE_ || '''' ||'    ';
+             
+               if OPENPOSITION_='True' then
+                XXX := XXX || '  AND NET_QTY>0 ';
+                end if;
+                
+                XXX := XXX || 'ORDER BY CODE,SYMBOL';
+               END IF; 
+      
+    IF EXCHANGES_  LIKE '%MCOM%' OR EXCHANGES_   LIKE '%NDEX%' OR EXCHANGES_  LIKE '%ICEX%' THEN
+            XXX := '  SELECT CODE CLIENTCODE,NAME CLIENTNAME,EXCHANGE FLAG ,SYMBOL SCRIPCODE , SYMBOL || ''-'' || TO_CHAR(EXPIRYDATE,''dd/MM/yyyy'') || ''-'' || 
+            STRIKEPRICE || ''-'' ||OPTIONTYPE SCRIPNAME,BF_QTY BFQTY,BF_RATE BFAVGRATE,BF_VALUE BFVALUE ,PURQTY,PUR_AVG_RATE  PURAVGRATE,
+            ROUND(PUR_VALUE,2) PURVALUE,SALEQTY,SALE_AVG_RATE SALEAVGRATE,ROUND(SALE_VALUE,2)SALEVALUE,
+            NET_QTY NETQTY,AVGRATE NETAVGRATE,ROUND(NET_VALUE,2) NETVALUE,CLOSE_RATE CLOSERATE,ROUND(MTM,2) MTM,
+            DECODE(NET_QTY,0,0,ROUND(NVL(MTM_NOTIONAL,0),2)) MTM_NOTIONAL   ,BROK  , NSETAX, 0 DEMAT,
+            TOTALSTT STTAMT,STAMP STAMPDUTY, TAX1, TAX2,TAX3,CGST,SGST,IGST,UTT,TOTMINBROK FROM  (   
+           
+            SELECT  EXCHANGE,A.CODE,A.NAME,A.SYMBOL ,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,BF_QTY,
+            BF_VALUE,BF_RATE,A.PURQTY, PUR_VALUE,SALEQTY,SALE_VALUE,NET_QTY,NET_VALUE,
+            AVGRATE,A.PUR_AVG_RATE,   A.SALE_AVG_RATE, CLOSE_RATE,MTM MTM,MTM_NOTIONAL,BROK 
+             ,NVL(NSETAX,0) NSETAX,NVL(TOTALSTT,0) TOTALSTT,NVL(STAMP,0) STAMP,TAX1, TAX2,
+            TAX3,CGST,SGST,IGST,UTT,TOTMINBROK  FROM  (           
+            
+            SELECT NULL EXCHANGE, NULL CODE,NULL NAME,
+            NULL SYMBOL, NULL EXPIRYDATE,NULL STRIKEPRICE,NULL OPTIONTYPE,0 BF_QTY,
+            0 BF_VALUE,0 BF_RATE,0 PURQTY, 
+            0 PUR_VALUE,0 SALEQTY,   0 SALE_VALUE, 0 NET_QTY,0 BFQTY,0 NET_VALUE, 
+            0 AVGRATE, 0 CLOSE_RATE,   0 MTM ,0 MTM_NOTIONAL,  0  PUR_AVG_RATE, 
+            0   SALE_AVG_RATE  FROM DUAL  ';     
+             
+             FOR REC IN  (SELECT REGEXP_SUBSTR(EXCHANGES_,'[^,]+', 1, LEVEL) EXCH FROM DUAL   CONNECT BY REGEXP_SUBSTR(EXCHANGES_, '[^,]+', 1, LEVEL) IS NOT NULL)
+            LOOP
+            XXX := XXX || '  UNION ALL  SELECT A.EXCHANGE,A.CODE,A.NAME,
+            A.SYMBOL,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,SUM(BF_QTY) BF_QTY,
+            SUM(BF_VALUE) BF_VALUE,ABS(ROUND(DECODE(SUM(BF_QTY),0,0,
+            SUM(BF_VALUE)/SUM(BF_QTY)),2)) BF_RATE,SUM(A.PURQTY) AS PURQTY, 
+            SUM(A.PUR_VALUE) AS PUR_VALUE,SUM(A.SALEQTY) AS SALEQTY,   SUM(A.SALE_VALUE) AS 
+            SALE_VALUE, SUM(A.NET_QTY)AS NET_QTY,0 BFQTY,SUM(A.NET_VALUE) AS NET_VALUE, 
+            DECODE(SUM(A.NET_QTY),0,0,ROUND(ABS(SUM(A.NET_VALUE))/ABS(SUM(A.NET_QTY)),2)) 
+            AS AVGRATE, NVL(R.CLOSPRICE,0) AS CLOSE_RATE,   DECODE(A.OPTIONTYPE,''FX'',
+            SUM(A.NET_QTY)* DECODE(NVL(A.STRIKEPRICE,0),0,NVL(R.CLOSPRICE,0),0) + 
+            SUM(A.NET_VALUE),(SUM(SALE_VALUE-PUR_VALUE)) ) AS MTM ,SUM(A.NET_QTY)* 
+            NVL(R.CLOSPRICE,0) + SUM(A.NET_VALUE) AS MTM_NOTIONAL,  DECODE(SUM(A.PURQTY),0,
+            0,ROUND(ABS(SUM(A.PUR_VALUE))/ABS(SUM(A.PURQTY)),2))  PUR_AVG_RATE, 
+            DECODE(SUM(A.SALEQTY),0,0,ROUND(ABS(SUM(A.SALE_VALUE))/ABS(SUM(A.SALEQTY)),2)) 
+            SALE_AVG_RATE  FROM (   
+                        
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,
+            T.SYMBOL ,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,SUM(TRN_QTY) AS  BF_QTY,SUM( 
+            0-(TRN_QTY*TRADEPRICE) )  AS BF_VALUE,   0  AS PURQTY,0 AS  SALEQTY,
+            SUM(TRN_QTY) AS  NET_QTY, 0  PUR_VALUE, 0  AS SALE_VALUE, SUM( 
+            0-(TRN_QTY*TRADEPRICE) )  AS NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE FROM COMM.COTRNMAST_SUMM T,COMM.PARTYMST P   WHERE T.CLIENTCODE 
+            = P.PAR_CODE  AND T.TRADESTATUS=''BF''  AND T.TRADE_DATE='|| '''' || DATEFROM_ || '''' || '
+              AND INSTRUMENT_TYPE LIKE ''FUT%''    AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||'  
+              AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL) 
+              AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+            AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY CLIENTCODE,P.PAR_NAME,T.SYMBOL,
+            T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE  
+
+            UNION ALL   
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,T.SYMBOL 
+            ,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,SUM(TRN_QTY) BF_QTY,SUM( 
+            0-(TRN_QTY*CLOSPRICE) ) BF_VALUE,  0  AS PURQTY,0 AS  SALEQTY,SUM(TRN_QTY) AS  
+            NET_QTY,0  PUR_VALUE,0  AS SALE_VALUE,SUM( 0-(TRN_QTY*CLOSPRICE) )  AS 
+            NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE  FROM 
+            COMM.COTRNMAST_SUMM T,COMM.PARTYMST P ,COMM.CODAILYPRICE R WHERE R.WDATE 
+            (+) ='|| '''' || DATEFROM_ || '''' || ' AND R.CONTNAME (+) = T.SECURITYNAME  
+            AND NVL(R.STRIKEPRICE(+),0)=NVL(T.STRIKEPRICE,0)  AND 
+            DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',
+            T.OPTIONTYPE)=DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',R.OPTIONTYPE(+)) 
+            AND NVL(T.EXCHANGE,''NFO'')=NVL(R.EXCHANGE(+),''NFO'')  AND T.CLIENTCODE=P.PAR_CODE 
+            AND T.INSTRUMENT_TYPE LIKE ''OPT%'' AND T.TRADE_DATE<'|| '''' || DATETO_ || '''' || '  
+            AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||' AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' 
+            AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL) 
+              AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+               GROUP BY          CLIENTCODE,P.PAR_NAME,T.SYMBOL,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,
+            T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE HAVING SUM(TRN_QTY)!=0 
+
+             UNION ALL  
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,T.SYMBOL ,T.EXPIRYDATE,
+            T.STRIKEPRICE,T.OPTIONTYPE,0 BF_QTY,0 BF_VALUE,  SUM(DECODE(SIGN(TRN_QTY),1,
+            TRN_QTY,0))  AS PURQTY,SUM(DECODE(SIGN(TRN_QTY),-1,(ABS(TRN_QTY)),0)) AS  
+            SALEQTY,SUM(TRN_QTY) AS  NET_QTY,  SUM( DECODE(SIGN(TRN_QTY),1,
+            (TRN_QTY*TRADEPRICE),0) ) PUR_VALUE, SUM( ABS(DECODE(SIGN(TRN_QTY),-1,
+            (TRN_QTY*TRADEPRICE),0)) )  AS SALE_VALUE,  SUM( 0-(TRN_QTY*TRADEPRICE) )  AS 
+            NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE FROM COMM.COTRNMAST_SUMM 
+            T,COMM.PARTYMST P  WHERE T.CLIENTCODE = P.PAR_CODE AND T.TRADESTATUS NOT IN 
+            (''BF'',''CF'') AND T.TRADE_DATE>='|| '''' || DATEFROM_ || '''' || ' AND 
+            T.TRADE_DATE<='|| '''' || DATETO_ || '''' || ' AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||'
+            AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL) 
+              AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+            AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY CLIENTCODE,P.PAR_NAME,T.SYMBOL,
+            T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE                   
+                                  
+             ) A ,COMM.CODAILYPRICE R WHERE R.WDATE (+) = '|| '''' || CLOSINGRATEDATE_ || '''' || ' AND R.CONTNAME (+) = A.SECURITYNAME  AND NVL(R.STRIKEPRICE(+),
+            0)=NVL(A.STRIKEPRICE,0)  AND DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',
+            A.OPTIONTYPE)=DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',R.OPTIONTYPE(+))  
+            AND NVL(A.EXCHANGE,''NFO'')=NVL(R.EXCHANGE(+),''NFO'')AND A.EXCHANGE=DECODE('|| '''' || REC.EXCH || '''' ||',''MCOM'',''MCX'',''NDEX'',''NCDEX'',''ICEX'',''ICEX'')  
+            AND A.CODE='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY A.EXCHANGE,A.CODE,
+            A.NAME,A.SYMBOL,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,R.CLOSPRICE  ';
+         
+            END LOOP;
+            XXX := XXX || '  ) A ,
+            (SELECT CLIENTID,SUM(NVL(STAX,0)) STAX,SUM(NVL(BROK,0)) BROK,SUM(NVL(NSETAX,0)) 
+            NSETAX,0 TOTALSTT,SUM(NVL(STAMP,0)) STAMP,  
+            0 STAX_NSETAX,SUM(NVL(STAX_STAMP,0)) STAX_STAMP,
+            SUM(NVL(TAX1,0)) TAX1,SUM(NVL(STAX_TAX1,0)) STAX_TAX1,  SUM(NVL(TAX2,0)) TAX2,
+            SUM(NVL(STAX_TAX2,0)) STAX_TAX2,SUM(NVL(TAX3,0)) TAX3,0
+            STAX_TAX3  ,SUM(NVL(SBC_STAX,0)) SBC,  SUM(NVL(KKC_STAX,0)) KKC,SUM(NVL(CGST,
+            0)) CGST,SUM(NVL(SGST,0)) SGST,SUM(NVL(IGST,0)) IGST,SUM(NVL(UTT,0)) UTT,
+            0 TOTMINBROK,  0 STAX_TOTMINBROK 
+             FROM  COMM.COBILL D WHERE   BDATE>='|| '''' || DATEFROM_ || '''' || '  AND 
+            BDATE<='|| '''' || DATETO_ || '''' || '   AND CLIENTID>='|| '''' || CLIENTCODE_ || '''' ||' AND 
+            CLIENTID<='|| '''' || CLIENTCODE_ || '''' ||'  GROUP BY CLIENTID  ) B  WHERE A.CODE=B.CLIENTID(+)            
+             )  WHERE CODE='|| '''' || CLIENTCODE_ || '''' ||'    ';
+             
+               if OPENPOSITION_='True' then
+                XXX := XXX || '  AND NET_QTY>0 ';
+                end if;
+                
+                XXX := XXX || 'ORDER BY CODE,SYMBOL';
+               END IF; 
+     
+    IF EXCHANGES_  LIKE '%NCD%' OR EXCHANGES_   LIKE '%BCD%' OR EXCHANGES_  LIKE '%MCD%' THEN
+            XXX := '  SELECT CODE CLIENTCODE,NAME CLIENTNAME,EXCHANGE FLAG ,SYMBOL SCRIPCODE , SYMBOL || ''-'' || TO_CHAR(EXPIRYDATE,''dd/MM/yyyy'') || ''-'' || 
+            STRIKEPRICE || ''-'' ||OPTIONTYPE SCRIPNAME,BF_QTY BFQTY,BF_RATE BFAVGRATE,BF_VALUE BFVALUE ,PURQTY,PUR_AVG_RATE  PURAVGRATE,
+            ROUND(PUR_VALUE,2) PURVALUE,SALEQTY,SALE_AVG_RATE SALEAVGRATE,ROUND(SALE_VALUE,2)SALEVALUE,
+            NET_QTY NETQTY,AVGRATE NETAVGRATE,ROUND(NET_VALUE,2) NETVALUE,CLOSE_RATE CLOSERATE,ROUND(MTM,2) MTM,
+            DECODE(NET_QTY,0,0,ROUND(NVL(MTM_NOTIONAL,0),2)) MTM_NOTIONAL   ,BROK  , NSETAX, 0 DEMAT,
+            TOTALSTT STTAMT,STAMP STAMPDUTY, TAX1, TAX2,TAX3,CGST,SGST,IGST,UTT,TOTMINBROK FROM  (   
+           
+            SELECT  EXCHANGE,A.CODE,A.NAME,A.SYMBOL ,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,BF_QTY,
+            BF_VALUE,BF_RATE,A.PURQTY, PUR_VALUE,SALEQTY,SALE_VALUE,NET_QTY,NET_VALUE,
+            AVGRATE,A.PUR_AVG_RATE,   A.SALE_AVG_RATE, CLOSE_RATE,MTM MTM,MTM_NOTIONAL,BROK 
+             ,NVL(NSETAX,0) NSETAX,NVL(TOTALSTT,0) TOTALSTT,NVL(STAMP,0) STAMP,TAX1, TAX2,
+            TAX3,CGST,SGST,IGST,UTT,TOTMINBROK  FROM  (           
+            
+            SELECT NULL EXCHANGE, NULL CODE,NULL NAME,
+            NULL SYMBOL, NULL EXPIRYDATE,NULL STRIKEPRICE,NULL OPTIONTYPE,0 BF_QTY,
+            0 BF_VALUE,0 BF_RATE,0 PURQTY, 
+            0 PUR_VALUE,0 SALEQTY,   0 SALE_VALUE, 0 NET_QTY,0 BFQTY,0 NET_VALUE, 
+            0 AVGRATE, 0 CLOSE_RATE,   0 MTM ,0 MTM_NOTIONAL,  0  PUR_AVG_RATE, 
+            0   SALE_AVG_RATE  FROM DUAL  ';     
+             
+             FOR REC IN  (SELECT REGEXP_SUBSTR(EXCHANGES_,'[^,]+', 1, LEVEL) EXCH FROM DUAL   CONNECT BY REGEXP_SUBSTR(EXCHANGES_, '[^,]+', 1, LEVEL) IS NOT NULL)
+            LOOP
+            XXX := XXX || '  UNION ALL  SELECT A.EXCHANGE,A.CODE,A.NAME,
+            A.SYMBOL,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,SUM(BF_QTY) BF_QTY,
+            SUM(BF_VALUE) BF_VALUE,ABS(ROUND(DECODE(SUM(BF_QTY),0,0,
+            SUM(BF_VALUE)/SUM(BF_QTY)),2)) BF_RATE,SUM(A.PURQTY) AS PURQTY, 
+            SUM(A.PUR_VALUE) AS PUR_VALUE,SUM(A.SALEQTY) AS SALEQTY,   SUM(A.SALE_VALUE) AS 
+            SALE_VALUE, SUM(A.NET_QTY)AS NET_QTY,0 BFQTY,SUM(A.NET_VALUE) AS NET_VALUE, 
+            DECODE(SUM(A.NET_QTY),0,0,ROUND(ABS(SUM(A.NET_VALUE))/ABS(SUM(A.NET_QTY)),2)) 
+            AS AVGRATE, NVL(R.CLOSPRICE,0) AS CLOSE_RATE,   DECODE(A.OPTIONTYPE,''FX'',
+            SUM(A.NET_QTY)* DECODE(NVL(A.STRIKEPRICE,0),0,NVL(R.CLOSPRICE,0),0) + 
+            SUM(A.NET_VALUE),(SUM(SALE_VALUE-PUR_VALUE)) ) AS MTM ,SUM(A.NET_QTY)* 
+            NVL(R.CLOSPRICE,0) + SUM(A.NET_VALUE) AS MTM_NOTIONAL,  DECODE(SUM(A.PURQTY),0,
+            0,ROUND(ABS(SUM(A.PUR_VALUE))/ABS(SUM(A.PURQTY)),2))  PUR_AVG_RATE, 
+            DECODE(SUM(A.SALEQTY),0,0,ROUND(ABS(SUM(A.SALE_VALUE))/ABS(SUM(A.SALEQTY)),2)) 
+            SALE_AVG_RATE  FROM (   
+                        
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,
+            T.SYMBOL ,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,SUM(TRN_QTY) AS  BF_QTY,SUM( 
+            0-(TRN_QTY*TRADEPRICE) )  AS BF_VALUE,   0  AS PURQTY,0 AS  SALEQTY,
+            SUM(TRN_QTY) AS  NET_QTY, 0  PUR_VALUE, 0  AS SALE_VALUE, SUM( 
+            0-(TRN_QTY*TRADEPRICE) )  AS NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE FROM CURR.CUTRNMAST_SUMM T,CURR.CUPARTYMST P   WHERE T.CLIENTCODE 
+            = P.PAR_CODE  AND T.TRADESTATUS=''BF''  AND T.TRADE_DATE='|| '''' || DATEFROM_ || '''' || '
+              AND INSTRUMENT_TYPE LIKE ''FUT%''    AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||' 
+              AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL) 
+              AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+            AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY CLIENTCODE,P.PAR_NAME,T.SYMBOL,
+            T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE  
+
+            UNION ALL   
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,T.SYMBOL 
+            ,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,SUM(TRN_QTY) BF_QTY,SUM( 
+            0-(TRN_QTY*CLOSPRICE) ) BF_VALUE,  0  AS PURQTY,0 AS  SALEQTY,SUM(TRN_QTY) AS  
+            NET_QTY,0  PUR_VALUE,0  AS SALE_VALUE,SUM( 0-(TRN_QTY*CLOSPRICE) )  AS 
+            NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE  FROM 
+            CURR.CUTRNMAST_SUMM T,CURR.CUPARTYMST P ,CURR.CUDAILYPRICE R WHERE R.WDATE 
+            (+) ='|| '''' || DATEFROM_ || '''' || ' AND R.CONTNAME (+) = T.SECURITYNAME  
+            AND NVL(R.STRIKEPRICE(+),0)=NVL(T.STRIKEPRICE,0)  AND 
+            DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',
+            T.OPTIONTYPE)=DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',R.OPTIONTYPE(+)) 
+            AND NVL(T.EXCHANGE,''NSE'')=NVL(R.EXCHANGE(+),''NSE'')  AND T.CLIENTCODE=P.PAR_CODE 
+            AND T.INSTRUMENT_TYPE LIKE ''OPT%'' AND T.TRADE_DATE<'|| '''' || DATETO_ || '''' || '  
+            AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||' AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' 
+            AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL) 
+              AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)              
+              GROUP BY          CLIENTCODE,P.PAR_NAME,T.SYMBOL,T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,
+            T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE HAVING SUM(TRN_QTY)!=0 
+
+             UNION ALL  
+            SELECT CLIENTCODE  AS CODE,P.PAR_NAME AS  NAME,T.SYMBOL ,T.EXPIRYDATE,
+            T.STRIKEPRICE,T.OPTIONTYPE,0 BF_QTY,0 BF_VALUE,  SUM(DECODE(SIGN(TRN_QTY),1,
+            TRN_QTY,0))  AS PURQTY,SUM(DECODE(SIGN(TRN_QTY),-1,(ABS(TRN_QTY)),0)) AS  
+            SALEQTY,SUM(TRN_QTY) AS  NET_QTY,  SUM( DECODE(SIGN(TRN_QTY),1,
+            (TRN_QTY*TRADEPRICE),0) ) PUR_VALUE, SUM( ABS(DECODE(SIGN(TRN_QTY),-1,
+            (TRN_QTY*TRADEPRICE),0)) )  AS SALE_VALUE,  SUM( 0-(TRN_QTY*TRADEPRICE) )  AS 
+            NET_VALUE ,T.INSTRUMENT_TYPE,SECURITYNAME,T.EXCHANGE FROM CURR.CUTRNMAST_SUMM 
+            T,CURR.CUPARTYMST P  WHERE T.CLIENTCODE = P.PAR_CODE AND T.TRADESTATUS NOT IN 
+            (''BF'',''CF'') AND T.TRADE_DATE>='|| '''' || DATEFROM_ || '''' || ' AND 
+            T.TRADE_DATE<='|| '''' || DATETO_ || '''' || ' AND T.CLIENTCODE>='|| '''' || CLIENTCODE_ || '''' ||'
+            AND T.CLIENTCODE<='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY CLIENTCODE,P.PAR_NAME,T.SYMBOL,
+            T.EXPIRYDATE,T.STRIKEPRICE,T.OPTIONTYPE,T.INSTRUMENT_TYPE,SECURITYNAME,
+            T.EXCHANGE                   
+                                  
+             ) A ,CURR.CUDAILYPRICE R WHERE R.WDATE (+) = '|| '''' || CLOSINGRATEDATE_ || '''' || ' AND R.CONTNAME (+) = A.SECURITYNAME  AND NVL(R.STRIKEPRICE(+),
+            0)=NVL(A.STRIKEPRICE,0)  AND DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',
+            A.OPTIONTYPE)=DECODE(SUBSTR(INSTRUMENT_TYPE,1,3),''FUT'',''FX'',R.OPTIONTYPE(+))  
+            AND NVL(A.EXCHANGE,''NSE'')=NVL(R.EXCHANGE(+),''NSE'') AND A.EXCHANGE=DECODE('|| '''' || REC.EXCH || '''' ||',''NCD'',''NSE'',''BCD'',''BSE'',''MCD'',''MCX'') 
+            AND A.CODE='|| '''' || CLIENTCODE_ || '''' ||' GROUP BY A.EXCHANGE,A.CODE,
+            A.NAME,A.SYMBOL,A.EXPIRYDATE,A.STRIKEPRICE,A.OPTIONTYPE,R.CLOSPRICE  ';
+         
+            END LOOP;
+            XXX := XXX || '  ) A ,
+            (SELECT CLIENTID,SUM(NVL(STAX,0)) STAX,SUM(NVL(BROK,0)) BROK,SUM(NVL(NSETAX,0)) 
+            NSETAX,0 TOTALSTT,SUM(NVL(STAMP,0)) STAMP,  
+            0 STAX_NSETAX,SUM(NVL(STAX_STAMP,0)) STAX_STAMP,
+            SUM(NVL(TAX1,0)) TAX1,SUM(NVL(STAX_TAX1,0)) STAX_TAX1,  SUM(NVL(TAX2,0)) TAX2,
+            SUM(NVL(STAX_TAX2,0)) STAX_TAX2,SUM(NVL(TAX3,0)) TAX3,SUM(NVL(STAX_TAX3,0)) 
+            STAX_TAX3  ,SUM(NVL(SBC_STAX,0)) SBC,  SUM(NVL(KKC_STAX,0)) KKC,SUM(NVL(CGST,
+            0)) CGST,SUM(NVL(SGST,0)) SGST,SUM(NVL(IGST,0)) IGST,SUM(NVL(UTT,0)) UTT,
+            0 TOTMINBROK,  0 STAX_TOTMINBROK 
+             FROM  CURR.CUBILL D WHERE   BDATE>='|| '''' || DATEFROM_ || '''' || '  AND 
+            BDATE<='|| '''' || DATETO_ || '''' || '   AND CLIENTID>='|| '''' || CLIENTCODE_ || '''' ||' AND 
+            CLIENTID<='|| '''' || CLIENTCODE_ || '''' ||'  GROUP BY CLIENTID  ) B  WHERE A.CODE=B.CLIENTID(+)            
+             )  WHERE CODE='|| '''' || CLIENTCODE_ || '''' ||'    ';
+             
+               if OPENPOSITION_='True' then
+                XXX := XXX || '  AND NET_QTY>0 ';
+                end if;
+                
+                XXX := XXX || 'ORDER BY CODE,SYMBOL';
+               END IF; 
+               
+               
+                       
+        
+    
+         OPEN P_RECORDSET  FOR XXX;
+END IF;
+
+
+
+
+IF REPORTTYPE_='ASONDATE' THEN
+
+ 
+ IF EXCHANGES_  LIKE '%NFO%' OR EXCHANGES_   LIKE '%BFO%' OR EXCHANGES_  LIKE '%MFO%'  OR EXCHANGES_  LIKE '%NCOM%' OR EXCHANGES_  LIKE '%BCOM%'  THEN
+     XXX := XXX || '  SELECT trn_date, A.code ClientCode, A.name ClientName, A.scrip ScripName ,A.scrip ScripCode , SUM(A.purqty) AS PURQTY, round(SUM(A.pur_value),2) AS PURVALUE, SUM(A.saleqty) AS SALEQTY, 
+      round(SUM(A.sale_value),2) AS SALEVALUE, SUM(A.net_qty) AS NETQTY, 0 BFQTY, 0 BFValue, 0 BFAvgRate , round(SUM(A.net_value),2) AS NETVALUE, Decode(SUM(A.net_qty), 0, 0,
+       Round(Abs(SUM(A.net_value)) / Abs(SUM(A.net_qty)), 2)) AS NetAvgRate, Nvl(R.closprice, 0)   AS CloseRate, 
+       round(SUM(A.net_qty) * Nvl(R.closprice, 0) + SUM(A.net_value) ,2)  AS MTM, Decode(SUM(A.purqty), 0, 0, Round(Abs(SUM(A.pur_value)) / Abs(SUM(A.purqty)), 2)) 
+       PurAvgRate, Decode(SUM(A.saleqty), 0, 0, Round(Abs(SUM(A.sale_value)) / Abs(SUM(A.saleqty)), 2)) SaleAvgRate, lotsize, 0 NSETax, 0 StampDuty, 0 Brok, 0 Demat,
+        0 Tax1, 0 Tax2, 0 Tax3, 0 STTAmt, 0 IGST, 0 CGST, 0 SGST, Flag  FROM          (
+        
+         SELECT  ''FO'' Flag, SYSDATE TRN_DATE, NULL  AS CODE, NULL  AS NAME, NULL AS SCRIP, 0 PURQTY, 0 SALEQTY, 0 NET_QTY, 
+           0 PUR_VALUE, 0 SALE_VALUE, 0 AS NET_VALUE, NULL instrument_type, NULL expirydate, NULL symbol, NULL securityname, NULL strikeprice, 
+           NULL exchange, NULL optiontype, NULL lotsize FROM   DUAL             ';
+      
+         IF EXCHANGES_  LIKE '%NFO%'  THEN 
+    
+           XXX := XXX || '   UNION ALL    SELECT  ''NFO'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, strikeprice, 
+           T.exchange, optiontype, lotsize FROM   sysadm.fotrnmast_summ T, sysadm.partymst P, sysadm.contracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''NFO'') = Nvl(C.exchange, ''NFO'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode ='|| '''' || CLIENTCODE_ || '''' || ' AND T.exchange = ''NFO'' 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND clientcode <> (SELECT focmid FROM   sysadm.para) ';
+           END IF;
+           
+         IF EXCHANGES_  LIKE '%BFO%'  THEN 
+    
+           XXX := XXX || '  UNION ALL   SELECT  ''BFO'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, strikeprice, 
+           T.exchange, optiontype, lotsize FROM   sysadm.fotrnmast_summ T, sysadm.partymst P, sysadm.contracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''NFO'') = Nvl(C.exchange, ''NFO'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode = '|| '''' || CLIENTCODE_ || '''' || ' AND T.exchange = ''BFO'' 
+           AND clientcode <> (SELECT focmid FROM   sysadm.para) ';
+           END IF;
+           
+         IF EXCHANGES_  LIKE '%MFO%'  THEN 
+    
+           XXX := XXX || '  UNION ALL     SELECT  ''MFO'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, strikeprice, 
+           T.exchange, optiontype, lotsize FROM   sysadm.fotrnmast_summ T, sysadm.partymst P, sysadm.contracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''NFO'') = Nvl(C.exchange, ''NFO'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode =  '|| '''' || CLIENTCODE_ || '''' || ' AND T.exchange = ''MFO'' 
+           AND clientcode <> (SELECT focmid FROM   sysadm.para)  ';
+           END IF;
+         
+         IF EXCHANGES_  LIKE '%NCOM%'  THEN 
+    
+           XXX := XXX || '  UNION ALL     SELECT  ''NCOM'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, strikeprice, 
+           T.exchange, optiontype, lotsize FROM   sysadm.fotrnmast_summ T, sysadm.partymst P, sysadm.contracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''NFO'') = Nvl(C.exchange, ''NFO'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode =  '|| '''' || CLIENTCODE_ || '''' || ' AND T.exchange = ''NCOM'' 
+           AND clientcode <> (SELECT focmid FROM   sysadm.para)  ';
+           END IF;
+           
+         IF EXCHANGES_  LIKE '%BCOM%'  THEN 
+    
+           XXX := XXX || '  UNION ALL     SELECT  ''BCOM'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, strikeprice, 
+           T.exchange, optiontype, lotsize FROM   sysadm.fotrnmast_summ T, sysadm.partymst P, sysadm.contracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''NFO'') = Nvl(C.exchange, ''NFO'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode =  '|| '''' || CLIENTCODE_ || '''' || ' AND T.exchange = ''BCOM'' 
+           AND clientcode <> (SELECT focmid FROM   sysadm.para)  ';
+           END IF;
+           
+                       
+         XXX := XXX || '  ) A, sysadm.fodailyprice R           WHERE  R.wdate (+) = '|| '''' || DATETO_ || '''' || '  AND R.contname (+) = A.securityname 
+       AND Nvl(R.strikeprice(+), 0) = Nvl(A.strikeprice, 0) AND Decode(Substr(A.instrument_type, 1, 3), ''FUT'', ''FX'', A.optiontype) = Decode(Substr(A.instrument_type, 1, 3), 
+       ''FUT'', ''FX'', r.optiontype(+)) AND Nvl(A.exchange, ''NFO'') = Nvl(R.exchange(+), ''NFO'') and A.code=  '|| '''' || CLIENTCODE_ || '''' || '  ';
+       IF OPENPOSITION_='True' THEN
+        XXX := XXX || '  having  SUM(A.net_qty)>0 ';
+        END IF;
+        
+        XXX := XXX || '  GROUP  BY trn_date, code, name, scrip, R.closprice, lotsize, FLAG
+       ORDER  BY code,  name,   Substr(scrip, Instr(scrip, ''-'') + 1, 100),   Substr(scrip, 1, Instr(scrip, ''-'') - 1),  trn_date ';
+    END IF;
+    
+    
+
+
+
+
+
+ 
+ IF EXCHANGES_  LIKE '%MCOM%' OR EXCHANGES_   LIKE '%NDEX%' OR EXCHANGES_  LIKE '%ICEX%'  THEN
+     XXX := XXX || '  SELECT trn_date, A.code ClientCode, A.name ClientName, A.scrip ScripName ,A.scrip ScripCode , SUM(A.purqty) AS PURQTY, round(SUM(A.pur_value),2) AS PURVALUE, SUM(A.saleqty) AS SALEQTY, 
+      round(SUM(A.sale_value),2) AS SALEVALUE, SUM(A.net_qty)AS NETQTY, 0 BFQTY, 0 BFValue, 0 BFAvgRate , round(SUM(A.net_value),2) AS NETVALUE, Decode(SUM(A.net_qty), 0, 0,
+       Round(Abs(SUM(A.net_value)) / Abs(SUM(A.net_qty)), 2)) AS NetAvgRate, Nvl(R.closprice, 0)   AS CloseRate, 
+       round(SUM(A.net_qty) * Nvl(R.closprice, 0) + SUM(A.net_value) ,2)  AS MTM, Decode(SUM(A.purqty), 0, 0, Round(Abs(SUM(A.pur_value)) / Abs(SUM(A.purqty)), 2)) 
+       PurAvgRate, Decode(SUM(A.saleqty), 0, 0, Round(Abs(SUM(A.sale_value)) / Abs(SUM(A.saleqty)), 2)) SaleAvgRate, lotsize, 0 NSETax, 0 StampDuty, 0 Brok, 0 Demat,
+        0 Tax1, 0 Tax2, 0 Tax3, 0 STTAmt, 0 IGST, 0 CGST, 0 SGST, Flag  FROM          (
+        
+         SELECT  ''FO'' Flag, SYSDATE TRN_DATE, NULL  AS CODE, NULL  AS NAME, NULL AS SCRIP, 0 PURQTY, 0 SALEQTY, 0 NET_QTY, 
+           0 PUR_VALUE, 0 SALE_VALUE, 0 AS NET_VALUE, NULL instrument_type, NULL expirydate, NULL symbol, NULL securityname, NULL strikeprice, 
+           NULL exchange, NULL optiontype, NULL lotsize FROM   DUAL             ';
+      
+         IF EXCHANGES_  LIKE '%MCOM%'  THEN 
+    
+           XXX := XXX || '   UNION ALL    SELECT  ''MCX'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, c.strikeprice, 
+           T.exchange, c.optiontype, lotsize FROM   COMM.COtrnmast_summ T, COMM.partymst P, COMM.COcontracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''MCX'') = Nvl(C.exchange, ''MCX'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode ='|| '''' || CLIENTCODE_ || '''' ||' AND T.exchange = ''MCX''  ';
+           END IF;
+         
+         IF EXCHANGES_  LIKE '%NDEX%'  THEN 
+    
+           XXX := XXX || '   UNION ALL    SELECT  ''NCDEX'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, c.strikeprice, 
+           T.exchange, c.optiontype, lotsize FROM   COMM.COtrnmast_summ T, COMM.partymst P, COMM.COcontracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''MCX'') = Nvl(C.exchange, ''MCX'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode ='|| '''' || CLIENTCODE_ || '''' ||' AND T.exchange = ''NCDEX''  ';
+           END IF;
+           
+           IF EXCHANGES_  LIKE '%ICEX%'  THEN 
+    
+           XXX := XXX || '   UNION ALL    SELECT  ''ICEX'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, c.strikeprice, 
+           T.exchange, c.optiontype, lotsize FROM   COMM.COtrnmast_summ T, COMM.partymst P, COMM.COcontracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''MCX'') = Nvl(C.exchange, ''MCX'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode ='|| '''' || CLIENTCODE_ || '''' ||' AND T.exchange = ''ICEX''  ';
+           END IF;  
+          
+                       
+         XXX := XXX || '  ) A, COMM.Codailyprice R           WHERE  R.wdate (+) = '|| '''' || DATETO_ || '''' || '  AND R.contname (+) = A.securityname 
+       AND Nvl(R.strikeprice(+), 0) = Nvl(A.strikeprice, 0) AND Decode(Substr(A.instrument_type, 1, 3), ''FUT'', ''FX'', A.optiontype) = Decode(Substr(A.instrument_type, 1, 3), 
+       ''FUT'', ''FX'', r.optiontype(+)) AND Nvl(A.exchange, ''NFO'') = Nvl(R.exchange(+), ''NFO'')  and A.code=  '|| '''' || CLIENTCODE_ || '''' || '  ';
+       IF OPENPOSITION_='True' THEN
+        XXX := XXX || '  having  SUM(A.net_qty)>0 ';
+        END IF;
+        
+        XXX := XXX || '  GROUP  BY trn_date, code, name, scrip, R.closprice, lotsize, FLAG
+       ORDER  BY code,  name,   Substr(scrip, Instr(scrip, ''-'') + 1, 100),   Substr(scrip, 1, Instr(scrip, ''-'') - 1),  trn_date ';
+    END IF;
+
+    
+
+ IF EXCHANGES_  LIKE '%NCD%' OR EXCHANGES_   LIKE '%BCD%' OR EXCHANGES_  LIKE '%MCD%'  THEN
+     XXX := XXX || '  SELECT trn_date, A.code ClientCode, A.name ClientName, A.scrip ScripName ,A.scrip ScripCode , SUM(A.purqty) AS PURQTY, round(SUM(A.pur_value),2) AS PURVALUE, SUM(A.saleqty) AS SALEQTY, 
+      round(SUM(A.sale_value),2) AS SALEVALUE, SUM(A.net_qty)AS NETQTY, 0 BFQTY, 0 BFValue, 0 BFAvgRate , round(SUM(A.net_value),2) AS NETVALUE, Decode(SUM(A.net_qty), 0, 0,
+       Round(Abs(SUM(A.net_value)) / Abs(SUM(A.net_qty)), 2)) AS NetAvgRate, Nvl(R.closprice, 0)   AS CloseRate, 
+       round(SUM(A.net_qty) * Nvl(R.closprice, 0) + SUM(A.net_value) ,2)  AS MTM, Decode(SUM(A.purqty), 0, 0, Round(Abs(SUM(A.pur_value)) / Abs(SUM(A.purqty)), 2)) 
+       PurAvgRate, Decode(SUM(A.saleqty), 0, 0, Round(Abs(SUM(A.sale_value)) / Abs(SUM(A.saleqty)), 2)) SaleAvgRate, lotsize, 0 NSETax, 0 StampDuty, 0 Brok, 0 Demat,
+        0 Tax1, 0 Tax2, 0 Tax3, 0 STTAmt, 0 IGST, 0 CGST, 0 SGST, Flag  FROM          (
+        
+         SELECT  ''FO'' Flag, SYSDATE TRN_DATE, NULL  AS CODE, NULL  AS NAME, NULL AS SCRIP, 0 PURQTY, 0 SALEQTY, 0 NET_QTY, 
+           0 PUR_VALUE, 0 SALE_VALUE, 0 AS NET_VALUE, NULL instrument_type, NULL expirydate, NULL symbol, NULL securityname, NULL strikeprice, 
+           NULL exchange, NULL optiontype, NULL lotsize FROM   DUAL             ';
+      
+         IF EXCHANGES_  LIKE '%NCD%'  THEN 
+    
+           XXX := XXX || '   UNION ALL    SELECT  ''NSE'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, c.strikeprice, 
+           T.exchange, c.optiontype, lotsize FROM   CURR.CUtrnmast_summ T, CURR.CUpartymst P, CURR.CUcontracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''NSE'') = Nvl(C.exchange, ''NSE'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode ='|| '''' || CLIENTCODE_ || '''' ||' AND T.exchange = ''NSE''            ';
+           END IF;
+           
+            IF EXCHANGES_  LIKE '%BCD%'  THEN 
+    
+           XXX := XXX || '   UNION ALL    SELECT  ''BSE'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, c.strikeprice, 
+           T.exchange, c.optiontype, lotsize FROM   CURR.CUtrnmast_summ T, CURR.CUpartymst P, CURR.CUcontracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''NSE'') = Nvl(C.exchange, ''NSE'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode ='|| '''' || CLIENTCODE_ || '''' ||' AND T.exchange = ''BSE''            ';
+           END IF;
+           
+            IF EXCHANGES_  LIKE '%MCD%'  THEN 
+    
+           XXX := XXX || '   UNION ALL    SELECT  ''MCX'' Flag, SYSDATE TRN_DATE, clientcode  AS CODE, P.par_name  AS NAME, T.instrument_type ||''-'' ||T.symbol ||''-'' ||T.expirydate ||''-'' ||T.strikeprice ||''-'' ||
+           T.optiontype  AS SCRIP, Decode(Sign(trn_qty), 1, trn_qty, 0)AS PURQTY, Decode(Sign(trn_qty), -1, ( Abs(trn_qty) ), 0)AS SALEQTY, trn_qty AS NET_QTY, 
+           Decode(Sign(trn_qty), 1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0)PUR_VALUE, Abs(Decode(Sign(trn_qty), -1, ( trn_qty * tradeprice + Nvl(trn_brok, 0) ), 0))   
+           AS SALE_VALUE, 0 - ( trn_qty * tradeprice + Nvl(trn_brok, 0) ) AS NET_VALUE, T.instrument_type, T.expirydate, T.symbol, securityname, c.strikeprice, 
+           T.exchange, c.optiontype, lotsize FROM   CURR.CUtrnmast_summ T, CURR.CUpartymst P, CURR.CUcontracts C WHERE  T.clientcode = P.par_code AND 
+           T.securityname = C.contname AND Nvl(T.exchange, ''NSE'') = Nvl(C.exchange, ''NSE'') AND T.tradestatus NOT IN ( ''BF'', ''CF'' ) 
+           AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)  AND T.EXPIRYDATE =NVL( '|| '''' || EXPIRYDATE_ || '''' || ' ,T.EXPIRYDATE)
+           AND T.trade_date <=  '|| '''' || DATETO_ || '''' || '  AND T.expirydate >=  '|| '''' || DATETO_ || '''' || '  AND t.clientcode ='|| '''' || CLIENTCODE_ || '''' ||' AND T.exchange = ''MCX''            ';
+           END IF;
+          
+                       
+         XXX := XXX || '  ) A, COMM.Codailyprice R           WHERE  R.wdate (+) = '|| '''' || DATETO_ || '''' || '  AND R.contname (+) = A.securityname 
+       AND Nvl(R.strikeprice(+), 0) = Nvl(A.strikeprice, 0) AND Decode(Substr(A.instrument_type, 1, 3), ''FUT'', ''FX'', A.optiontype) = Decode(Substr(A.instrument_type, 1, 3), 
+       ''FUT'', ''FX'', r.optiontype(+)) AND Nvl(A.exchange, ''NFO'') = Nvl(R.exchange(+), ''NFO'')  and A.code=  '|| '''' || CLIENTCODE_ || '''' || '  ';
+       IF OPENPOSITION_='True' THEN
+        XXX := XXX || '  having  SUM(A.net_qty)>0 ';
+        END IF;
+        
+        XXX := XXX || '  GROUP  BY trn_date, code, name, scrip, R.closprice, lotsize, FLAG
+       ORDER  BY code,  name,   Substr(scrip, Instr(scrip, ''-'') + 1, 100),   Substr(scrip, 1, Instr(scrip, ''-'') - 1),  trn_date ';
+    END IF;
+
+
+
+
+OPEN P_RECORDSET  FOR XXX;
+        
+END IF;
+
+
+
+END;
+/
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_PCRREPORT
+( CLIENTCODE_ IN VARCHAR2, 
+USER_ IN VARCHAR2,
+P_RECORDSET OUT SYS_REFCURSOR) 
+AS 
+XXX VARCHAR2(2000):='';
+
+BEGIN 
+ 
+IF USER_ ='SYSADM' THEN
+XXX := ' select CALC_DATE, REPDATE, BRANCH, GRP, CODE, PAR_NAME, NSEBAL, BSEBAL, FOBAL, CLRBAL, MTMVALUE, DEM_CR  from sysadm.pcrweb  WHERE BRANCH='|| '''' || CLIENTCODE_ || '''' || ' ';
+END IF;
+
+IF USER_ ='COMM' THEN
+XXX := ' select * from sysadm.pcrweb  WHERE BRANCH='|| '''' || CLIENTCODE_ || '''' || ' ';
+END IF;
+
+IF USER_ ='CURR' THEN
+XXX := ' select * from sysadm.pcrweb  WHERE BRANCH='|| '''' || CLIENTCODE_ || '''' || ' ';
+END IF;
+
+OPEN p_recordset  FOR XXX;
+
+END;
+/
+
+
+
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_SYMBOLLIST
+( EXCHANGES_ IN VARCHAR2,
+P_RECORDSET OUT SYS_REFCURSOR) 
+AS BEGIN 
+
+ IF EXCHANGES_  LIKE '%NSE%' OR EXCHANGES_   LIKE '%BSE%' OR EXCHANGES_  LIKE '%MCX%'  THEN
+ OPEN P_RECORDSET FOR  
+SELECT SH_NAME, SH_CODE  FROM SYSADM.SHAREMST ORDER BY 1;
+END IF;
+
+
+ IF EXCHANGES_  LIKE '%NFO%' OR EXCHANGES_   LIKE '%BFO%' OR EXCHANGES_  LIKE '%MFO%'  OR EXCHANGES_  LIKE '%NCOM%' OR EXCHANGES_  LIKE '%BCOM%'  THEN
+OPEN P_RECORDSET FOR  
+SELECT DISTINCT SYMBOL, SYMBOL SYM FROM SYSADM.CONTRACTS ORDER BY 1;
+END IF;
+
+ IF EXCHANGES_  LIKE '%MCOM%' OR EXCHANGES_   LIKE '%NCDEX%' OR EXCHANGES_  LIKE '%ICEX%'  THEN
+ OPEN P_RECORDSET FOR  
+SELECT DISTINCT SYMBOL, SYMBOL SYM FROM COMM.COCONTRACTS ORDER BY 1;
+END IF;
+
+ IF EXCHANGES_  LIKE '%NCD%' OR EXCHANGES_   LIKE '%BCD%' OR EXCHANGES_  LIKE '%MCD%'  THEN
+ OPEN P_RECORDSET FOR  
+SELECT DISTINCT SYMBOL, SYMBOL SYM FROM CURR.CUCONTRACTS ORDER BY 1;
+END IF;
+
+END;
+/
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_TRADECONF (
+                                                   CLIENTCODE_ IN VARCHAR2, 
+                                                   DATEFROM_   IN DATE, 
+                                                   DATETO_     IN DATE,                                                    
+                                                   SYMBOL_ IN VARCHAR2,                                                 
+                                                   EXCHANGES_ IN VARCHAR2,
+                                                   P_RECORDSET OUT SYS_REFCURSOR 
+) 
+AS 
+
+        XXX VARCHAR2(20000):='';
+         
+BEGIN    
+
+ IF EXCHANGES_  LIKE '%NSE%' OR EXCHANGES_   LIKE '%BSE%' OR EXCHANGES_  LIKE '%MCX%'  THEN
+     XXX :=  ' SELECT TRN_CLIENTCD CLIENTCODE, PAR_NAME CLIENTNAME, TRN_SCRIP SCRIPCODE, SH_NAME SCRIPNAME, TRN_DATE TradeDate, TRN_TRDNO TRADENO, TRN_ORDNO ORDERNO, 
+                TRN_TIME TRADETIME,  TRN_ORDTIME ORDERTIME,  SUM(TRN_QTY) QTY, TRN_MKTRATE TRADERATE,TRN_NETRATE NETRATE,
+                SUM(TRN_QTY*TRN_MKTRATE+NVL(TRN_BROK,0)) TRADEVALUE, SUM(TRN_BROK) BROKRAGE, TRN_BROKTYPE FLAG  
+                FROM SYSADM.TRNMAST T, SYSADM.PARTYMST P, SYSADM.SHAREMST S WHERE TRN_CLIENTCD='|| '''' || CLIENTCODE_ || '''' || '  AND TRN_DATE>='|| '''' || DATEFROM_ || '''' || '   
+                AND TRN_DATE<='|| '''' || DATETO_ || '''' || '  AND TRN_SCRIP =NVL( '|| '''' || SYMBOL_ || '''' || ' ,TRN_SCRIP)
+                AND T.TRN_CLIENTCD=P.PAR_CODE AND T.TRN_SCRIP = S.SH_CODE   ';
+      
+         IF EXCHANGES_  LIKE '%NSE%'  THEN 
+    
+           XXX := XXX || '   AND TRN_SETTNO LIKE ''N%'' ';
+           END IF;
+         
+         IF EXCHANGES_  LIKE '%BSE%'  THEN 
+    
+           XXX := XXX || '   AND TRN_SETTNO LIKE ''B%'' ';
+           END IF;
+           
+           IF EXCHANGES_  LIKE '%MCX%'  THEN 
+    
+           XXX := XXX || ' AND TRN_SETTNO LIKE ''M%''  ';
+           END IF;  
+          
+                       
+         XXX := XXX || '  GROUP BY TRN_CLIENTCD , PAR_NAME, TRN_SCRIP,  SH_NAME, TRN_DATE, TRN_TRDNO, TRN_ORDNO, 
+                    TRN_TIME,  TRN_ORDTIME, TRN_MKTRATE, TRN_NETRATE, TRN_BROKTYPE 
+                    ORDER BY TRN_CLIENTCD, TRN_DATE, TRN_SCRIP, TRN_ORDTIME ';
+    END IF;
+    
+ IF EXCHANGES_  LIKE '%NFO%' OR EXCHANGES_   LIKE '%BFO%' OR EXCHANGES_  LIKE '%MFO%'  OR EXCHANGES_  LIKE '%NCOM%' OR EXCHANGES_  LIKE '%BCOM%'  THEN
+     XXX :=  ' SELECT CLIENTCODE CLIENTCODE, PAR_NAME CLIENTNAME, T.SYMBOL SCRIPCODE, 
+                            T.INSTRUMENT_TYPE ||''-'' ||T.SYMBOL ||''-'' ||To_char(T.EXPIRYDATE, ''ddMONyyyy'') ||''-'' ||T.STRIKEPRICE ||''-'' ||T.OPTIONTYPE  SCRIPNAME, 
+                            TRADE_DATE TRADEDATE, TRADENO TRADENO, ORDERNO ORDERNO, 
+                            TRADE_TIME TRADETIME,  ORDER_TIME ORDERTIME,  SUM(TRN_QTY) QTY, TRADEPRICE TRADERATE,NETPRICE NETRATE,
+                            SUM(TRN_QTY*TRADEPRICE+NVL(TRN_BROK,0)) TRADEVALUE, SUM(TRN_BROK) BROKRAGE, EXCHANGE FLAG  
+                            FROM SYSADM.FOTRNMAST T, SYSADM.PARTYMST P WHERE CLIENTCODE='|| '''' || CLIENTCODE_ || '''' || '  AND TRADE_DATE>='|| '''' || DATEFROM_ || '''' || ' 
+                              AND TRADE_DATE<='|| '''' || DATETO_ || '''' || '  AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)   AND  (1=1  ';
+      
+         IF EXCHANGES_  LIKE '%NFO%'  THEN 
+    
+           XXX := XXX || '   OR EXCHANGE= ''NFO''  ';
+           END IF;
+           
+         IF EXCHANGES_  LIKE '%BFO%'  THEN 
+    
+           XXX := XXX || '  OR EXCHANGE= ''BFO'' ';
+           END IF;
+           
+         IF EXCHANGES_  LIKE '%MFO%'  THEN 
+    
+           XXX := XXX || '   OR EXCHANGE= ''MFO'' ';
+           END IF;
+         
+         IF EXCHANGES_  LIKE '%NCOM%'  THEN 
+    
+           XXX := XXX || '  OR EXCHANGE= ''NCOM''  ';
+           END IF;
+           
+         IF EXCHANGES_  LIKE '%BCOM%'  THEN 
+    
+           XXX := XXX || '  OR EXCHANGE= ''BCOM'' ';
+           END IF;
+           
+                       
+         XXX := XXX || '  ) AND T.CLIENTCODE=P.PAR_CODE  AND TRADESTATUS NOT IN (''BF'',''CF'')
+                            GROUP BY CLIENTCODE , PAR_NAME, SYMBOL, TRADE_DATE, TRADENO, ORDERNO, 
+                            T.INSTRUMENT_TYPE ,T.EXPIRYDATE ,T.STRIKEPRICE,T.OPTIONTYPE,
+                            TRADE_TIME,  ORDER_TIME,  TRADEPRICE, NETPRICE, EXCHANGE
+                            ORDER BY CLIENTCODE, TRADERATE, SYMBOL, T.INSTRUMENT_TYPE ,T.EXPIRYDATE ,T.STRIKEPRICE,T.OPTIONTYPE ';
+       
+    END IF;
+
+
+ 
+ IF EXCHANGES_  LIKE '%MCOM%' OR EXCHANGES_   LIKE '%NDEX%' OR EXCHANGES_  LIKE '%ICEX%'  THEN
+     XXX :=  '    SELECT CLIENTCODE CLIENTCODE, PAR_NAME CLIENTNAME, T.SYMBOL SCRIPCODE, 
+                            T.INSTRUMENT_TYPE ||''-'' ||T.SYMBOL ||''-'' ||To_char(T.EXPIRYDATE, ''ddMONyyyy'') ||''-'' ||T.STRIKEPRICE ||''-'' ||T.OPTIONTYPE  SCRIPNAME, 
+                            TRADE_DATE TRADEDATE, TRADENO TRADENO, ORDERNO ORDERNO, 
+                            TRADE_TIME TRADETIME,  TRADE_TIME ORDERTIME,  SUM(TRN_QTY) QTY, TRADEPRICE TRADERATE,NETPRICE NETRATE,
+                            SUM(TRN_QTY*TRADEPRICE+NVL(TRN_BROK,0)) TRADEVALUE, SUM(TRN_BROK) BROKRAGE, EXCHANGE FLAG  
+                            FROM COMM.COTRNMAST T, COMM.PARTYMST P WHERE CLIENTCODE='|| '''' || CLIENTCODE_ || '''' || '  AND TRADE_DATE>='|| '''' || DATEFROM_ || '''' || ' 
+                              AND TRADE_DATE<='|| '''' || DATETO_ || '''' || '   AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)   AND  (1=1   ';
+      
+         IF EXCHANGES_  LIKE '%MCOM%'  THEN 
+    
+           XXX := XXX || '    OR EXCHANGE= ''MCX''   ';
+           END IF;
+         
+         IF EXCHANGES_  LIKE '%NDEX%'  THEN 
+    
+           XXX := XXX || '   OR EXCHANGE= ''NCDEX''    ';
+           END IF;
+           
+           IF EXCHANGES_  LIKE '%ICEX%'  THEN 
+    
+           XXX := XXX || '   OR EXCHANGE= ''ICEX''    ';
+           END IF;  
+          
+                       
+         XXX := XXX || '   ) AND T.CLIENTCODE=P.PAR_CODE  AND TRADESTATUS NOT IN (''BF'',''CF'')
+                            GROUP BY CLIENTCODE , PAR_NAME, SYMBOL, TRADE_DATE, TRADENO, ORDERNO, 
+                            T.INSTRUMENT_TYPE ,T.EXPIRYDATE ,T.STRIKEPRICE,T.OPTIONTYPE,
+                            TRADE_TIME,  ORD_TIME,  TRADEPRICE, NETPRICE, EXCHANGE
+                            ORDER BY CLIENTCODE, TRADERATE, SYMBOL, T.INSTRUMENT_TYPE ,T.EXPIRYDATE ,T.STRIKEPRICE,T.OPTIONTYPE  ';
+    END IF;
+
+    
+
+ IF EXCHANGES_  LIKE '%NCD%' OR EXCHANGES_   LIKE '%BCD%' OR EXCHANGES_  LIKE '%MCD%'  THEN
+     XXX :=  '   SELECT CLIENTCODE CLIENTCODE, PAR_NAME CLIENTNAME, T.SYMBOL SCRIPCODE, 
+                            T.INSTRUMENT_TYPE ||''-'' ||T.SYMBOL ||''-'' ||To_char(T.EXPIRYDATE, ''ddMONyyyy'') ||''-'' ||T.STRIKEPRICE ||''-'' ||T.OPTIONTYPE  SCRIPNAME, 
+                            TRADE_DATE TRADEDATE, TRADENO TRADENO, ORDERNO ORDERNO, 
+                            TRADE_TIME TRADETIME,  ORDER_TIME ORDERTIME,  SUM(TRN_QTY) QTY, TRADEPRICE TRADERATE,NETPRICE NETRATE,
+                            SUM(TRN_QTY*TRADEPRICE+NVL(TRN_BROK,0)) TRADEVALUE, SUM(TRN_BROK) BROKRAGE, EXCHANGE FLAG  
+                            FROM CURR.CUTRNMAST T, CURR.CUPARTYMST P WHERE CLIENTCODE='|| '''' || CLIENTCODE_ || '''' || '  AND TRADE_DATE>='|| '''' || DATEFROM_ || '''' || ' 
+                              AND TRADE_DATE<='|| '''' || DATETO_ || '''' || '   AND T.SYMBOL =NVL( '|| '''' || SYMBOL_ || '''' || ' ,T.SYMBOL)    AND  (1=1     ';
+      
+         IF EXCHANGES_  LIKE '%NCD%'  THEN 
+    
+          XXX := XXX || '  OR EXCHANGE= ''NSE''   ';
+           END IF;
+           
+            IF EXCHANGES_  LIKE '%BCD%'  THEN 
+    
+           XXX := XXX || '  OR EXCHANGE= ''BSE''   ';
+           END IF;
+           
+            IF EXCHANGES_  LIKE '%MCD%'  THEN 
+    
+           XXX := XXX || '   OR EXCHANGE= ''MCX''  ';
+           END IF;
+          
+                       
+        XXX := XXX || '  ) AND T.CLIENTCODE=P.PAR_CODE  AND TRADESTATUS NOT IN (''BF'',''CF'')
+                            GROUP BY CLIENTCODE , PAR_NAME, SYMBOL, TRADE_DATE, TRADENO, ORDERNO, 
+                            T.INSTRUMENT_TYPE ,T.EXPIRYDATE ,T.STRIKEPRICE,T.OPTIONTYPE,
+                            TRADE_TIME,  ORDER_TIME,  TRADEPRICE, NETPRICE, EXCHANGE
+                            ORDER BY CLIENTCODE, TRADERATE, SYMBOL, T.INSTRUMENT_TYPE ,T.EXPIRYDATE ,T.STRIKEPRICE,T.OPTIONTYPE  ';
+    END IF;
+
+
+
+
+OPEN P_RECORDSET  FOR XXX;
+
+
+END;
+/
+
+
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_UPDATEWEBUSERMASTER
+
+AS      
+        CNT VARCHAR2(2):=''; 
+BEGIN    
+     
+   FOR REC IN  (SELECT PAR_CODE URID FROM SYSADM.PARTYMST WHERE  GROUPLEVEL1 ='Sundry Debtors/Creditors' AND EMAILNO IS NOT NULL AND MOBILENOS IS NOT NULL)
+        LOOP
+                SELECT COUNT(*) INTO CNT FROM WEBUSER WHERE USERID=REC.URID;
+               IF CNT='0' THEN 
+               
+                    INSERT INTO WEBUSER( USERID, USERNAME, EMAILID, MOBILENO, DISABLESTATUS, ALLOWMULTILOGIN, LOGINSTATUS, USERTYPE,  BRANCH, SUBBRANCH, RMCODE, GROUPCODE) 
+                    SELECT PAR_CODE, PAR_NAME, EMAILNO, MOBILENOS, 0 A,1 B,0 C,'Client' D, BRANCHIND, SUBBRANCHIND, RMCODE, GROUPCD  FROM SYSADM.PARTYMST
+                    WHERE PAR_CODE=REC.URID AND GROUPCODE='Sundry Debtors/Creditors' AND GROUPLEVEL1 ='Sundry Debtors/Creditors' AND EMAILNO IS NOT NULL AND MOBILENOS IS NOT NULL;
+
+                END IF   ;
+        END LOOP;
+        
+        
+        FOR REC IN  (SELECT  CODE URID  FROM SYSADM.BRANCHMST WHERE EMAIL IS NOT NULL AND MOBILENO IS NOT NULL)
+        LOOP
+                SELECT COUNT(*) INTO CNT FROM WEBUSER WHERE USERID=REC.URID;
+               IF CNT='0' THEN 
+               
+                    INSERT INTO WEBUSER( USERID, USERNAME, EMAILID, MOBILENO, DISABLESTATUS, ALLOWMULTILOGIN, LOGINSTATUS, USERTYPE) 
+                    SELECT  CODE , NAME , EMAIL , MOBILENO, 0 A,1 B,0 C,'Branch' D FROM SYSADM.BRANCHMST WHERE CODE=REC.URID;
+
+                END IF   ;
+        END LOOP;
+        
+    END;
+/
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_WEBUSER
+(USRID IN VARCHAR2,PWD IN VARCHAR2,P_RECORDSET OUT SYS_REFCURSOR) 
+AS BEGIN OPEN P_RECORDSET FOR 
+SELECT USERID,
+  USERNAME ,
+  EMAILID,
+  MOBILENO  ,
+  DISABLESTATUS   ,
+  DISABLEDATE,
+  ALLOWMULTILOGIN                ,
+  LOGINSTATUS          ,
+  USERTYPE                ,
+  MACHINENAME  ,
+  PASSWORD1   ,
+  PASSWORD1DATE  ,
+  PASSWORD2  ,
+  PASSWORD3 ,
+  RESETPASSWORD  ,
+  RESETSTATUS ,
+  RESETDATE ,
+  REQUIREDPASSWORDPOLICY,
+  USERRIGHTS             ,
+  REMARKS           
+  FROM SYSTEM.WEBUSER WHERE UPPER(USERID)=UPPER(USRID) AND (PASSWORD1=PWD OR RESETPASSWORD=PWD);
+
+END;
+/
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$GET_WEBUSER_WITHOUTPASSWORD
+(USRID IN VARCHAR2,P_RECORDSET OUT SYS_REFCURSOR) 
+AS BEGIN OPEN P_RECORDSET FOR 
+SELECT USERID,
+  USERNAME ,
+  EMAILID,
+  MOBILENO  ,
+  DISABLESTATUS   ,
+  DISABLEDATE,
+  ALLOWMULTILOGIN                ,
+  LOGINSTATUS          ,
+  USERTYPE                ,
+  MACHINENAME  ,
+  PASSWORD1   ,
+  PASSWORD1DATE  ,
+  PASSWORD2  ,
+  PASSWORD3 ,
+  RESETPASSWORD  ,
+  RESETSTATUS ,
+  RESETDATE ,
+  REQUIREDPASSWORDPOLICY,
+  USERRIGHTS             ,
+  REMARKS           
+  FROM SYSTEM.WEBUSER WHERE UPPER(USERID)=UPPER(USRID);
+
+END;
+/
+
+
+
+
+CREATE OR REPLACE PROCEDURE N$UPDATE_WEBUSER
+(
+USERID_ IN VARCHAR2,
+USERNAME_ IN VARCHAR2,
+EMAILID_ IN VARCHAR2,
+MOBILENO_ IN VARCHAR2,
+DISABLESTATUS_ IN CHAR,
+DISABLEDATE_ IN DATE,
+ALLOWMULTILOGIN_ IN CHAR,
+LOGINSTATUS_ IN CHAR,
+USERTYPE_ IN VARCHAR2,
+MACHINENAME_ IN VARCHAR2,
+PASSWORD1_ IN VARCHAR2,
+PASSWORD1DATE_ IN DATE,
+PASSWORD2_ IN VARCHAR2,
+PASSWORD3_ IN VARCHAR2,
+RESETPASSWORD_ IN VARCHAR2,
+RESETSTATUS_ IN CHAR,
+RESETDATE_ IN DATE,
+REQUIREDPASSWORDPOLICY_ IN CHAR,
+USERRIGHTS_ IN VARCHAR2
+) 
+AS BEGIN  
+
+UPDATE SYSTEM.WEBUSER SET 
+USERNAME=NVL(USERNAME_,USERNAME), 
+EMAILID=NVL(EMAILID_ , EMAILID ), 
+MOBILENO=NVL(MOBILENO_,  MOBILENO), 
+DISABLESTATUS=NVL(DISABLESTATUS_,  DISABLESTATUS), 
+DISABLEDATE=NVL(DISABLEDATE_, DISABLEDATE ), 
+ALLOWMULTILOGIN=NVL(ALLOWMULTILOGIN_, ALLOWMULTILOGIN ), 
+LOGINSTATUS=NVL(LOGINSTATUS_,  LOGINSTATUS), 
+USERTYPE=NVL(USERTYPE_,  USERTYPE), 
+MACHINENAME=NVL(MACHINENAME_, MACHINENAME ), 
+PASSWORD1=NVL(PASSWORD1_, PASSWORD1 ), 
+PASSWORD1DATE=NVL(PASSWORD1DATE_,  PASSWORD1DATE), 
+PASSWORD2=NVL(PASSWORD2_,  PASSWORD2), 
+PASSWORD3=NVL(PASSWORD3_,  PASSWORD3), 
+RESETPASSWORD=NVL(RESETPASSWORD_,  RESETPASSWORD), 
+RESETSTATUS=NVL(RESETSTATUS_, RESETSTATUS ), 
+RESETDATE=NVL(RESETDATE_, RESETDATE ), 
+REQUIREDPASSWORDPOLICY=NVL(REQUIREDPASSWORDPOLICY_, REQUIREDPASSWORDPOLICY ), 
+USERRIGHTS=NVL(USERRIGHTS_ ,USERRIGHTS ) 
+WHERE UPPER(USERID)=UPPER(USERID_);
+
+END;
+/
+
+
+
+
+
+

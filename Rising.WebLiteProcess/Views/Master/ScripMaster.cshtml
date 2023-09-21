@@ -1,0 +1,505 @@
+﻿@using Rising.WebRise.Models
+@model ScripMaster
+@{
+    ViewBag.Title = "ScripMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+@section Scripts {
+    <script>
+            debugger
+            $(".selectsttl").click(function () {
+                $("#ScripCode").val("").html("");
+                $("#ISINCode").val("").html("");
+                $("#ScripName").val("").html("");
+                $("#Remark").val("").html("");
+                $("#LotSize").val("").html("");
+                $("#Variance").val("").html("");
+                $("#CustomVariance").val("").html("");
+                $("#MarginSale").val("").html("");
+                $("#MarginBuy").val("").html("");
+                $("#GroupCD").val("").html("");
+                $("#ClosingStockDemat").val("").html("");
+                $("#DematScrip").val("").html("");             
+                $("#TrnxScripType").val("").html("");
+                $("#Pledgeable").val("").html("");
+                $("#STTCalculate").val("").html("");
+                $("#DPPreference").val("").html("");
+                $("#MTFMovement").val("").html("");
+                $("#BondScrip").val("").html("");
+                $("#FundFlag").val("").html("");
+                $("#IgnoreTrnxTax").val("").html("");
+                $("#EquityOrientedFund").val("").html("");
+                $("#DelTradeFO").val("").html("");
+                $("#RowId").val("").html("");
+             
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/ScripMasterSelect/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (Scriptype) {
+                        debugger                   
+                        $("#ScripCode").val(Scriptype.ScripCode).html(Scriptype.ScripCode);
+                        $("#ISINCode").val(Scriptype.ISINCode).html(Scriptype.ISINCode);
+                        $("#ScripName").val(Scriptype.ScripName).html(Scriptype.ScripName);
+                        $("#Remark").val(Scriptype.Remark).html(Scriptype.Remark);
+                        $("#LotSize").val(Scriptype.LotSize).html(Scriptype.LotSize);
+                        $("#Variance").val(Scriptype.Variance).html(Scriptype.Variance);
+                        $("#CustomVariance").val(Scriptype.CustomVariance).html(Scriptype.CustomVariance);
+                        $("#MarginSale").val(Scriptype.MarginSale).html(Scriptype.MarginSale);
+                        $("#MarginBuy").val(Scriptype.MarginBuy).html(Scriptype.MarginBuy);
+                        $("#GroupCD").val(Scriptype.GroupCD).html(Scriptype.GroupCD);
+                        $("#ClosingStockDemat").val(Scriptype.MarginBuy).html(Scriptype.MarginBuy);           
+                        $("#TrnxScripType").val(Scriptype.TrnxScripType).html(Scriptype.TrnxScripType);
+                        $("#RowId").val(Scriptype.RowId).html(Scriptype.RowId);
+                        $("#Pledgeable").append($("<option>", { value: Scriptype.Pledgeable, text: Scriptype.Pledgeable }))
+                        if (Scriptype.Pledgeable == "Y") $("#Pledgeable").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.Pledgeable == "N") $("#Pledgeable").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#STTCalculate").append($("<option>", { value: Scriptype.STTCalculate, text: Scriptype.STTCalculate }))
+                        if (Scriptype.STTCalculate == "Y") $("#STTCalculate").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.STTCalculate == "N") $("#STTCalculate").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#DPPreference").append($("<option>", { value: Scriptype.DPPreference, text: Scriptype.DPPreference }))
+                        if (Scriptype.DPPreference == "Y") $("#DPPreference").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.DPPreference == "N") $("#DPPreference").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#MTFMovement").append($("<option>", { value: Scriptype.MTFMovement, text: Scriptype.MTFMovement }))
+                        if (Scriptype.MTFMovement == "Y") $("#MTFMovement").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.MTFMovement == "N") $("#MTFMovement").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#BondScrip").append($("<option>", { value: Scriptype.BondScrip, text: Scriptype.BondScrip }))
+                        if (Scriptype.BondScrip == "Y") $("#BondScrip").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.BondScrip == "N") $("#BondScrip").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#FundFlag").append($("<option>", { value: Scriptype.FundFlag, text: Scriptype.FundFlag }))
+                        if (Scriptype.FundFlag == "Y") $("#FundFlag").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.FundFlag == "N") $("#FundFlag").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#IgnoreTrnxTax").append($("<option>", { value: Scriptype.IgnoreTrnxTax, text: Scriptype.IgnoreTrnxTax }))
+                        if (Scriptype.IgnoreTrnxTax == "Y") $("#IgnoreTrnxTax").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.IgnoreTrnxTax == "N") $("#IgnoreTrnxTax").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#EquityOrientedFund").append($("<option>", { value: Scriptype.EquityOrientedFund, text: Scriptype.EquityOrientedFund }))
+                        if (Scriptype.EquityOrientedFund == "Y") $("#EquityOrientedFund").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.EquityOrientedFund == "N") $("#EquityOrientedFund").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#DematScrip").append($("<option>", { value: Scriptype.DematScrip, text: Scriptype.DematScrip }))
+                        if (Scriptype.DematScrip == "Y") $("#DematScrip").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.DematScrip == "N") $("#DematScrip").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $("#DelTradeFO").append($("<option>", { value: Scriptype.DelTradeFO, text: Scriptype.DelTradeFO }))
+                        if (Scriptype.DelTradeFO == "Y") $("#DelTradeFO").append($("<option>", { value: 'N', text: 'N' }))
+                        if (Scriptype.DelTradeFO == "N") $("#DelTradeFO").append($("<option>", { value: 'Y', text: 'Y' }))
+                        $('#exampleModalLarge1').modal('hide');
+
+                    }
+                });
+
+            });
+    </script>
+    <script>
+            debugger
+            $(".selectisin").click(function () {           
+                $("#ISINCode").val("").html("");        
+                var idd = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/ScripMasterSelect/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: idd },
+                    success: function (isintype) {
+                        debugger                   
+                        $("#ISINCode").val(isintype.ISINCode).html(isintype.ISINCode);
+                        $('#exampleModalLarge2').modal('hide');
+
+                    }
+                });
+
+            });
+</script>
+
+}
+
+<div class="page-content" style="margin-top:115px;">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-12" style="margin-left:auto;margin-right:auto;">
+                <div class="card">
+                    <div class="card-header" style="background-color:#fbd857;">
+                        <h4 class="card-title">Scrip Master</h4>
+                    </div>
+                    @using (Html.BeginForm("ScripMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ScripCode, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-7">
+                                            @Html.TextBoxFor(m => m.ScripCode, new { @class = "form-control" })
+                                          
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="button" data-toggle="modal" data-target="#exampleModalLarge1" class="btn btn-primary btn-icon-square-sm"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ISINCode, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-7">
+                                            @Html.TextBoxFor(m => m.ISINCode, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="button" data-toggle="modal" data-target="#exampleModalLarge2" class="btn btn-primary btn-icon-square-sm"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.LotSize, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.LotSize, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.GrossExposure, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.GrossExposure, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.MTFMovement, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.MTFMovement, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })         
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.MarginSale, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MarginSale, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ClosingStockPhy, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ClosingStockPhy, new { @class = "form-control"})
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.Remark, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Remark, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ShareInNse, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ShareInNse, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.StartDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ShareType, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ShareType, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ShortName, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control" })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ISINCodeOld, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ISINCodeOld, new { @class = "form-control"})
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.Variance, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Variance, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.Iliquid, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.Iliquid, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })                                      
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.STTCalculate, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.STTCalculate, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })       
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.MarginBuy, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.MarginBuy, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ClosingStockDemat, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ClosingStockDemat, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.EquityOrientedFund, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.EquityOrientedFund, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ShareInBse, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ShareInBse, new { @class = "form-control"})
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.CustomVariance, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.CustomVariance, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.ScripName, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.ScripName, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.DematScrip, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.DematScrip, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })             
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.BondScrip, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.BondScrip, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.GroupCD, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.GroupCD, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.Pledgeable, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">   
+                                            @Html.DropDownListFor(m => m.Pledgeable, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.FundFlag, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                           @Html.DropDownListFor(m => m.FundFlag, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })       
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.IgnoreTrnxTax, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.IgnoreTrnxTax, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })                                 
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.DelTradeFO, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.DelTradeFO, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })         
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.TrnxScripType, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.TrnxScripType, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.DPPreference, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.DPPreference, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">          
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.RowId, new { @class = "hidden" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8 ml-auto">
+                                    <button type="submit" id="btnscripsave" class="btn btn-primary float-right">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="modal fade bd-example-modal-lg" id="exampleModalLarge1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title m-0" id="myLargeModalLabel">Type</h6>
+                                    <button type="button" class="close" data-target="#CompanyProfile" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="la la-times"></i></span></button>
+                                </div>
+                                <!--end modal-header-->
+                                <div class="modal-body">
+                                    <div class="table-responsive">
+                                        <table id="datatable" class="table dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Select</</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">ScripName</</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">ScripCode</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Symbol</</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Series</</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">ISINCode</</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">NODFrom</</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">NODTo</</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">SETTNo</</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        foreach (System.Data.DataRow dr in Model.Scripdata.Tables[0].Rows)
+                                                        {
+                                                            <tr>
+                                                                <td><button type="button" class="selectsttl" data-model-id="@dr["ID"]">Select</button></td>
+                                                                <td>@dr["sh_NAME"]</td>
+                                                                <td>@dr["sh_code"]</td>
+                                                                <td>@dr["sh_symbol"]</td>
+                                                                <td>@dr["sh_series"]</td>
+                                                                <td>@dr["isincode"]</td>
+                                                                <td>@dr["NodFrom"]</td>
+                                                                <td>@dr["NodTo"]</td>
+                                                                <td>@dr["SH_SETTNO"]</td>
+                                                            </tr>
+
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                    <!--end row-->
+                                </div>
+                                <!--end modal-body-->
+                                <div class="modal-footer"><button type="button" id="btnCloseCodeFrom" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button></div>
+                                <!--end modal-footer-->
+                            </div>
+                            <!--end modal-content-->
+                        </div>
+                        <!--end modal-dialog-->
+                    </div>
+
+                    <div class="modal fade bd-example-modal-lg" id="exampleModalLarge2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title m-0" id="myLargeModalLabel">Type</h6>
+                                    <button type="button" class="close" data-target="#CompanyProfile1" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="la la-times"></i></span></button>
+                                </div>
+                                <!--end modal-header-->
+                                <div class="modal-body">
+                                    <div class="table-responsive">
+                                        <table id="datatable2" class="table dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Select</</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">ISIN Code</</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">ISIN Name</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">ISIN Short Name</</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Face Value</</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    foreach (System.Data.DataRow rw in Model.Scripdata.Tables[0].Rows)
+                                                    {
+                                                        <tr>
+                                                            <td><button type="button" class="selectisin" data-model-id="@rw["ID"]">Select</button></td>
+                                                            <td>@rw["ISINCODE"]</td>
+                                                            <td>@rw["SH_NAME"]</td>
+                                                            <td>@rw["SH_SERIES"]</td>
+                                                            <td>@rw["SH_FACEVAL"]</td>                               
+                                                        </tr>
+
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--end row-->
+                                </div>
+                                <!--end modal-body-->
+                                <div class="modal-footer"><button type="button" id="btnCloseCodeFrom" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button></div>
+                                <!--end modal-footer-->
+                            </div>
+                            <!--end modal-content-->
+                        </div>
+                        <!--end modal-dialog-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalSuccess1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h6 class="modal-title m-0 text-white" id="exampleModalSuccess1">Primary Modal</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="la la-times text-white"></i></span></button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-3 text-center align-self-center"><img src="assets/images/widgets/btc.png" alt="" class="img-fluid"></div>
+                    <!--end col-->
+                    <div class="col-lg-9">
+                        <h5>DATA SAVED SUCCESSFULLY</h5>      
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end modal-body-->
+            <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button></div>
+            <!--end modal-footer-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+<script>
+    $(function () {
+    });
+
+    $("#btnscripsave").click(function () {
+        $('#exampleModalSuccess').modal('show');
+    });
+</script>

@@ -1,0 +1,190 @@
+﻿@using Rising.WebRise.Models
+@model ContractSpecification
+@using System.Data
+@{
+    ViewBag.Title = "ContractSpecification";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+}
+
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            $('.editButton').click(function () {
+                $("#Exchnage").val("").html("");
+                $("#ExpiryDate").val("").html("");
+                $("#Symbol").val("").html("");
+                $("#InstrumentType").val("").html("");
+                $("#LotSize").val("").html("");
+
+
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '/Master/GetContractDetails',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+
+                    success: function (holiday) {
+                        debugger
+                        $("#Exch").val(holiday.Exchange).html(holiday.Exchange);
+                        $("#Syb").val(holiday.Sdate).html(holiday.Sdate);
+                        $("#ExpDt").val(holiday.Holiday).html(holiday.Holiday);
+                        $("#InsTy").val(holiday.Sdate).html(holiday.Sdate);
+                        $("#Lot").val(holiday.Holiday).html(holiday.Holiday);
+
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+
+         function clearTextBox() {
+             $('#Exchnage').val('');
+             $('#ExpiryDate').val('');
+             $('#Symbol').val('');
+             $('#InstrumentType').val('');
+             $('#LotSize').val('');
+
+         }
+    </script>
+    @if (TempData.ContainsKey("true"))
+    {
+        <script>
+        swal({
+            title: "@TempData["Message"]",
+            type: "@TempData["MessageType"]"
+        });
+        </script>
+
+    }
+
+}
+
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">CONTRACT SPECIFICATION</h4>
+                </div>
+            </div>
+
+            <div class="row mt-100">
+                <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                    <div class="card" id="ExportedGrid">
+                        <div class="box">
+                            @if (Model.result.Tables.Count > 0)
+                            {
+
+                                <div>
+                                    <table class="table data-table table-striped table-bordered dataTable">
+                                        <thead>
+                                            <tr>
+                                                @foreach (var cl in Model.result.Tables[0].Columns)
+                                                {
+                                                    <th class="table-header">@cl</th>
+
+                                                }
+                                                <th class="table-header"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow dr in Model.result.Tables[0].Rows)
+                                            {
+                                                <tr>
+                                                    @foreach (var cl in dr.ItemArray)
+                                                    {
+                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</td>
+                                                    }
+                                                    <td style="border: 1px solid  #d3d3d3;font-size: 12px">
+                                                        @*<button type="submit" id="btnedit" onclick="MaintenanceList(@Convert.ToString(dr[0]),@Convert.ToString(dr[1]),@Convert.ToString(dr[2]),@Convert.ToString(dr[3]),@Convert.ToString(dr[4]),@Convert.ToString(dr[5]),@Convert.ToString(dr[6]))" class="btn btn-success btn-xs">Edit</button>*@
+                                                        @*<button type="submit" style="height:18px; width:18px" class="btn btn-sm editButton" data-toggle="modal" data-target="#UpdateFrom" id="edit" data-id="@Convert.ToString(dr[1])"><i class="dripicons dripicons-pencil"></i></button>*@
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+</div>
+    </div>
+<div class="col-xl-12 col-lg-12">
+    <div class="card">
+        <div class="modal fade bd-example-modal-lg" id="UpdateFrom" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">CONTRACT SPECIFICATION</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <div class="new-user-info">
+                                @using (Html.BeginForm("Contract", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="row">
+                                        <div class=" form-group col-md-4 col-12">
+                                            @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.Exchange, new { @class = "form-control", @id = "Exch" })
+                                        </div>
+                                        <div class="form-group col-md-4 col-12">
+                                            @Html.LabelFor(m => m.Symbol, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.Symbol, new { @class = "form-control", @id = "Syb" })
+                                        </div>
+                                        <div class="form-group col-md-4 mb-12">
+                                            @Html.LabelFor(m => m.ExpiryDate, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.ExpiryDate, null, new { @class = "form-control", @id = "ExpDt", @type = "date" })
+                                        </div>
+                                        <div class="form-group col-md-4 col-12">
+                                            @Html.LabelFor(m => m.InstrumentType, new { @class = "form-label" })
+                                            @Html.DropDownListFor(m => m.InstrumentType, new SelectList(new[] { "FUTCUR", "OPTCUR", "FUTCOM", "FUTSTK", "FUTIDX", "OPTIDX" }), new { @class = "form-control", @id = "InsTy" })
+                                        </div>
+                                        <div class="form-group col-md-4 mb-12">
+                                            @Html.LabelFor(m => m.LotSize, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.LotSize, new { @class = "form-control", @id = "Lot" })
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:10px">
+                                        <div class="form-group col-12 ">
+                                            <input type="submit" id="btnSave" class="btn btn-danger" name="Submit" value="Delete" onclick="return confirm('Are you sure want to delete?')" />
+                                            <input type="submit" id="btnCancel" class="btn btn-primary pull-right" name="Submit" value="Update" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

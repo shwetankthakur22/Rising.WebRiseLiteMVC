@@ -1,0 +1,580 @@
+/* responsive css starts here*/
+
+@media screen and (max-width: 767px) {
+    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn){
+        width:100%!important;
+    }
+   .head_bottom .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {background: transparent;  border-color: #FFECCC; color:#fff;}
+   .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover{
+       color:#333; font-weight:bold;
+   }
+   .navbar-default .navbar-nav .open .dropdown-menu > li > a{
+       color:#fff;
+   }
+    .navbar-collapse > ul > li{
+        background:#ececec;
+    }
+    .navbar-collapse.in{
+      overflow-y: inherit;
+    }
+    .navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse{
+        max-height:none;
+    }
+    .navbar {
+        margin-bottom:0px;
+        border:0px;
+        position:static;
+    }
+    #Top {
+        margin: -18px auto 0 !important;
+    }
+     .fixedtop{
+        position:static !important;
+    }
+    .content{
+        padding:10px 3% 206px 3% !important;
+    }
+    .adj_Wd_action {
+        margin: 20px auto 0;
+        text-align: center;
+        width: 90%;
+        float:none;
+    }
+    .filter_c .control_btns.master_report{
+        margin: 20px auto 0;
+        text-align: center;
+        width: 90%;
+        float: none;
+    }
+    .filter_c .form-group,.filter_c .selectpicker, .filter_c .form-control, .filter_c dropdown-toggle, .filter_c .btn-group, .filter_c .datepickr.settlement_report {
+        width:100%;
+    }
+    .filter_c .checkbox.checkbox-warning{
+        clear:both;
+    }
+    .filter_c .control_btns{
+        text-align:center;
+    }
+    .filter_c .form-group{
+        width:100%;
+    }
+    .filter_c .form-group > div{
+        margin-bottom:12px;
+        width:100%;
+        display: inline-block;
+    }
+    .filter_c .form-group .custom_date{
+        width:100%;
+    }
+    .filter_c .form-group > div.clearfix{
+        margin-bottom:0px;
+    }
+    .filter_c .datepickr{
+        clear:both;
+    }
+    .filter_c .adj_Wd{
+        float:none;
+        display:block;
+        text-align:center;
+        margin-right:0px;
+    }
+     .filter_c .radio, .checkbox{
+        margin-bottom:10px;
+        margin-top:10px;
+    }
+     .filter_c .trade_summary .radio, .checkbox{
+        margin-bottom:0px;
+        margin-top:0px;
+    }
+    .filter_c .form-group {
+        border-bottom: 0px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+    }
+    .filter_c .checkbox{
+        margin-bottom:10px;
+    }
+    .show_hide_filters{
+        width:100px;
+        padding:5px;
+    }
+    .logo_container{
+        background-color:none;
+        display:table;
+        float:none;
+        height:auto;
+        width:100%;
+        background:#fff;
+    }
+    .logo_container a.logo{
+        float:none;
+        margin: 0 auto;
+    }
+    .logo_container .TopLeft{
+        float:none;
+        display:table;
+        padding:0;
+        margin:0 auto;
+        width:auto;
+    }
+    .logo_container .TopLeft ul {
+        float:none;
+    }
+    .logo_container .ClientList{
+        display:table;
+        float:none;
+        margin:0px auto;
+        max-width:none;
+        min-width:auto;
+        padding-right:0px;
+    }
+    .overviews{
+        top:154px;
+        background:#fff;
+    }
+    .right_box {
+        display:table;
+        float:none;
+        margin:0;
+        position:relative;
+        right:0;
+        top:0;
+        width:100%;
+        margin-bottom:10px;
+    }
+    .content_box {
+        display:block;
+        float:none;
+    }
+    .user_profile {
+        width:100%;
+        float:none;
+    }
+    .partycode_box {
+        margin: 0px 0 10px !important;
+        width:100%;
+    }
+    .partycode_box.partywidth {
+        width:100%;
+    }
+    .head_bottom .nav .open > a, .nav .open > a:hover, .nav .open > a:focus{
+        background:#000;
+    }
+    .back_button {
+        font-size:11px;
+        padding: 1px 8px;
+    }
+    .help_dashboard #sidebar, .client_dashboard #sidebar{
+        top: 232px;
+        height: 243px;
+    }
+    .ui-accordion .ui-accordion-content{
+        border-bottom:1px solid #f6931f;
+    }
+    .bottomTickerIcon{
+        width:26%;
+    }
+    .bottomTickerText{
+        width:74%;
+    }
+    .LandingPageTickerText{
+        width:74%;
+    }
+    .without_overview .right_box {
+        top: 0px;
+    }
+    .without_overview main {
+        padding-top: 0px;
+    }
+    .user_profile .left_box .bottom_box{
+        overflow:hidden;
+    }
+    .user_profile .left_box .user_info .info_table tfoot{
+        position:relative;
+        display:inline-block;
+    }
+    #birthday_message{
+        width:80%;
+    }
+    .wish_text{
+        font-size:16px;
+    }
+    .message_content div{
+        float:none !important;
+    }
+    .right_box .ui_slug{
+        height:auto!important;
+    }
+    .isin_close_button{
+        clear: none;
+    display: inline-block;
+    float: left;
+    padding-top: 2px;
+    width: 18px;
+    margin-bottom: 12px;
+    }
+    .TabHeading{
+        min-width:100%;
+
+    }
+    .box .small_note{
+        vertical-align:middle;
+    }
+    .box span.hasTooltip_help{
+        margin:2px 0;
+    }
+    .POAavailableText{
+        margin-top:0px;
+        font-size:10px;
+    }
+    .box {
+        margin-top:15px;
+        margin-bottom:15px;
+    }
+    .POAavailableText{
+        padding: 3px 10px;
+    }
+    .user_profile .left_box .user_info .info_table tfoot{
+         display: table;
+        position: relative;
+        width: 100%;
+    }
+    .filter_c .trade_summary .btn{
+        border-radius: 4px !important;
+        margin-bottom: 3px;
+        width: 100%;
+    }
+    .filter_c .trade_summary table{
+        width:100%;
+        display:table;
+    }
+    .filter_c .trade_summary table td {
+        display: table-cell;
+        padding-right: 18px;
+        width: 25%;
+    }
+}
+@media only screen and (min-width: 300px) and (max-width: 480px) {
+    .user_profile .left_box .user_info {
+        width: 68%;
+    }
+    .user_profile .left_box .user_image {
+        width: 25%;
+    }
+    /*DayPilotPopup pop_up*/
+    .DayPilotPopup{
+        width:320px!important;
+        margin: 0 auto !important;
+        right:0;
+        left:0px!important;
+    }
+    .overviews .nav-tabs > li > a{
+        font-size: 10px;
+        text-transform:capitalize;
+        letter-spacing:0;
+        padding:2px 0;
+    }
+    .overviews .nav-tabs > li > a span{
+        display:none;
+    }
+    .partycode_box label{
+        font-size:12px;
+    }
+    .partycodetxt{
+        width:92px;
+    }
+    .OnOffLinebutton{
+        font-size:11px;
+        padding:0 8px 0 0;
+        width:144px;
+        line-height:23px;
+        background-position: 4px center !important;
+    }
+    .partycode_box label{
+        display:none;
+    }
+    .report_heading h2{
+        max-width:200px;
+        display:block;
+        font-size:13px;
+    }
+    .three_radio table{
+        width:178px;
+    }
+      .right_box #accordion .ui-accordion-content.Ageing .nodata, .right_box #accordion .ui-accordion-content.Ageing .nodata:hover{
+        background:#fff;
+    }
+    .right_box #accordion .ui-accordion-content.MOSL_Alerts .nodata, .right_box #accordion .ui-accordion-content.MOSL_Alerts .nodata:hover{
+        background:#fff;
+    }
+}
+@media only screen and (min-width: 320px) and (max-width: 639px) {
+    .without_overview main {
+        padding-top: 0;
+    }
+    .partycode_box{
+        margin: 0 0 10px !important;
+    }
+    .Spantooltip_Help{
+        width:300px !important;
+    }
+}
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+    /*DayPilotPopup pop_up*/
+    .DayPilotPopup{
+        width:480px!important;
+        margin: 0 auto !important;
+        right:0;
+        left:0px!important;
+    }
+    .TopLeft {
+        width: 60%;
+    }
+    .overviews .nav-tabs > li > a{
+        padding: 2px 0;
+        font-size:10px;
+        letter-spacing:0px;
+    }
+    .overviews .nav-tabs > li > a span{
+        margin: 3px 2px 0;
+    }
+    .ui_slug {
+        display: table-cell;
+        float: left;
+        height: auto;
+        width: 32%;
+        margin-right:2%;
+    }
+    .ui_slug:last-child {
+        margin-right:0px;
+    }
+    .ui-accordion .ui-accordion-content {
+        overflow-y:auto;
+        height:155px !important;
+    }
+    .ui-accordion .ui-accordion-content table{
+        height: 155px ;
+    }
+    .right_box #accordion .ui-accordion-content.MOSL_Alerts ul li.nodata{
+        margin-top: 49px;
+    }
+    .user_profile .left_box .user_info {
+        width: 80%;
+    }
+    .user_profile .left_box .user_image{
+        width:20%;
+    }
+    
+}
+@media only screen and (min-width: 768px) and (max-width: 980px) {
+    /*DayPilotPopup pop_up*/
+     .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn){
+        width:100%!important;
+    }
+    .user_profile .left_box .user_info {
+        width: 85%;
+    }
+     .user_profile .left_box .user_image{
+         width:15%;
+     }
+    .DayPilotPopup{
+        width:700px!important;
+        margin: 0 auto !important;
+        right:0;
+        left:0px!important;
+    }
+    .TopLeft {
+        width: 60%;
+    }
+    .right_box {
+        display:table;
+        float:none;
+        margin:0;
+        position:relative;
+        right:0;
+        top:0;
+        width:100%;
+        margin-bottom:20px;
+    }
+    .content_box {
+        display:block;
+        float:none;
+    }
+    .user_profile {
+        width:100%;
+        float:none;
+    }
+    .partycode_box.partywidth {
+        width:100%;
+    }
+    .right_box #accordion-resizer{
+        height:auto !important;
+    }
+   .ui_slug {
+        display: table-cell;
+        float: left;
+        height: auto;
+        width: 32% !important;
+        margin-right:2%;
+    }
+    .ui_slug:last-child {
+        margin-right:0px;
+    }
+    .ui-accordion .ui-accordion-content {
+        overflow-y:auto;
+        height:155px !important;
+        border-bottom:1px solid #f6931f;
+    }
+    .ui-accordion .ui-accordion-content table{
+        height: 155px ;
+    }
+    .right_box #accordion .ui-accordion-content.MOSL_Alerts ul li.nodata{
+        margin-top: 49px;
+    }
+    .control-label{
+        margin-right:5px !important;
+    }
+    .bottomTickerIcon{
+        width:26%;
+    }
+    .bottomTickerText{
+        width:74%;
+    } 
+    .LandingPageTickerText{
+        width:74%;
+    } 
+    .without_overview .right_box{
+        top:0px;
+    }
+    .without_overview main {
+        padding-top: 32px;
+    }
+     #birthday_message{
+        width:50%;
+    }
+}
+@media only screen and (min-width: 981px) and (max-width: 1023px) {
+     .user_profile .left_box .user_info {
+        width: 85%;
+    }
+     .user_profile .left_box .user_image{
+         width:15%;
+     }
+      #birthday_message{
+        width:40%;
+    }
+       .message_content div{
+        float:none !important;
+    }
+   
+}
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    
+    .cheque_link{
+        width:100%;
+    }
+    .filter_c .trade_summary .btn-warning{
+        border-radius: 4px !important;
+        background-color:transparent;
+        color:#333;
+        font-weight:bold;
+        border:0px;
+    }
+    .filter_c .trade_summary .btn{
+        border-radius:4px !important;
+    }
+     .filter_c .isin_group_by_responsive{
+        width:100px;
+    }
+    .filter_c .isin_group_by_responsive button {
+        width:100px !important;
+    }
+    .filter_c .isin_strike_price_responsive{
+        width:100px !important;
+    }
+    .filter_c .control-label, .dtp_label{
+         width:100%;
+         white-space: nowrap;
+         line-height:23px;
+    }
+    .isin_responsive button.mot_grid{
+        width:auto !important;
+    }
+    .filter_c input,.filter_c button,.filter_c .form-control {
+        width:167px;
+    }
+    .filter_c .bootstrap-select > .dropdown-toggle{
+        width:167px;
+    }
+    .bootstrap-select.btn-group[class*="col-"] .dropdown-toggle{
+        width:167px;
+    }
+    .width_167_res{
+        width: 167px !important;
+    }
+    .filter_c .datepickr{
+        width:204px;
+    }
+    .filter_c .radio, .checkbox{
+        margin-bottom:5px;
+    }
+    .filter_c .trade_summary .radio, .checkbox{
+        margin-bottom:0px
+    }
+    
+    .filter_c .checkbox{
+        margin-bottom:5px;
+    }
+    .filter_c  .form-group > div > div{
+        clear:both;
+    }
+    .adj_Wd_action {
+        display: inline-block;
+        float: none;
+        margin: 40px auto 0;
+        text-align: center;
+        width: 100%;
+    }
+    .filter_c .control_btns.master_report{
+        margin: 40px auto 0;
+        text-align: center;
+        width: 100%;
+        float: none;
+        display:inline-block;
+    }
+    .filter_c .control_btns{
+        text-align:center;
+    }
+    .filter_c .adj_Wd{
+        float:none;
+        display:block;
+        text-align:center;
+        margin-right:0px;
+    }
+    .filter_c .adj_Wd .control-label, .dtp_label{
+         width:auto;
+     }
+    .filter_c .adj_Wd_action input, .filter_c .control_btns input{
+        width:auto !important;
+    }
+     .isin_close_button{
+         clear: none !important;
+        display: table;
+        float: left;
+        margin-left: -105px;
+        margin-top: -20px;
+    }
+    .filter_c .width_100_res{
+        width:100px !important;
+    }
+    .filter_c .width_75_res button  {
+        width:75px !important;
+    }
+    .filter_c .width_75_res .bootstrap-select.btn-group[class*="col-"] .dropdown-toggle{
+        width:75px !important;
+    }
+    .without_overview main{
+        padding-top:31px;
+    }
+}
+/* responsive css ends here*/

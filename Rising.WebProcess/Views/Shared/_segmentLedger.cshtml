@@ -1,0 +1,98 @@
+﻿@model Rising.WebRise.Models.DashBoardOutPut
+@using GridMvc.Html
+
+
+
+
+<table class="table table-striped table-bordered" style="width:100%;">
+    <thead>
+        <tr>
+            <th style="border: 1px solid  #808080;text-align:center; background-color:#f39fa0;font-size: 12px;font-weight: bold;">&nbsp;&nbsp;&nbsp;DATE&nbsp;&nbsp;&nbsp;</th>
+            <th style="border: 1px solid  #808080;text-align:center; background-color:#f39fa0;font-size: 12px;font-weight: bold;">NARRATION</th>
+            <th style="border: 1px solid  #808080;text-align:center; background-color:#f39fa0;font-size: 12px;font-weight: bold;">TRADE DATE</th>
+            <th style="border: 1px solid  #808080;text-align:center; background-color:#f39fa0;font-size: 12px;font-weight: bold;">BILLNO</th>
+            <th style="border: 1px solid  #808080;text-align:center; background-color:#f39fa0;font-size: 12px;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHQNO&nbsp;</th>
+            <th style="border: 1px solid  #808080;text-align:center; background-color:#f39fa0;font-size: 12px;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DEBIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <th style="border: 1px solid  #808080;text-align:center; background-color:#f39fa0;font-size: 12px;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CREDIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <th style="border: 1px solid  #808080;text-align:center; background-color:#f39fa0;font-size: 12px;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NET&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody id="segmentLedgerBody">
+        @{
+            string ccode = "gsdfgsdfgfdgdf";
+            string clBal = "0.00";
+            foreach (Rising.WebRise.Models.FinancialLedgerOutputRow rw in Model.listSegmentWiseFinancialLedgerOutputRow)
+            {
+                if (ccode != rw.ClientCode)
+                {
+                    if (ccode != "gsdfgsdfgfdgdf")
+                    {
+                        <tr>
+                            <td style="border: 1px solid  #d3d3d3;background-color:palegoldenrod;"></td>
+                            <td style="border: 1px solid  #d3d3d3;text-align:left; background-color:palegoldenrod;font-size: 12px;font-weight: bold;">Closing Balance : </td>
+                            <td style="border: 1px solid  #d3d3d3;background-color:palegoldenrod;"></td>
+                            <td style="border: 1px solid  #d3d3d3;background-color:palegoldenrod;"></td>
+                            <td style="border: 1px solid  #d3d3d3;background-color:palegoldenrod;"></td>
+                            <td style="border: 1px solid  #d3d3d3;background-color:palegoldenrod;"></td>
+                            <td style="border: 1px solid  #d3d3d3;background-color:palegoldenrod;"></td>
+                            <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;background-color:palegoldenrod;font-weight: bold;">@clBal</td>
+                        </tr>
+                    }
+                    <tr style="height:20px">
+                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                    </tr>
+
+
+                }
+
+                <tr>
+                    <td style="text-align: center; font-size:12px;border: 1px solid  #d3d3d3;">@rw.Date.ToString("dd/MM/yy")</td>
+                    <td style="text-align: left;font-size:12px;border: 1px solid  #d3d3d3;">@rw.Narration</td>
+                    <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;">@rw.ValueDate.ToString("dd/MM/yy")</td>
+
+                    @if (rw.BillNo.Contains("FDLY") == true || rw.BillNo.Contains("FEXP") == true || rw.BillNo.Contains("OPTDLY") == true || rw.BillNo.Contains("OPTEXAS") == true || rw.BillNo.Contains("OPEXP") == true || rw.BillNo.Contains("DLV") == true)
+                    {
+                        <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;">
+                            @Html.ActionLink(rw.BillNo, "BillDetail", "FinancialLedger", new { billno = rw.BillNo.Replace("/", "__"), trndate = rw.ValueDate, segment = rw.Segment, cd = rw.ClientCode }, null)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;font-size:12px;border: 1px solid #d3d3d3;">@rw.BillNo</td>
+                    }
+                    @*(@rw.CHQNO=="" ? "" : (@rw.CHQNO.Length > 6 ? @rw.CHQNO.Substring(@rw.CHQNO.Length - 5) : @rw.CHQNO;))*@
+                    <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;">@rw.CHQNO</td>
+                    <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;">@rw.Debit</td>
+                    <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;">@rw.Credit</td>
+                    <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;">@rw.RUNBAL</td>
+                </tr>
+                ccode = rw.ClientCode;
+                clBal = rw.RUNBAL;
+            }
+
+
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td style="border: 1px solid  #d3d3d3;background-color: #6594d7ad; "></td>
+            <td style="border: 1px solid  #d3d3d3;text-align:left; background-color:#6594d7ad;font-size: 12px;font-weight: bold;">Closing Balance : </td>
+            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+            <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;background-color:#6594d7ad;font-weight: bold;"> @clBal</td>
+        </tr>
+    </tfoot>
+</table>
+
+
+

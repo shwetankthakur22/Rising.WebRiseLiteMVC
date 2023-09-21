@@ -1,0 +1,139 @@
+.DayPilotPopup {
+    /*width:99%!important; background:#fe8502; margin:0px !important; padding:0px !important; left:0 !important; top:0 !important; overflow: auto;*/
+    /*width: 70% !important;*/
+    background: #fe8502;
+}
+
+.DayPilotPopup2 {
+    /*width:99%!important; background:#fe8502; margin:0px !important; padding:0px !important; left:0 !important; top:0 !important; overflow: auto;*/
+    width: 30% !important;
+    background: #fe8502;
+}
+
+.partywidth {
+    width: 78%;
+}
+
+.tffooter {
+    background: #ddd !important;
+    font-weight: bold;
+    text-align: right;
+}
+
+.table-hover > tbody > tr.tffooter:hover {
+    background: #ddd !important;
+}
+
+.table-hover > tbody > tr.tffooter > td {
+    border-color: #d2d2d2 ;
+    /*!important*/
+}
+
+
+
+.hidebar {
+    display: none;
+}
+
+.dialogstyle {
+    top: 20px;
+}
+
+.tableHeaderRightAlign {
+    text-align: right !important;
+}
+
+.tableHeaderCenterAlign {
+    text-align: center !important;
+}
+
+.totalAll {
+    background-color: #fbb030;
+    border-right: 3px solid #333;
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 3px 10px;
+    text-align: right;
+    position:relative;
+    border:1px solid #999;
+}
+
+.totalAll:after {
+    border-color: transparent #333 transparent transparent;
+    border-style: solid;
+    border-width: 6px;
+    content: "";
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 9px;
+    width: 0;
+}
+.totalAll small {
+    font-size:10px;
+}
+
+
+.tdTotFooter {
+    text-align: right;
+}
+
+.tdborderright {
+    border-right: 1px solid #999 !important;
+}
+
+.numeric {
+    text-align: right;
+}
+
+.modalNewLoader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+    z-index: 99;
+    opacity: 0.53;
+    filter: alpha(opacity=80);
+    -moz-opacity: 0.8;
+    min-height: 100%;
+    width: 100%;
+    /*background-image: url("../images/ui-bg_diagonals-thick_20_666666_40x40.png");*/
+}
+
+.loadingNewLoader {
+    width: 200px;
+    height: 100px;
+    display: none;
+    position: fixed;
+    z-index: 999;
+}
+
+.wrapColText {
+    white-space: normal !important;
+}
+
+.dvTitle {
+    background: #999 none repeat scroll 0 0 !important;
+    width:100% !important;
+}
+    
+.grdPager td table tbody tr td{
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.defcursor{
+cursor : default !important;
+
+}
+.valsym{
+    padding-left:2px;
+    color:red;
+
+}
+
+.auctiondrop td{
+    width:50px;
+}

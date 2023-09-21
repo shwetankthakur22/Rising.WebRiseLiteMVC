@@ -1,0 +1,150 @@
+﻿@model Rising.WebRise.Controllers.DematLedgerInput
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Financial Ledger";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+ 
+}
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="Ledger">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>DEMAT LEDGER</h5>
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-lg-8">
+                              
+                                <div class="btn btn-info btn-sm mr-2">Date Range  : @Model.DateFrom.ToString("dd-MM-yyyy")  to   @Model.DateTo.ToString("dd-MM-yyyy")</div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div style="float:right">
+
+                                    <a href="javascript:void(0);" class="btn btn-dark btn-sm mr-2" onclick="history.go(-1);">Back</a>
+
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportExcel", "ReportExport", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml1" />
+                                        <button type="submit" class="btn btn-success btn-sm mr-2" id="btnSubmit1">Excel</button>
+
+                                    }
+
+
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportWord", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml2" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit2">Word</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportPdf", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml3" />
+                                        <button type="submit" class="btn btn-danger btn-sm mr-2" id="btnSubmit3">Pdf</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("SendEmail", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml4" />
+                                        <button type="submit" class="btn btn-warning btn-sm mr-2" id="btnSubmit4">Email</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+                                    @using (Html.BeginForm("ExportPrint", "ReportExport", FormMethod.Post, new { target = "_blank" }))
+                                    {
+
+                                        <input type="hidden" name="GridHtml5" />
+                                        <button type="submit" class="btn btn-info btn-sm mr-2" id="btnSubmit5">Print</button>
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!--end row-->
+
+
+                        <div class="row">
+                            <div class="col-lg-12" style="margin: auto;">
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="table-responsive table-box" style="height:600px">
+                                            <table class="table table-bordered table-responsive" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">Date</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">Scrip Name</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">Status</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">SettNo</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">Debit</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">Credit</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">Ref No</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">DP Code</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">AC NO</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">ISIN</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">Trnf From</th>
+                                                        <th class="table-header"style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">Client</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @{
+
+                                                        foreach (System.Data.DataRow rw in Model.DSOut.Tables[0].Rows)
+                                                        {
+
+                                                            <tr>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["ddate"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["sh_name"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["status"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["settno"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["debit"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["credit"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["scrollno"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["clientdp"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["acno"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["isincode"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["clientto"]</td>
+                                                                <td style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw["clientcd"]</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

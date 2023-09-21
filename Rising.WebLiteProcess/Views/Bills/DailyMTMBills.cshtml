@@ -1,0 +1,69 @@
+﻿@using Rising.WebRise.Models
+@model Bills
+@{
+    ViewBag.Title = "DailyMTMBills";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">DAILY MTM BILLS</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    @using (Html.BeginForm("DailyMTMBills", "Report", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-4 col-12">
+                                @Html.LabelFor(m => m.TrDateFrom, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.TrDateFrom, null, new { @Value = Model.TrDateFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                            </div>
+                            <div class="col-md-4 col-12">
+                                @Html.LabelFor(m => m.TrDateTo, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.TrDateTo, null, new { @Value = Model.TrDateTo.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                            </div>                   
+                        </div>
+                        <div class="row" style="margin-bottom: 15px;">
+                            <div class="col-md-3 col-12">
+                                @Html.LabelFor(m => m.Client, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Client, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-1 mb-12">
+                                <label class="form-label" style="margin-top: 38px;"></label>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+
+                            </div>
+                            <div class="col-md-4 col-12">
+                                @Html.LabelFor(m => m.Branch, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Branch, null, new { @class = "form-control" })
+                            </div>          
+                        </div>                    
+
+                        <div class="box-footer">
+                            <input type="submit" value="View" class="btn btn-success pull-right" />
+                            <a href="javascript:void(0);" class="btn btn-danger" onclick="history.go(-1);">Back</a>
+                        </div>
+
+                    }
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

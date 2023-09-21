@@ -1,0 +1,266 @@
+﻿@using Rising.WebRise.Models
+@model TMMaster
+@using System.Data
+@{
+    ViewBag.Title = "TMMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+
+}
+
+<div class="page-content" style="margin-top:115px;">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+
+        <div class="row">
+            <div class="col-12" style="margin-left:auto;margin-right:auto;">
+                <div class="card">
+                    <div class="card-header" style="background-color:#fbd857;">
+                        <h4 class="card-title">TM Master</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-pills nav-justified" role="tablist">
+                            <li class="nav-item waves-effect waves-light"><a class="nav-link active" data-toggle="tab" href="#home-1" role="tab" aria-selected="true">Tab1</a></li>
+                            <li class="nav-item waves-effect waves-light"><a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-selected="false">Tab2</a></li>
+                            <li class="nav-item waves-effect waves-light"><a class="nav-link" data-toggle="tab" href="#settings-1" role="tab" aria-selected="false">Tabe3</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        @using (Html.BeginForm("TMMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                        {
+
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="tab-content">
+                                <div class="tab-pane p-3 active" id="home-1" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.Exchange, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "BSE", "NFO" }), new { @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.TMId, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.TMId, new { @class = "form-control", @id = "tmid", @placeholder = "Enter TM Id" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.UccCode, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.UccCode, new { @class = "form-control", @id = "ucccode", @placeholder = "Enter Ucc Code", @maxlength = "1" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.ClientCode, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.ClientCode, new { @class = "form-control", @id = "clientcode", @placeholder = "Enter Client Code" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.DPCodePhy, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.DPCodePhy, new { @class = "form-control", @placeholder = "Enter DPCode", @id = "dpcodephy" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.DPCodePool, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.DPCodePool, new { @class = "form-control", @id = "dpcodepool", @placeholder = "Enter DPCode Pool" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.DPAcnoPhy, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.DPAcnoPhy, new { @class = "form-control", @id = "dpacnophy", @placeholder = "Enter DPAcno phy", @maxlength = "1" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.DPAcnoPool, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.DPAcnoPool, new { @class = "form-control", @id = "dpaccnopool", @placeholder = "Enter DPAcno Pool" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.CBMPID, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.CBMPID, new { @class = "form-control", @placeholder = "Enter CBMP Id", @id = "cbmpid" })
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.ClientCodeCash, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.ClientCodeCash, new { @class = "form-control", @id = "clientcodecash", @placeholder = "Enter ClientCode Cash" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-8 ml-auto"><button type="submit" class="btn btn-primary float-right">Submit</button></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12" style="margin-left:auto;margin-right:auto;">
+
+                                            <div class="card">
+                                                <div class="card-header" style="background-color:#fbd857;">
+                                                    <h4 class="card-title">TM Master List</h4>
+                                                </div>
+                                                <!--end card-header-->
+                                                <div class="card-body">
+
+
+                                                </div>
+                                                <!--end card-body-->
+                                            </div>
+
+
+
+
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane p-3" id="profile-1" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.Exchange, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "BSE", "NFO" }), new { @class = "form-control" })
+                                                    @*@Html.DropDownListFor(model => model.Exchange, (IEnumerable<SelectListItem>)ViewBag.enumExchange, new { @class = "form-control" })*@
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.UccCode, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.UccCode, new { @class = "form-control", @placeholder = "Enter Ucc Code" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.ClientCode, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.ClientCode, new { @class = "form-control", @placeholder = "Enter Client Code" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-8 ml-auto"><button type="submit" class="btn btn-primary float-right">Save</button></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12" style="margin-left:auto;margin-right:auto;">
+
+                                            <div class="card">
+                                                <div class="card-header" style="background-color:#fbd857;">
+                                                    <h4 class="card-title">Maintenance List</h4>
+                                                </div>
+                                                <!--end card-header-->
+                                                <div class="card-body">
+
+
+                                                </div>
+                                                <!--end card-body-->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane p-3" id="settings-1" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.Exchange, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "BSE", "NFO" }), new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.TMId, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.TMId, new { @class = "form-control", @placeholder = "Enter TMId" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.UccCode, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.UccCode, new { @class = "form-control", @placeholder = "Enter Ucc Code" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(m => m.ClientCode, new { @class = "col-sm-4 col-form-label" })
+                                                <div class="col-sm-8">
+                                                    @Html.TextBoxFor(m => m.ClientCode, new { @class = "form-control", @placeholder = "Enter Client Code" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-8 ml-auto"><button type="submit" class="btn btn-primary float-right">Save</button></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" style="margin-left:auto;margin-right:auto;">
+
+                                            <div class="card">
+                                                <div class="card-header" style="background-color:#fbd857;">
+                                                    <h4 class="card-title">TM Master List</h4>
+                                                </div>
+                                                <!--end card-header-->
+                                                <div class="card-body">
+
+
+                                                </div>
+                                                <!--end card-body-->
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+                <!-- container -->
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>

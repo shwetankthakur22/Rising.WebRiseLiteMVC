@@ -1,0 +1,59 @@
+﻿
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="Ledger">
+                <div class="card">
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="box-body" style="background-color: white;">
+                                            <div class="table-responsive table-box" style="height:100%">
+                                                <table style="width:1050px" id="myTable">
+                                                    <thead>
+                                                        <tr>
+                                                           
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">SYMBOL</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">EXPIRYDATE</th>
+                                                            @*<th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">CLOSE PRICE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">STRIKE PRICE</th>*@
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">OUR</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">EXCH</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">DIFF</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            foreach (Rising.WebRise.Models.Process.ImportMatchingRecordRow rw in Model.lstImportMatchingrecordRow)
+                                                            {
+                                                                <tr>
+                                                                    
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.symbol</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.expirydate.ToString()</td>
+                                                                    @*<td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;" contenteditable="true" onkeypress="return validateNumber(e)"> @rw.ClosePrice</td>
+                                                                    <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">@rw.StrikePrice</td>*@
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.ourmtm</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.EXCHANGE.ToString()</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.exchmtm</td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

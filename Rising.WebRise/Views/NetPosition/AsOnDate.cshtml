@@ -1,0 +1,127 @@
+﻿@using Rising.WebRise.Models
+@model NetPositionInput
+
+@{
+    ViewBag.Title = "Net Position";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<script type=text/javascript>
+    $(document).ready(function () {
+        $('#DateTo').change(function () {
+            var x = $('#DateTo').val();
+            $('#DateClosing').val(x);
+        });
+    });
+</script>
+
+<div class="page-wrapper" style="margin-top: 72px;">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6" id="Ledger" style="margin: auto;">
+
+
+                <div class="card" style="margin-top:20px;">
+                    <div class="card-header" style="background-color:#eb2c2e">
+                        <h4 class="card-title" style="color:white">Net Position
+                            
+
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        @using (Html.BeginForm("Position", "NetPosition", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div>
+                                @if ((Session["CodeSearchFilterType"] as List<string>).Count > 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control" })
+
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="margin-top: 25px;"></label>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#CodeFrom"><i class="fa fa-user"></i></button>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong> @Html.LabelFor(m => m.DateFrom, new { @class = "my-3", @style = "font-size: 14px;" })</strong>
+                                        @Html.TextBoxFor(m => m.DateFrom, null, new { @Value = Model.DateFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <strong> @Html.LabelFor(m => m.DateTo, new { @class = "my-3", @style = "font-size: 14px;" })</strong>
+                                        @Html.TextBoxFor(m => m.DateTo, null, new { @Value = Model.DateTo.ToString("yyyy-MM-dd"), @class = "form-control", @type = "date", @id = "date-end", onchange = "" })
+                                    </div>
+
+                                </div>
+
+                                <div class="row" style="margin-top:5px">
+                                    <div class="col-md-6 col-lg-6">
+                                        @Html.LabelFor(m => m.DateClosing, new { @class = "my-3", @style = "font-size: 14px;" })
+                                        @Html.TextBoxFor(m => m.DateClosing, null, new { @Value = Model.DateClosing.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        @Html.LabelFor(m => m.ExpiryDate, new { @class = "my-3", @style = "font-size: 14px;" })
+                                        @Html.DropDownList("ExpiryDate", Model.ExpiryDateList, new { @class = "form-control select2 custom-select" })
+                                    </div>
+
+                                </div>
+                                <div class="row" style="margin-top:5px">
+                                    <div class="col-md-6 col-lg-6">
+                                        @Html.LabelFor(m => m.Symbol, new { @class = "my-3", @style = "font-size: 14px;" })
+                                        @Html.DropDownList("Symbol", Model.SymbolList, new { @class = "form-control select2 custom-select" })
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:5px">
+                                    <div class="col-md-6 col-lg-6">
+                                        <strong> @Html.LabelFor(m => m.OpenPosition, new { @class = "my-3", @style = "font-size: 14px;" })</strong>
+                                        @Html.CheckBoxFor(m => m.OpenPosition, new { @class = "checkbox" })
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                        <strong> @Html.LabelFor(m => m.AsOnDate, new { @class = "my-3", @style = "font-size: 14px;" })</strong>
+                                        @Html.CheckBoxFor(m => m.AsOnDate, new { @class = "checkbox" })
+                                    </div>
+                                </div>
+
+                                <div class="card-footer text-right">
+                                    <input type="submit" value="View" class="btn btn-primary px-4" style="margin-right: 5px;" />
+                                    <a href="javascript:void(0);" class="btn btn-red" onclick="history.go(-1);">Back</a>
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+

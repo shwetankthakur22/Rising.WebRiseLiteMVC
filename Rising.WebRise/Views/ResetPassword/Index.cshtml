@@ -1,0 +1,68 @@
+﻿@using Rising.WebRise.Models
+@model ResetPasswordModel
+@using Rising.OracleDBHelper;
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">           
+            @using (Html.BeginForm("Index", "ResetPassword", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-10">    
+                        @if (MvcApplication.ViewDic["ResetReason"] != null)
+                        {
+                        @Html.Label(("Please reset Password to Continue").ToString() + MvcApplication.ViewDic["ResetReason"].ToString(), new { @class = "text-danger" })
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserID, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @{WebUser webUser = Session["WebUser"] as WebUser;
+                        @Html.Label(webUser.UserID, new { @class = "col-md-2 control-label" })}
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.OldPassword, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.OldPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NewPassword, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Reset" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+﻿@model Rising.WebRise.Models.Reports.PortfolioAndExposure
+
+@{
+    ViewBag.Title = "PortfolioAndExposure";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Portfolio And Exposure</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    @using (Html.BeginForm("GSTReport", "Report", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            @Html.LabelFor(m => m.ClientCode, new { @class = "form-label" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(m => m.ClientCode, null, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                        </div>
+                                        <div class="col-md-5">
+                                            @Html.TextBoxFor(m => m.ClientCode, null, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        @Html.DropDownListFor(m => m.Report, new SelectList(new[] { "FUTURE", " OPTION" }), new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.SessionId, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.DropDownListFor(m => m.SessionId, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.Group, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.Group, null, new { @class = "form-control" })
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.OnDate, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.OnDate, null, new { @class = "form-control", @id = "date-end", @type = "date" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.ClosePriceDate, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.ClosePriceDate, null, new { @class = "form-control", @type = "date" })
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="custom-control custom-checkbox col-md-4">
+                                                <input type="checkbox" class="custom-control-input" checked id="customCheck1">
+                                                <label class="custom-control-label" for="customCheck1">Client Code</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox col-md-4">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                                <label class="custom-control-label" for="customCheck2">Original Code</label>
+                                            </div>
+                                             <div class="col-md-4">
+                                                    @Html.CheckBoxFor(m => m.ShowExchange, new { @class = "" })
+                                                    @Html.LabelFor(m => m.ShowExchange, new { @class = "me-30", @style = "" })
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <input type="submit" value="View" class="btn btn-primary pull-right" />
+                            <a href="javascript:void(0);" class="btn btn-primary" onclick="history.go(-1);">Back</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

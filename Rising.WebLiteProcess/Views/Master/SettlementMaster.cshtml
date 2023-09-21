@@ -1,0 +1,122 @@
+﻿@using Rising.WebRise.Models
+@model SettlementSchedule
+@using System.Data
+@{
+    ViewBag.Title = "SettlementMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+@section Scripts {
+
+    <script>
+
+        function FillStnType() {
+            var stncode1 = $('#stn').val();
+            $.ajax({
+                url: '/Master/SettlementSechdulelist',
+                type: "GET",
+                dataType: "JSON",
+                data: { stncode: stncode1 },
+                success: function (stat) {
+
+                    $("#stltype").html(""); // clear before appending new list
+                    $.each(stat, function (i, sttltype) {
+                        $("#stltype").append($("<option>", {
+                            value: sttltype,
+                            text: sttltype
+
+
+                            //.append(
+                            //$('<option>hello</option>').val(sttltype.SETTTYPE).html(sttltype.SETTDES));
+                        }))
+                    });
+                }
+            });
+        }
+    </script>
+
+
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Settlement Schedule</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    @using (Html.BeginForm("SettlementSechduleSave", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.StationName, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.StationName, new SelectList(ViewBag.States, "key", "value", "me"), "- select-", new { @class = "form-control", required = "required", @id = "stn", @onchange = "FillStnType()" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.SettType, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.SettType, new SelectList(Enumerable.Empty<SelectListItem>(), "STATION", "SETTDES"), new { @class = "form-control", @id = "stltype" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.SettNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.SettNo, new { @class = "form-control", @id = "sttlment", @placeholder = "Enter Settlement No", @onblur = "Fillsettlementcode()" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ExchSett, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ExchSett, new { @class = "form-control", @placeholder = "Enter Setting", @id = "exstt" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.PeriodFrom, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.PeriodFrom, null, new { @Value = Model.PeriodFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "prdfrm", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.PeriodTo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.PeriodTo, null, new { @Value = Model.PeriodTo.ToString("yyyy-MM-dd"), @class = "form-control", @id = "prdto", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.PayinDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.PayinDate, null, new { @Value = Model.PayinDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "indate", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.PayoutDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.PayoutDate, null, new { @Value = Model.PayoutDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "paydate", @type = "date" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.DelinDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DelinDate, null, new { @Value = Model.DelinDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "deldate", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.DeloutDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DeloutDate, null, new { @Value = Model.DeloutDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "deloutdate", @type = "date" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer" style="margin-bottom: 15px;">
+                            <input type="submit" value="Save" name="Submit" class="btn btn-success pull-right" />
+                            <input type="submit" class="btn btn-danger pull-left" name="Submit" value="Delete" />
+                            <a href="javascript:void(0);" class="btn btn-dark" style="float: right;" onclick="history.go(-1);">Back</a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,38 @@
+﻿@using Rising.WebRise.Models
+@model WebUserModel
+@using Rising.OracleDBHelper
+
+@{
+    ViewBag.Title = "Save";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<br /><br />
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("Index","Admin", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.Label(("User Management").ToString(), new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-pull-1">
+                        @Html.LabelFor(m => m.UserID, new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.UserID)
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+

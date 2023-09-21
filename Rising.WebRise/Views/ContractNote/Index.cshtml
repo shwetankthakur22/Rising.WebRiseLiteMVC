@@ -1,0 +1,154 @@
+﻿@using Rising.WebRise.Models
+@model ContractNoteInput
+
+@{
+    ViewBag.Title = "ContractNote";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+
+
+<div class="page-wrapper" style="margin-top: 72px;">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 " id="Ledger" style="margin: auto;margin-top: 20px;">
+
+
+                <div class="card">
+                    <div class="card-header" style="background-color:#eb2c2e">
+                        <h4 class="card-title" style="color:white">Contract Note</h4>
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        @using (Html.BeginForm("ContractNoteList", "ContractNote", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div>
+
+                                @if ((Session["CodeSearchFilterType"] as List<string>).Count > 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control" })
+
+
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <label class="form-label" style="margin-top: 25px;"></label>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#CodeFrom"><i class="fa fa-user"></i></button>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <strong> @Html.LabelFor(m => m.DateFrom, new { @class = "my-3", @style = "font-size: 14px;" })</strong>
+                                        @Html.TextBoxFor(m => m.DateFrom, null, new { @Value = Model.DateFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-start", @type = "date" })
+
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <strong> @Html.LabelFor(m => m.DateTo, new { @class = "my-3", @style = "font-size: 14px;" })</strong>
+                                        @Html.TextBoxFor(m => m.DateTo, null, new { @Value = Model.DateTo.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date", onchange = "" })
+
+                                    </div>
+                                    <!--end col-->
+                                </div>
+
+                                <div class="row" style="margin-top: 20px;">
+                                    <div class="col-sm-12 text-right">
+                                        <input type="submit" value="View" class="btn btn-primary px-4" style="margin-right: 5px;" />
+                                        <a href="javascript:void(0);" class="btn btn-red" onclick="history.go(-1);">Back</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                                <!--end row-->
+                        }
+                    </div>
+                    <!--end card-body-->
+                </div>
+
+
+                <!--end card-->
+            </div>
+            <!-- end col -->
+
+        </div>
+
+    </div>
+</div>
+
+@*<ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dastyle</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript:void(0);">Forms</a></li>
+                                            <li class="breadcrumb-item active">Form Advanced</li>
+                                        </ol><div class="row">
+        <div class="col-md-12">
+            <section id="Ledger">
+                @using (Html.BeginForm("ContractNoteList", "ContractNote", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12 col-xl-3"></div>
+                        <div class="col-md-12 col-xl-6">
+                            <div class="card">
+                                <div class="card-header br-tr-7 br-tl-7" style="background-color:#088d9c">
+                                    <h3 class="card-title" style="color:white;">@Html.Label(("Net Position Date Range").ToString(), new { @class = "" })</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <strong> @Html.LabelFor(m => m.DateFrom, new { @class = "form-label" })</strong>
+                                                @Html.TextBoxFor(m => m.DateFrom, null, new { @Value = Model.DateFrom.ToString("yyyy-MM-dd"), @class = "form-control fc-datepicker", @type = "date" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <strong> @Html.LabelFor(m => m.DateTo, new { @class = "form-label" })</strong>
+                                                @Html.TextBoxFor(m => m.DateTo, null, new { @Value = Model.DateTo.ToString("yyyy-MM-dd"), @class = "form-control fc-datepicker", @type = "date", onchange = "" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-footer text-right">
+                                    <input type="submit" value="View" class="btn btn-primary" style="background-color:#088d9c" />
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 col-xl-3"></div>
+                        </div>
+                    </div>
+                }
+            </section>
+
+        </div>
+
+
+
+    </div>*@

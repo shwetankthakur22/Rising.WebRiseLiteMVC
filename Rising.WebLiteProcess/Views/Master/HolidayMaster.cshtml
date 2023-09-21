@@ -1,0 +1,287 @@
+﻿@using Rising.WebRise.Models
+@model HolidayMaster
+@using System.Data
+@{
+    ViewBag.Title = "HolidayMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            var text = $(".text");
+            text.focus();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.editButton').click(function () {
+                $("#Exchnage").val("").html("");
+                $("#Holiday").val("").html("");
+                $("#Sdate").val("").html("");
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '/Master/HolidayGetdata',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { id: id },
+                    success: function (holiday) {
+                        debugger
+                        $("#Exch").val(holiday.Exchange).html(holiday.Exchange);
+                        $("#hdate").val(holiday.Sdate).html(holiday.Sdate);
+                        $("#hday").val(holiday.Holiday).html(holiday.Holiday);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+    function getDate() {
+        debugger
+        var input1 = document.getElementById("Sdate");
+        var st1 = input1.value;
+        var st1_1;
+
+        if (st1.length === 10 && st1.indexOf("-") > 1) {
+            st1_1 = st1;
+        }
+        else {
+            if (st1.length === 6) {
+                st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-20" + st1.substr(4, 2);
+            }
+            else if (st1.length === 5) {
+                st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-200" + st1.substr(4, 2);
+            }
+            else if (st1.length === 7) {
+                st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-2" + st1.substr(4, 3);
+            }
+            else {
+                st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-" + st1.substr(4, 4);
+            }
+            var pattern = /(\d{2})\-(\d{2})\-(\d{4})/;
+            var dt1 = new Date(st1_1.replace(pattern, '$3-$2-$1'));
+            if (dt1 == "Invalid Date") {
+                st1_1 = null; document.getElementById("Sdate").focus();
+                document.getElementById("Sdate").style.backgroundColor = '#fff0e6';
+                alert(dt1);
+            }
+            else {
+                debugger
+                document.getElementById("Sdate").value = st1_1;
+            }
+        }
+        document.getElementById("Sdate").value = st1_1;
+    }
+    </script>
+
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                         Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["DeleteMessage"]",
+                    timer: 3000,
+                    showConfirmButton: true,
+                })
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+    <script>
+         function clearTextBox() {
+             $('#Exchnage').val('');
+             $('#Holiday').val('');
+             $('#StartDate').val('');
+         }
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    timer: 3000,
+                    showConfirmButton: true,
+                })
+            });
+        </script>
+    }
+    <script>
+    function onlyAlphabets(e, t) {
+        try {
+            if (window.event) {
+                var charCode = window.event.keyCode;
+            }
+            else if (e) {
+                var charCode = e.which;
+            }
+            else { return true; }
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 32)
+                return true;
+            else
+                return false;
+        }
+        catch (err) {
+            alert(err.Description);
+        }
+    }
+    </script>
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Holiday Master</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("HolidayMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, " ", new { @class = "text-danger" })
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX", "IBX", "IFSC" }), new { @class = "text form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Sdate, new { @class = "form - label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(m => m.Sdate, null, new { @class = "form-control", @onChange = "getDate()", @required = true, @placeholder = "DD-MM-YYYY" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Holiday, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(m => m.Holiday, new { @class = "form-control", @placeholder = "Holiday For", @required = true, runat = "server", onkeypress = "return onlyAlphabets(event,this);" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group col-12 ">
+                                    <button type="submit" class="btn btn-primary mt-1" id="XYZ">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row mt-100">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+                        <div class="card" id="ExportedGrid">
+                            <div class="box">
+                                @if (Model.result.Tables.Count > 0)
+                                {
+                                    <div>
+                                        <table class="table data-table table-striped table-bordered dataTable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (var cl in Model.result.Tables[0].Columns)
+                                                    {
+                                                        <th class="table-header">@cl</th>
+
+                                                    }
+                                                    <th class="table-header">ACTION(EDIT)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow dr in Model.result.Tables[0].Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (var cl in dr.ItemArray)
+                                                        {
+                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</td>
+                                                        }
+                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">
+                                                            @*<button type="submit" id="btnedit" onclick="MaintenanceList(@Convert.ToString(dr[0]),@Convert.ToString(dr[1]),@Convert.ToString(dr[2]),@Convert.ToString(dr[3]),@Convert.ToString(dr[4]),@Convert.ToString(dr[5]),@Convert.ToString(dr[6]))" class="btn btn-success btn-xs">Edit</button>*@
+                                                            <button type="submit" style="height:18px; width:18px" class="btn btn-sm editButton" data-toggle="modal" data-target="#UpdateFrom" id="edit" data-id="@Convert.ToString(dr[1])"><i class="dripicons dripicons-pencil"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                </div>
+            </div>
+            <!-- container -->
+            <!--end footer-->
+        </div>
+    </div>
+</div>
+<div class="col-xl-12 col-lg-12">
+    <div class="card">
+        <div class="modal fade bd-example-modal-lg" id="UpdateFrom" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Holiday List</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <div class="new-user-info">
+                                @using (Html.BeginForm("Holidayedit", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="row">
+                                        <div class="form-group col-md-4 col-12">
+                                            @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.Exchange, new { @class = "form-control", @id = "Exch", @readonly = true })
+                                        </div>
+                                        <div class="form-group col-md-4 col-12">
+                                            @Html.LabelFor(m => m.Sdate, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.Sdate, new { @class = "form-control", @id = "hdate", @readonly = true })
+                                        </div>
+                                        <div class="form-group col-md-4 mb-12">
+                                            @Html.LabelFor(m => m.Holiday, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.Holiday, new { @class = "form-control", @id = "hday" })
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:10px">
+                                        <div class="form-group col-12 ">
+                                            <input type="submit" id="btnSave" class="btn btn-danger" name="Submit" value="Delete" onclick="return confirm('Are you sure want to delete?')" />
+                                            <input type="submit" id="btnCancel" class="btn btn-primary pull-right" name="Submit" value="Update" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

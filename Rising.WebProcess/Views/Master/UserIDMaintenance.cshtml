@@ -1,0 +1,245 @@
+﻿@using Rising.WebRise.Models
+@model TradeUserIds
+@using System.Data
+@{
+    ViewBag.Title = "UserIDMaintenance";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+ 
+
+
+}
+
+
+<div class="page-content" style="margin-top:115px;">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+
+        <div class="row">
+            <div class="col-12" style="margin-left:auto;margin-right:auto;">
+                <div class="card">
+                    <div class="card-header" style="background-color:#fbd857;">
+                        <h4 class="card-title">Maintenance</h4>
+                    </div>
+                    <!--end card-header-->
+                    @using (Html.BeginForm("UserIDMaintenance", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.UserID, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.UserID, new { @class = "form-control", @placeholder = "Enter UserId", @id = "__userid" })
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group row">
+
+                                        @Html.LabelFor(m => m.BranchCode, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @id="__BranchCode",  @placeholder = "Enter Branch Code" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.RecordType, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.RecordType, new { @class = "form-control", @id = "__RecordType", @placeholder = "Enter Record Type", @maxlength = "1" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+
+                                        @Html.LabelFor(m => m.Station, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Station, new { @class = "form-control", @id = "__txtStation", @placeholder = "Enter Station" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ml-auto">
+                                            <div class="custom-control custom-checkbox">
+                                                @Html.CheckBoxFor(m => m.deleteOnly, new { @class = "custom-control-input" })
+                                                @Html.LabelFor(m => m.deleteOnly, new { @class = "custom-control-label" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+
+                                        @Html.LabelFor(m => m.Proclient, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Proclient, new { @class = "form-control", @id = "__ProClient", @placeholder = "Enter Proclient" })
+                                        </div>
+                                    </div>
+                                    <!-- end col -->
+                                    <div class="form-group row">
+
+                                        @Html.LabelFor(m => m.Remark, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Remark, new { @class = "form-control", @id = "__Remark", @placeholder = "Enter Remark" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.BrokerCode, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.BrokerCode, new { @class = "form-control", @id = "__BrokerCode", @placeholder = "Enter Broker Code" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.CTCLID, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.CTCLID, new { @class = "form-control", @id = "__CTCLID", @placeholder = "Enter CTCLID" })
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-4">
+
+                                    <div class="form-group row">
+
+                                        @Html.LabelFor(m => m.FixedPrefix, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.FixedPrefix, new { @class = "form-control", @id = "__FixedPrefix", @placeholder = "Enter Fixed Prefix" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.TR_OrderCV, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.TR_OrderCV, new { @class = "form-control", @id = "__Tordercv", @placeholder = "Enter OrderCV" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.RemarkPro, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.RemarkPro, new { @class = "form-control", @id = "__RemarkPro", @placeholder = "Enter RemarkPro", @maxlength = "1" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.Prefix, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.Prefix, new { @class = "form-control", @id = "__Prefix", @placeholder = "Enter Prefix" })
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8 ml-auto"><button type="submit" class="btn btn-primary float-right">Submit</button></div>
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+                <!-- container -->
+                <!--end footer-->
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-12" style="margin-left:auto;margin-right:auto;">
+
+                <div class="card">
+                    <div class="card-header" style="background-color:#fbd857;">
+                        <h4 class="card-title">Maintenance List</h4>
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        @if (Model.result.Tables.Count > 0)
+                        {
+
+                            <div class="table-responsive">
+                                <table id="datatable" class="table dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            @foreach (var cl in Model.result.Tables[0].Columns)
+                                            {
+                                                <th style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</th>
+
+                                            }
+                                            <th style="border: 1px solid  #d3d3d3;font-size: 12px">ACTION(EDIT)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow dr in Model.result.Tables[0].Rows)
+                                        {
+                                            <tr>
+                                                @foreach (var cl in dr.ItemArray)
+                                                {
+                                                    <td style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</td>
+                                                }
+                                                <td style="border: 1px solid  #d3d3d3;font-size: 12px">     
+                                                    <button type="submit"  id="btnedit"  onclick="MaintenanceList(@Convert.ToString(dr[0]),@Convert.ToString(dr[1]),@Convert.ToString(dr[2]),@Convert.ToString(dr[3]),@Convert.ToString(dr[4]),@Convert.ToString(dr[5]),@Convert.ToString(dr[6]),@Convert.ToString(dr[7]),@Convert.ToString(dr[8]),@Convert.ToString(dr[9]),@Convert.ToString(dr[10]),@Convert.ToString(dr[11]))" class="btn btn-success btn-icon-square-sm"><i class="fa fa-edit"></i></button>                                                
+                                                </td>
+                                            </tr>
+
+
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        }
+
+                    </div>
+                    <!--end card-body-->
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    function MaintenanceList(uid, bcode, rtype, stn, pclient, rmark, fprefix, tordercv, rpro, brcode, ctlid, prefix)
+        {
+            alert(uid);
+            debugger
+            $("#__userid").val(uid).html(uid);
+            $("#__BranchCode").val(bcode).html(bcode);
+            $("#__RecordType").val(rtype).html(rtype);
+            $("#__txtStation").val(stn).html(stn);
+            $("#__ProClient").val(pclient).html(pclient);
+            $("#__Remark").val(rmark).html(rmark);
+            $("#__FixedPrefix").val(fprefix).html(fprefix);
+            $("#__Tordercv").val(tordercv).html(tordercv);
+            $("#__RemarkPro").val(rpro).html(rpro);
+            $("#__BrokerCode").val(brcode).html(brcode);
+            $("#__CTCLID").val(ctlid).html(ctlid);
+            $("#__Prefix").val(prefix).html(prefix)
+        }
+
+</script>
+
+@*<script>
+    $("#btnedit").click(function () {
+        debugger
+        var $row = $(this).closest("tr");  
+        var $text = $row.find("#__userid").text(); 
+        var $text1 = $row.find("#__BranchCode").text();
+
+        // Let's test it out
+        alert($text);
+    });
+</script>*@
+

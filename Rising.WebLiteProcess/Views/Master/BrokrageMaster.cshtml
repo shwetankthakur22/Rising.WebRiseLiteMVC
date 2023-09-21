@@ -1,0 +1,234 @@
+﻿@using Rising.WebRise.Models
+@model BrokrageMaster
+@using System.Data
+@{
+    ViewBag.Title = "BrokrageMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+@section Scripts {
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.tmdetails').click(function () {
+                $("#ccode").val("").html("");
+                $("#bacno").val("").html("");
+                $("#bname").val("").html("");
+                $("#badd1").val("").html("");
+                $("#add2").val("").html("");
+                $("#add3").val("").html("");
+                $("#rrid").val("").html("");
+
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/GetBankAccountDetails/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (bdetails) {
+                        debugger
+                        $("#ccode").val(bdetails.ClientCode).html(bdetails.ClientCode);
+                        $("#bacno").val(bdetails.BankAc).html(bdetails.BankAc);
+                        $("#bname").val(bdetails.BankName).html(bdetails.BankName);
+                        $("#address1").val(bdetails.Address1).html(bdetails.Address1);
+                        $("#address2").val(bdetails.Address2).html(bdetails.Address2);
+                        $("#address3").val(bdetails.Address3).html(bdetails.Address3);
+                        $("#micr").val(bdetails.Micr).html(bdetails.Micr);
+                        $("#ifsc").val(bdetails.IFSC).html(bdetails.IFSC);
+                        $("#rwid").val(bdetails.Rwid).html(bdetails.Rwid);
+                        $('#BankCodeFrom').modal('hide');
+
+                    }
+                });
+
+            });
+        });
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Account Head Details</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("BrokrageMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ClientCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClientCode, null, new { @class = "form-control", @id = "bacno" })
+                                </div>
+                                <div class="col-md-1 mb-3">
+                                    <label class="form-label" style="margin-top: 48px;"></label>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#BankCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Symbol, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Symbol, null, new { @class = "form-control", @id = "bname" })
+                                </div>
+
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.BrokType, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BrokType, null, new { @class = "form-control", @id = "address1" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.InstrumentType, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.InstrumentType, null, new { @class = "form-control", @id = "address2" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.DateRange, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DateRange, null, new { @class = "form-control", @id = "address3" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.BrokrageOn, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BrokrageOn, null, new { @class = "form-control", @id = "micr" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.FixedBrok, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FixedBrok, null, new { @class = "form-control", @id = "ifsc" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.FixMin, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FixMin, null, new { @class = "form-control", @id = "ifsc" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ShareRate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ShareRate, null, new { @class = "form-control", @id = "micr" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.FixedBrok, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FixedBrok, null, new { @class = "form-control", @id = "ifsc" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.FixedMin, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FixedMin, null, new { @class = "form-control", @id = "ifsc" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px; display:none;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input type="submit" value="Save" name="Submit" class="btn btn-success pull-right" />
+                                <input type="submit" class="btn btn-danger pull-left" name="Submit" value="Delete" />
+                                <a href="javascript:void(0);" class="btn btn-dark" style="float: right;" onclick="history.go(-1);">Back</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" id="BankCodeFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    @*<table id="datatable" class="table data-table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Select</</th>
+                                    <th>ClientCode</th>
+                                    <th>Name</th>
+                                    <th>Bank A/c</th>
+                                    <th>Bank Name</th>
+                                </tr>
+                            </thead>
+                            @if (Model.result.Tables.Count > 0)
+                            {
+                                <tbody>
+                                    @{
+
+                                        foreach (DataRow rw in Model.result.Tables[0].Rows)
+                                        {
+                                            <tr>
+                                                <td><button type="button" class="btn btn-success btn-sm mr-2 tmdetails" data-model-id="@rw["ID"]">Select</button></td>
+                                                <td>@rw["CLIENTCODE"]</td>
+                                                <td>@rw["PAR_NAME"]</td>
+                                                <td>@rw["BANKACNO"]</td>
+                                                <td>@rw["BANKNAME"]</td>
+                                            </tr>
+
+                                        }
+                                    }
+                                </tbody>
+                                        }
+                        </table>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnClosetm" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

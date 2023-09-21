@@ -1,0 +1,79 @@
+﻿@using Rising.WebRise.Models
+@model BankMaster
+@using System.Data
+@{
+    ViewBag.Title = "BankAccountDetails";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Bank Account Details</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("BankAccountDetails", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.BankCode, new { @class = "form-label", @placeholder = "Enter Client Code" })
+                                    @Html.TextBoxFor(m => m.BankCode, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.BankAc, new { @class = "form-label" , @placeholder = "Enter Bank Account" })
+                                    @Html.TextBoxFor(m => m.BankAc, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.PBankAc, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.PBankAc, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.BankName, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BankName, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Address1, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Address1, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Address2, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Address2, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    @Html.LabelFor(m => m.Address3, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Address3, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    @Html.LabelFor(m => m.Micr, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Micr, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    @Html.LabelFor(m => m.IFSC, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.IFSC, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12 ">
+                                    <button type="submit" class="btn btn-success pull-right">Save</button>
+                                    <input type="submit" id="btnSave" class="btn btn-danger" name="Submit" value="Delete" onclick="return confirm('Are you sure want to delete?')" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

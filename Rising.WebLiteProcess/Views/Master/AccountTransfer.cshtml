@@ -1,0 +1,264 @@
+﻿@using Rising.WebRise.Models
+@model AccountMaster
+@using System.Data
+@{
+    ViewBag.Title = "AccountTransfer";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.accountdetails').click(function () {
+                $("#acccode").val("").html("");
+                $("#coname").val("").html("");
+                $("#exigroup").val("").html("");
+                $("#rrid").val("").html("");
+
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/GetAccountTransferDetails/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (am) {
+                        debugger
+                        $("#accountcode").val(am.AccountCode).html(am.AccountCode);
+                        $("#codename").val(am.CodeName).html(am.CodeName);
+                        $("#exgroup").val(am.ExistingGroup).html(am.ExistingGroup);
+                        $("#exgroup1").val(am.ExistingGroup1).html(am.ExistingGroup1);
+                        $("#rwid").val(am.Rwid).html(am.Rwid);
+                        $('#BankCodeFrom').modal('hide');
+
+                    }
+                });
+
+            });
+        });
+    </script>
+    <script>
+        debugger
+        $(document).ready(function () {
+            $("#categoryDropdown").change(function () {
+                var categoryId = $(this).val();
+                $.ajax({
+                    url: '/Master/GetNewAccountDetails/',
+                    type: 'GET',
+                    data: { categoryId: categoryId },
+                    success: function (data) {
+                        var itemDropdown = $("#itemDropdown");
+                        itemDropdown.empty();
+                        itemDropdown.append($('<option/>', {
+                            value: '',
+                            text: '-- Select Item --'
+                        }));
+                        $.each(data, function (index, item) {
+                            itemDropdown.append($('<option/>', {
+                                value: item.Value,
+                                text: item.Text
+                            }));
+                        });
+                    }
+                });
+            });
+        });
+
+        //$(document).ready(function () {
+        //    $("#categorydropdown").change(function () {
+        //        var categoryId = $(this).val();
+        //        $.ajax({
+        //            url: '/Master/GetNewAccountDetails/',
+        //            type: 'GET',
+        //            data: { categoryId: categoryId },
+        //            success: function (model) {
+        //                debugger
+        //                var itemDropdown = $("#itemDropdown");
+        //                $.each(model, function (index, newGroup1) {
+        //                    itemDropdown.append($('<option>').text(newGroup1.Text).val(newGroup1.Value));
+        //                });
+        //                $('#newGroup1').html(itemDropdown);
+
+        //            }
+        //        });
+        //    });
+        //});
+
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Account Group Transfer</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("AccountTransfer", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.AccountCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.AccountCode, null, new { @class = "form-control", @id = "accountcode" })
+                                </div>
+                                <div class="col-md-1 mb-3">
+                                    <label class="form-label" style="margin-top: 48px;"></label>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#BankCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.CodeName, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.CodeName, null, new { @class = "form-control", @id = "codename", @readonly = "readonly" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ExistingGroup, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ExistingGroup, null, new { @class = "form-control", @id = "exgroup", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ExistingGroup1, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ExistingGroup1, null, new { @class = "form-control", @id = "exgroup1", @readonly = "readonly" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.NewGroup, new { @class = "form-label" })
+                                    @*@Html.DropDownList("NewGroup", Model.NewGroup, new { @class = "form-control", @id = "categorydropdown" })*@
+                                    @Html.DropDownListFor(model => model.NewGroup, ViewBag.CategoryList as SelectList, "-- Select Category --", new { @class = "form-control", id = "categoryDropdown" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.NewGroup1, new { @class = "form-label" })
+                                    @{
+                                              var itemDropdownOptions = new List<SelectListItem>();
+                                              foreach (var item in Model.NewGroup1)
+                                              {
+                                                  itemDropdownOptions.Add(new SelectListItem { Text = item.Text, Value = item.Value });
+                                              }
+                                        }
+                                    @Html.DropDownListFor(m => m.NewGroup1, Model.NewGroup1, "-- Select Item --", new { @class = "form-control", @id = "itemDropdown", @name = "newGroup1" })
+
+                                    @*@Html.DropDownList("NewGroup1", Model.NewGroup1, new { @class = "form-control", @id = "itemDropdown" })*@
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px; display:none;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <a href="javascript:void(0);" class="btn btn-dark" style="float: left;" onclick="history.go(-1);">Back</a>
+                                <input type="submit" value="Proceed" name="Submit" style="float: right;" class="btn btn-success pull-right" />
+                                <input type="submit" class="btn btn-danger pull-right" style="float: right;margin-right: 10px;" name="Submit" value="Delete" />
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" id="BankCodeFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="datatable" class="table data-table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Select</</th>
+                                <th>Account Description</th>
+                                <th>A/c Code</th>
+                                <th>Group Client</th>
+                                <th>Account Group</th>
+                                <th>BankAcNO</th>
+                                <th>PANNO</th>
+                            </tr>
+                        </thead>
+                        @if (Model.result.Tables.Count > 0)
+                        {
+                            <tbody>
+                                @{
+
+                                    foreach (DataRow rw in Model.result.Tables[0].Rows)
+                                    {
+                                        <tr>
+                                            <td><button type="button" class="btn btn-success btn-sm mr-2 accountdetails" data-model-id="@rw["ID"]">Select</button></td>
+                                            <td>@rw["par_name"]</td>
+                                            <td>@rw["par_code"]</td>
+                                            <td>@rw["groupclient"]</td>
+                                            <td>@rw["groupcode"]</td>
+                                            <td>@rw["bankacno1"]</td>
+                                            <td>@rw["ITAXNO"]</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                                    }
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnClosetm" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,91 @@
+﻿@model Rising.WebRise.Models.Reports.DaySummary
+
+@{
+    ViewBag.Title = "DaySummary";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Day Summary</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    @using (Html.BeginForm("DaySummary", "Report", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.ClientCode, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.ClientCode, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.ClientCode, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.Group, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.DropDownListFor(m => m.Group, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.DateFrom, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.DateFrom, null, new { @class = "form-control", @id = "date-end", @type = "date" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.To, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.To, null, new { @class = "form-control", @id = "date-end", @type = "date" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.Branch, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.DropDownListFor(m => m.Branch, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+                        <div class="box-footer">
+                            <input type="submit" value="View" class="btn btn-primary pull-right" />
+                            <a href="javascript:void(0);" class="btn btn-primary" onclick="history.go(-1);">Back</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

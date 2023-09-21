@@ -1,0 +1,111 @@
+﻿@using Rising.WebRise.Models
+@model CloseRateEntryOut
+@using GridMvc.Html
+@{
+    ViewBag.Title = "CloseRateEntryReport";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="Ledger">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>CLOSING RATE ENTRY</h5>
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="box-body" style="background-color: white;">
+                                            <div class="table-responsive table-box" style="height:100%">
+                                                <table style="width:1065px">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">WDATE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">CONT NAME</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">EXPIRY DATE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">CLOSE PRICE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">STRIKE PRICE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">OPTION TYPE</th>
+                                                            @*<th class="table-header">EXCHANGE</th>*@
+                                                            @*<th class="table-header">PRICE UNIT</th>
+                                                                <th class="table-header">UM</th>*@
+                                                            @*<th class="table-header">SESSION ID</th>*@
+                                                            @*<th class="table-header">SET TPRICE</th>*@
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+
+                                                            foreach (Rising.WebRise.Models.CloseRateEntryOutRow rw in Model.listCloseRateEntryOutRow)
+                                                            {
+
+
+                                                                <tr>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.TrDate</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.ContName</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.ExpiryDate</td>
+                                                                    <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">
+                                                                        <span class="editable-ClosePrice" data-id="@rw.ClosePrice" contenteditable="true">@rw.ClosePrice</span>
+                                                                    </td>
+                                                                    <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">@rw.StrikePrice</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.OptionType</td>
+                                                                    @*<td style="font-size:12px;border: 1px solid  #d3d3d3;">@rw.Exchange</td>*@
+                                                                    @*<td style="font-size:12px;border: 1px solid  #d3d3d3;">@rw.PriceUnit</td>
+                                                                        <td style="font-size:12px;border: 1px solid  #d3d3d3;">@rw.UM</td>*@
+                                                                    @*<td style="font-size:12px;border: 1px solid  #d3d3d3;">@rw.SessionId</td>*@
+                                                                    @*<td style="font-size:12px;border: 1px solid  #d3d3d3;">@rw.SetTTPrice</td>*@
+
+                                                                </tr>
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Add an event listener to each editable cell
+    document.querySelectorAll('.editable-ClosePrice').forEach(function (cell) {
+        cell.addEventListener('blur', function() {
+            var newValue = cell.textContent.trim();
+
+            // Send an AJAX request to update the Close Price with the new value
+            $.ajax({
+                url: '/Process/UpdateClosePrice',
+                type: 'POST',
+                data: { newValue: newValue },
+                success: function(response) {
+                    // Handle success (e.g., show a success message)
+                    console.log('Close Price updated successfully');
+                },
+                error: function(error) {
+                    // Handle error (e.g., show an error message)
+                    console.error('Error updating Close Price:', error);
+                }
+            });
+        });
+    });
+</script>
+
+

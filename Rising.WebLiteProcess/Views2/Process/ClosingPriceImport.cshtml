@@ -1,0 +1,76 @@
+﻿@using Rising.WebRise.Models
+@model ImportFileInput
+@{
+    ViewBag.Title = "ClosingPriceImport";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+<link href="~/Content/assets/sweetalert/css/sweetalert.css" rel="stylesheet" />
+<script src="~/Content/assets/sweetalert/js/sweetalert.js"></script>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">CLOSING PRICE IMPORT</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    @using (Html.BeginForm("ClosingPriceImport", "Process", new { @method = "ClosingFile" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.TradeDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.TradeDate, null, new { @class = "form-control", @id = "date-end", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.FileType, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.FileType, new SelectList(new[] { "CN", "PS03", "DSP" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Session, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Session, new SelectList(new[] { "1", "2" }), new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top:20px">
+                                <div class="col-md-4 col-12">
+                                    <div class="custom-file">
+                                        <label for="file-upload" class="custom-file-upload">Choose a file...</label>
+                                        <input id="file-upload" name="ClosingFile" type="file" />
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="box-footer">
+                                <input type="submit" value="Upload" class="btn btn-success pull-right" />
+                                <a href="javascript:void(0);" class="btn btn-danger" onclick="history.go(-1);">Back</a>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (TempData.ContainsKey("Message"))
+{
+    <script>
+        swal({
+            title: "@TempData["Message"]",
+            type: "@TempData["MessageType"]",
+            timer: 1000,
+            allowOutsideClick: true
+        });
+    </script>
+}

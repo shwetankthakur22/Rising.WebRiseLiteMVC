@@ -1,0 +1,187 @@
+﻿@using Rising.WebRise.Models
+@model BranchMaintenance
+@using System.Data
+@{
+    ViewBag.Title = "RegionMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.bankdetails').click(function () {
+                $("#code").val("").html("");
+                $("#name").val("").html("");
+                $("#mgr").val("").html("");
+                $("#rrid").val("").html("");
+
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/GetRegionDetails/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (region) {
+                        debugger
+                        $("#regioncode").val(region.RegionCode).html(region.RegionCode);
+                        $("#regiondesc").val(region.RegionDesc).html(region.RegionDesc);
+                        $("#zone").val(region.Zone).html(region.Zone);
+                        $("#rwid").val(region.Rwid).html(region.Rwid);
+                        $('#RegionCodeFrom').modal('hide');
+
+                    }
+                });
+
+            });
+        });
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Branch Maintenance/Region Master</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <div class="box-body">
+                        <div class="tab-content" id="pills-tabContent-1">
+                            @using (Html.BeginForm("RegionMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="tab-pane fade show" id="RegionMaster" role="tabpanel" aria-labelledby="pills-profile-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                            <div class="row">
+                                                <div class="form-group col-md-4 col-12">
+                                                    @Html.LabelFor(m => m.RegionCode, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.RegionCode, new { @class = "form-control", @id = "regioncode" })
+                                                </div>
+                                                <div class="form-group col-md-4 col-12">
+                                                    @Html.LabelFor(m => m.RegionDesc, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.RegionDesc, new { @class = "form-control", @id = "regiondesc" })
+                                                </div>
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Zone, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Zone, new { @class = "form-control", @id = "zone" })
+                                                </div>
+                                                <div class="form-group col-md-1 col-12">
+                                                    <label class="form-label" style="margin-top: 48px;"></label>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#RegionCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 15px; display:none;">
+                                                <div class="col-md-4 col-12">
+                                                    @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                                                </div>
+                                            </div>
+                                            <div class="box-footer">
+                                                <input type="submit" value="Save" name="Submit" class="btn btn-success pull-right" />
+                                                <input type="submit" class="btn btn-danger pull-left" name="Submit" value="Delete" />
+                                                <a href="javascript:void(0);" class="btn btn-dark" style="float: right;" onclick="history.go(-1);">Back</a>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="RegionCodeFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Region Code</th>
+                                <th>Region Desc</th>
+                                <th>Zone</th>
+                            </tr>
+                        </thead>
+                        @if (Model.result.Tables.Count > 0)
+                        {
+                            <tbody>
+                                @{
+
+                                    foreach (DataRow rw in Model.result.Tables[0].Rows)
+                                    {
+                                        <tr>
+                                            <td><button type="button" class="btn btn-success bankdetails" data-model-id="@rw["ID"]">Select</button></td>
+                                            <td>@rw["REGIONCODE"]</td>
+                                            <td>@rw["REGIONDESC"]</td>
+                                            <td>@rw["ZONE"]</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                       }
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnClosebranch" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

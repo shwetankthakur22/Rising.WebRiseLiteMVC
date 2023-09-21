@@ -1,0 +1,227 @@
+﻿@model Rising.WebRise.Models.OpeningStock
+@using System.Data
+@{
+    ViewBag.Title = "OpeningStock";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+
+    <style>
+        .table-box {
+            width: 1000px;
+            height: 210px;
+            overflow-y: scroll;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #808080;
+            border-collapse: collapse;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            color: #fff;
+            background: #00bcd4;
+        }
+    </style>
+}
+
+
+
+
+
+<div class="page-wrapper" style="margin-top: 72px;">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+             <div class="col-lg-11 col-md-11 col-sm-11" id="Ledger" style="margin: auto;margin-top: 20px;">
+
+
+                <div class="card">
+                    <div class="card-header" style="background-color:#eb2c2e70">
+                        <h4 class="card-title" style="color:white">Opening Stock</h4>
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+
+                        @using (Html.BeginForm("OpeningStock", "LongShortTerm", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+            {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="row" style="margin-top:10px">
+                            <div class="col-md-2 col-lg-2">
+                                @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                @Html.DropDownListFor(m => m.Exchange, new List<SelectListItem>
+                   { new SelectListItem{Text="NSE", Value="NSE"}, new SelectListItem{Text="BSE", Value="BSE"}} , "Please select", new { @class = "form-control select2 custom-select" })
+                               
+
+
+                            </div>
+
+
+                            <div class="col-md-2 col-lg-2">
+                                @Html.LabelFor(m => m.OpeningDate, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.OpeningDate, null, new { @Value = Model.OpeningDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+
+
+                            </div>
+                            <div class="col-md-2 col-lg-2">
+                                @Html.LabelFor(m => m.ScripCode, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.ScripCode, null, new { @class = "form-control" })
+
+
+                            </div>
+                            <div class="col-md-2 col-lg-2">
+                                @Html.LabelFor(m => m.Quantity, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Quantity, null, new { @class = "form-control" })
+
+
+                            </div>
+                            <div class="col-md-2 col-lg-2">
+                                @Html.LabelFor(m => m.Rate, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Rate, null, new { @class = "form-control" })
+
+
+                            </div>
+                            <div class="col-md-2 col-lg-2">
+                                @Html.LabelFor(m => m.Remarks, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Remarks, null, new { @class = "form-control" })
+
+
+                            </div>
+                           
+                        </div>
+                       
+                        <div class="card-footer text-right">
+
+                            <input type="submit" value="Save" class="btn btn-primary px-4" />
+
+                        </div>
+
+                         <!--end row-->
+                            <div class="row">
+                                
+                                <div class="col-sm-12">
+                                    <div style="float:right;padding:2px 2px 2px 2px">
+
+                                        <a href="javascript:void(0);" class="btn btn-dark" onclick="history.go(-1);"><i class="fa fa-arrow-left"></i></a>
+
+                                    </div>
+                                    <div style="float:right;padding:2px 2px 2px 2px">
+
+                                        @using (Html.BeginForm("ExportExcel", "ReportExport", FormMethod.Post))
+                                        {
+                                            <input type="hidden" name="GridHtml1" />
+                                            <button type="submit" class="btn btn-success" id="btnSubmit1"><i class="fa fa-file-excel"></i></button>
+
+                                        }
+
+                                    </div>
+                                    <div style="float:right;padding:2px 2px 2px 2px">
+
+                                        @using (Html.BeginForm("ExportWord", "ReportExport", FormMethod.Post))
+                                        {
+                                            <input type="hidden" name="GridHtml2" />
+                                            <button type="submit" class="btn btn-info" id="btnSubmit2"><i class="fa fa-file-word"></i></button>
+
+                                        }
+                                    </div>
+                                    <div style="float:right;padding:2px 2px 2px 2px">
+
+                                        @using (Html.BeginForm("ExportPdf", "ReportExport", FormMethod.Post))
+                                        {
+                                            <input type="hidden" name="GridHtml3" />
+                                            <button type="submit" class="btn btn-danger" id="btnSubmit3"><i class="fa fa-file-pdf"></i></button>
+
+                                        }
+                                    </div>
+                                    <div style="float:right;padding:2px 2px 2px 2px">
+
+                                        @using (Html.BeginForm("SendEmail", "ReportExport", FormMethod.Post))
+                                        {
+                                            <input type="hidden" name="GridHtml4" />
+                                            <button type="submit" class="btn btn-orange" id="btnSubmit4"><i class="fa fa-envelope"></i></button>
+
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="margin:auto;">
+                            <div class="card">
+                                <div class="card-body" style="padding: 0;">
+
+
+                                   @if (Model.DsOut1.Tables.Count > 0)
+                                        {
+                                            <div class="table-responsive browser_users" id="ExportedGrid1">
+                                                <div class="analytic-dash-activity" data-simplebar>
+                                                    <div class="activity">
+                                                        <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                            <thead>
+                                                                <tr>
+
+                                                                    <th style="border: 1px solid;background-color:#6594d7;font-size: 12px;font-weight: bold;text-align:center;">SCRIP NAME</th>
+                                                                    <th style="border: 1px solid;background-color:#6594d7;font-size: 12px;font-weight: bold;text-align:center;">SCRIP CODE</th>
+                                                                    <th style="border: 1px solid;background-color:#6594d7;font-size: 12px;font-weight: bold; text-align:center;">DATE</th>
+                                                                    <th style="border: 1px solid;background-color:#6594d7;font-size: 12px;font-weight: bold;text-align:center;">QTY</th>
+                                                                    <th style="border: 1px solid;background-color:#6594d7;font-size: 12px;font-weight: bold;text-align:center;">RATE</th>
+
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (DataRow dr in Model.DsOut1.Tables[0].Rows)
+                                                                {
+                                                                    <tr>
+                                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">@dr.ItemArray[1]</td>
+                                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">@dr.ItemArray[0]</td>
+                                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">@dr.ItemArray[2]</td>
+                                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">@dr.ItemArray[3]</td>
+                                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">@dr.ItemArray[4]</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

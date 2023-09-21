@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Success";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+
+<div class="container">
+    <div class="row px-3">
+        <div class="col-lg-10 col-xl-9 card flex-row mx-auto px-0">
+            <div class="img-left d-none d-md-flex"></div>
+            <div class="card-body">
+                <a href="@Url.Action("Index", "Login")" title="Home">
+                    <img src="~/Content/assets/img/logo.png" class="img-fluid" alt="Logo" style="height: 20%;float:right;">
+                </a>
+                <div class="login-form-body">
+                    <div class="form-box px-3" style="margin-top:85px">
+                        <div class="form-input">
+                            <p style="text-align: center;">Your Password has changed successfully</p>
+                        </div>
+
+                        <div class="mb-3">
+
+                            <a href="@Url.Action("Index", "Login")" title="Home"><button type="submit" class="btn btn-block text-uppercase">Back to Login</button></a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

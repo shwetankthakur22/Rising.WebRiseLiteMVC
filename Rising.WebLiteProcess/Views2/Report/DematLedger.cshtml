@@ -1,0 +1,139 @@
+﻿@model Rising.WebRise.Controllers.DematLedgerInput
+
+@{
+    ViewBag.Title = "Demat Ledger New";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    <style>
+        .table-box {
+            height: 443px;
+            overflow-y: scroll;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #808080;
+            border-collapse: collapse;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            color: #fff;
+        }
+    </style>
+
+
+}
+
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">DEMAT LEDGER</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    <!--end card-header-->
+                    @using (Html.BeginForm("DematLedgerReport", "Report", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control" })
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                    </div>
+
+
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.ClientCodeTo, null, new { @class = "form-control" })
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.DateFrom, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.DateFrom, null, new { @Value = Model.DateFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.DateTo, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.DateTo, null, new { @Value = Model.DateTo.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.ScripCode, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.ScripCode, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.ISINCode, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.ISINCode, new { @class = "form-control", @placeholder = "Enter ISIN" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.SettNo, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.SettNo, null, new { @class = "form-control", @placeholder = "Enter SettNo" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.RefNo, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.RefNo, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+
+
+
+
+                                        <div class="box-footer">
+                                            <input type="submit" value="View" class="btn btn-success pull-right" />
+                                            <a href="javascript:void(0);" class="btn btn-danger" onclick="history.go(-1);">Back</a>
+                                        </div>
+
+
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

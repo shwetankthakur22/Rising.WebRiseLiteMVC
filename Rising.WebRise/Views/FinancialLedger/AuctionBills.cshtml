@@ -1,0 +1,229 @@
+﻿@model Rising.WebRise.Models.FinancialLedgerOutput
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Ledger";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+
+    <style>
+        .table-box {
+            height: 90%;
+            overflow-y: scroll;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #808080;
+            border-collapse: collapse;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            color: #fff;
+            background: #00bcd4;
+        }
+    </style>
+}
+
+<div class="page-wrapper" style="margin-top: 72px;">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-11" id="Ledger" style="margin: auto;">
+
+
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header" style="background-color:#eb2c2e70;">
+                        <h4 class="card-title" style="color:black">Auction Bills</h4>
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row">
+                            
+                            <div class="col-sm-12">
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    <a href="javascript:void(0);" class="btn btn-dark" onclick="history.go(-1);"><i class="fa fa-arrow-left"></i></a>
+
+                                </div>
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    @using (Html.BeginForm("ExportExcel", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml1" />
+                                        <button type="submit" class="btn btn-success" id="btnSubmit1"><i class="fa fa-file-excel"></i></button>
+
+                                    }
+
+                                </div>
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    @using (Html.BeginForm("ExportWord", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml2" />
+                                        <button type="submit" class="btn btn-info" id="btnSubmit2"><i class="fa fa-file-word"></i></button>
+
+                                    }
+                                </div>
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    @using (Html.BeginForm("ExportPdf", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml3" />
+                                        <button type="submit" class="btn btn-danger" id="btnSubmit3"><i class="fa fa-file-pdf"></i></button>
+
+                                    }
+                                </div>
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    @using (Html.BeginForm("SendEmail", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml4" />
+                                        <button type="submit" class="btn btn-orange" id="btnSubmit4"><i class="fa fa-envelope"></i></button>
+
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end row-->
+
+
+                        <div class="row">
+                            <div class="col-lg-12" style="margin: auto;">
+
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="table-responsive browser_users">
+                                            <div class="table-responsive table-box">
+
+                                                <table class="table table-striped table-bordered" style="width:100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DATE</th>
+                                                            <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">NARRATION</th>
+                                                            <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TRADE DATE</th>
+                                                            <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">BILLNO</th>
+                                                            <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">CHQNO</th>
+                                                            <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DEBIT</th>
+                                                            <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">CREDIT</th>
+                                                            <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">NET</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            string ccode = "gsdfgsdfgfdgdf";
+                                                            string clBal = "0.00";
+                                                            foreach (Rising.WebRise.Models.FinancialLedgerOutputRow rw in Model.listFinancialLedgerOutputRow)
+                                                            {
+                                                                if (ccode != rw.ClientCode)
+                                                                {
+                                                                    if (ccode != "gsdfgsdfgfdgdf")
+                                                                    {
+                                                                        <tr>
+                                                                            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad; "></td>
+                                                                            <td style="border: 1px solid  #d3d3d3;text-align:left; background-color:#6594d7ad;font-size: 12px;font-weight: bold;">Closing Balance : </td>
+                                                                            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                            <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                            <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;background-color:#6594d7ad;font-weight: bold;">@clBal</td>
+                                                                        </tr>
+                                                                    }
+                                                                    <tr style="height:20px">
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:white; "></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:white; "></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:white;"></td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad; "></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;text-align:left; color:green; background-color:#6594d7ad;font-size: 12px;font-weight: bold;">Code : @rw.ClientCode</td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                        <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                    </tr>
+                                                                }
+
+                                                                <tr>
+                                                                    <td style="text-align: center; font-size:12px;border: 1px solid  #d3d3d3;">@rw.Date.ToString("dd/MM/yy")</td>
+                                                                    <td style="text-align: left;font-size:12px;border: 1px solid  #d3d3d3;">@rw.Narration</td>
+                                                                    <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;">@rw.ValueDate.ToString("dd/MM/yy")</td>
+
+                                                                    @if (rw.BillNo.Contains("FDLY") == true || rw.BillNo.Contains("FEXP") == true || rw.BillNo.Contains("OPTDLY") == true || rw.BillNo.Contains("OPTEXAS") == true || rw.BillNo.Contains("OPEXP") == true || rw.BillNo.Contains("DLV") == true)
+                                                                    {
+                                                                        <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;">
+                                                                            @Html.ActionLink(rw.BillNo, "BillDetail", "FinancialLedger", new { billno = rw.BillNo.Replace("/", "__"), trndate = rw.ValueDate, segment = rw.Segment, cd = rw.ClientCode }, null)
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td style="text-align: center;font-size:12px;border: 1px solid #d3d3d3;">@rw.BillNo</td>
+                                                                    }
+                                                                    @*(@rw.CHQNO=="" ? "" : (@rw.CHQNO.Length > 6 ? @rw.CHQNO.Substring(@rw.CHQNO.Length - 5) : @rw.CHQNO;))*@
+                                                                    <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;">@rw.CHQNO</td>
+                                                                    <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;">@rw.Debit</td>
+                                                                    <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;">@rw.Credit</td>
+                                                                    <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;">@rw.RUNBAL</td>
+                                                                </tr>
+                                                                ccode = rw.ClientCode;
+                                                                clBal = rw.RUNBAL;
+                                                            }
+                                                            <tr>
+                                                                <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad; "></td>
+                                                                <td style="border: 1px solid  #d3d3d3;text-align:left; background-color:#6594d7ad;font-size: 12px;font-weight: bold;">Closing Balance : </td>
+                                                                <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                <td style="border: 1px solid  #d3d3d3;background-color:#6594d7ad;"></td>
+                                                                <td style="text-align: right;font-size:12px;border: 1px solid  #d3d3d3;background-color:#6594d7ad;font-weight: bold;"> @clBal</td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

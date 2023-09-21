@@ -1,0 +1,19 @@
+﻿@model Rising.WebRise.Models.ImportFileInput
+
+@{
+    ViewBag.Title = "RateFileImport";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+<link href="~/Content/assets/sweetalert/css/sweetalert.css" rel="stylesheet" />
+<script src="~/Content/assets/sweetalert/js/sweetalert.js"></script>
+<script>
+    $(document).ready(function () {
+        var sweetAlertOptions = @Html.Raw(TempData["sweetAlertOptions"]); // Deserialize the TempData value
+
+        if (sweetAlertOptions) {
+            Swal.fire(sweetAlertOptions); // Display the SweetAlert notification
+        }
+    });
+</script>
+<h2>RateFileImport</h2>
+

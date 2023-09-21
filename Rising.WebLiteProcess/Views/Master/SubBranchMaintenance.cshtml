@@ -1,0 +1,242 @@
+﻿@using Rising.WebRise.Models
+@model BranchMaintenance
+@using System.Data
+@{
+    ViewBag.Title = "SubBranchMaintenance";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.bankdetails').click(function () {
+                $("#code").val("").html("");
+                $("#name").val("").html("");
+                $("#mgr").val("").html("");
+                $("#add1").val("").html("");
+                $("#add2").val("").html("");
+                $("#add3").val("").html("");
+                $("#add4").val("").html("");
+                $("#phn").val("").html("");
+                $("#mail").val("").html("");
+                $("#rmcode").val("").html("");
+                $("#rrid").val("").html("");
+
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/GetSubBranchDetails/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (subbranch) {
+                        debugger
+                        $("#bcode").val(subbranch.BranchCode).html(subbranch.BranchCode);
+                        $("#subbranch").val(subbranch.SubBranchName).html(subbranch.SubBranchName);
+                        $("#subbcode").val(subbranch.SubBranchCode).html(subbranch.SubBranchCode);
+                        $("#manager").val(subbranch.Manager).html(subbranch.Manager);
+                        $("#address1").val(subbranch.Address1).html(subbranch.Address1);
+                        $("#address2").val(subbranch.Address2).html(subbranch.Address2);
+                        $("#address3").val(subbranch.Address3).html(subbranch.Address3);
+                        $("#address4").val(subbranch.Address4).html(subbranch.Address4);
+                        $("#phone").val(subbranch.Phone).html(subbranch.Phone);
+                        $("#emailid").val(subbranch.EmailId).html(subbranch.EmailId);
+                        $("#enable").val(subbranch.Enable).change();
+                        $("#rmcode").val(subbranch.RMCode).html(subbranch.RMCode);
+                        $("#rwid").val(subbranch.Rwid).html(subbranch.Rwid);
+                        $('#SubBranchCodeFrom').modal('hide');
+
+                    }
+                });
+
+            });
+        });
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Branch Maintenance/SubBranch Master</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <div class="box-body">
+                        <div class="tab-content" id="pills-tabContent-1">
+                            @using (Html.BeginForm("SubBranchMaintenance", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="tab-pane fade show" id="SubBranchMaster" role="tabpanel" aria-labelledby="pills-profile-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                            <div class="row">
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.BranchCode, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @id = "bcode" })
+                                                </div>
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.SubBranchCode, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.SubBranchCode, new { @class = "form-control", @id = "subbcode" })
+                                                </div>    
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Manager, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Manager, new { @class = "form-control", @id = "manager" })
+                                                </div>                                      
+                                                <div class="form-group col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.SubBranchName, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.SubBranchName, new { @class = "form-control", @id="subbranch" })
+                                                </div>
+                                                <div class="form-group col-md-1 col-12">
+                                                    <label class="form-label" style="margin-top: 48px;"></label>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SubBranchCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Address1, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Address1, new { @class = "form-control", @id = "address1" })
+                                                </div>
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Address2, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Address2, new { @class = "form-control", @id = "address2" })
+                                                </div>
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Address3, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Address3, new { @class = "form-control", @id = "address3" })
+                                                </div>
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Address4, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Address4, new { @class = "form-control", @id = "address4" })
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Phone, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @id = "phone" })
+                                                </div>
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.EmailId, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", @id = "emailid" })
+                                                </div>
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.RMCode, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.RMCode, new { @class = "form-control", @id="rmcode" })
+                                                </div>
+                                                <div class="form-group col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Enable, new { @class = "form-label" })
+                                                    @Html.DropDownListFor(m => m.Enable, new SelectList(new[] { "N", "Y" }), new { @class = "form-control", @id="enable" })
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 15px; display:none;">
+                                                <div class="col-md-4 col-12">
+                                                    @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                                    @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                                                </div>
+                                            </div>
+                                            <div class="box-footer">
+                                                <input type="submit" value="Save" name="Submit" class="btn btn-success pull-right" />
+                                                <input type="submit" class="btn btn-danger pull-left" name="Submit" value="Delete" />
+                                                <a href="javascript:void(0);" class="btn btn-dark" style="float: right;" onclick="history.go(-1);">Back</a>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="SubBranchCodeFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Select</</th>
+                                <th>Branch Code</th>
+                                <th>SubBranch Code</th>
+                            </tr>
+                        </thead>
+                        @if (Model.result.Tables.Count > 0)
+                        {
+                            <tbody>
+                                @{
+
+                                    foreach (DataRow rw in Model.result.Tables[0].Rows)
+                                    {
+                                        <tr>
+                                            <td><button type="button" class="btn btn-success bankdetails" data-model-id="@rw["ID"]">Select</button></td>
+                                            <td>@rw["MAINCODE"]</td>
+                                            <td>@rw["SUBCODE"]</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                                    }
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnClosebranch" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

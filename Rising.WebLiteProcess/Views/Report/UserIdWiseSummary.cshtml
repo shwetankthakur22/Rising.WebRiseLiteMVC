@@ -1,0 +1,79 @@
+﻿@model Rising.WebRise.Models.Reports.UserIdWiseSummary
+
+@{
+    ViewBag.Title = "UserIdWiseSummary";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">UserIdWise Summary</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    @using (Html.BeginForm("UserIdWiseSummary", "Report", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.UserID, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.UserID, null, new { @class = "form-control" })
+                                    </div>
+                                    
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.Datefrm, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.Datefrm, null, new { @class = "form-control", type = "date" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(m => m.To, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.To, null, new { @class = "form-control", type = "date" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="c-inputs-stacked">
+                                            @Html.CheckBoxFor(m => m.IncludeCLTrx, new { @class = "" })
+                                            @Html.LabelFor(m => m.IncludeCLTrx, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <input type="submit" value="View" class="btn btn-primary pull-right" />
+                            <a href="javascript:void(0);" class="btn btn-primary" onclick="history.go(-1);">Back</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,54 @@
+﻿@using Rising.WebRise.Models
+@model StateMaster
+@{
+    ViewBag.Title = "StateMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">STATE MASTER</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("StateMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.StateCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.StateCode, null, new { @class = "form-control" })
+                                </div>                             
+                                <div class="col-md-1 mb-3">
+                                    <label class="form-label" style="margin-top: 48px;"></label>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#StateCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.StateName, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.StateName, null, new { @class = "form-control" })
+                                </div>                           
+                            </div>
+
+
+                            <div class="box-footer">
+                                <input type="submit" value="Save" class="btn btn-success pull-right" />
+                                <a href="javascript:void(0);" class="btn btn-danger" onclick="history.go(-1);">Back</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,623 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
+    <meta content="" name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Content/assets_new/images/logo.png">
+
+
+    <!-- App css -->
+
+    <link href="~/Content/assets_new/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/Content/assets_new/css/icons.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/css/metisMenu.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/css/app.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/css/tabs.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/MOTI/CSS/Responsive.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/MOTI/CSS/opviewstyle.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/MOTI/CSS/Style.css" rel="stylesheet" type="text/css">
+
+    <link href="~/Content/assets_new/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Dashboard Css -->
+    <link href="~/Content/assets/css/dashboard.css" rel="stylesheet" />
+
+
+    <link href="~/Content/assets/plugins/select2/select2.min.css" rel="stylesheet" />
+    <script src="~/Content/assets/js/vendors/jquery-3.2.1.min.js"></script>
+    <script src="~/Content/assets/js/vendors/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Content/assets/js/vendors/selectize.min.js"></script>
+
+
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/multiselectcombo/js/multiselect.js"></script>
+    <link href="~/Content/multiselectcombo/css/multiselect.css" rel="stylesheet" />
+
+    <script src="~/Content/assets/plugins/select2/select2.full.min.js"></script>
+    <!---datetime----->
+
+    <script src="~/Content/assets/js/select2.js"></script>
+    <script src="~/Content/assets/js/vendors/selectize.min.js"></script>
+
+
+    <title>@ViewBag.Title - WebRise</title>
+    @using Rising.WebRise.Models
+    @using Rising.OracleDBHelper;
+
+
+    <style>
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+            .sticky + .content {
+                padding-top: 60px;
+            }
+    </style>
+
+    <script type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit1").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid").html());
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit2").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid").html());
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit3").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid").html());
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit4").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitCP1").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGridCP").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitCP2").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGridCP").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitCP3").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGridCP").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitCP4").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGridCP").html());
+            });
+        });
+    </script>
+
+    @*dashboard click*@
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmitDash1").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid1").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash2").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid1").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash3").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid1").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash4").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid1").html());
+            });
+        });
+
+
+        $(function () {
+            $("#btnSubmitDash11").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid11").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash12").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid11").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash13").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid11").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash14").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid11").html());
+            });
+        });
+
+
+
+        $(function () {
+            $("#btnSubmitDash21").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid21").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash22").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid21").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash23").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid21").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash24").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid21").html());
+            });
+        });
+
+
+
+        $(function () {
+            $("#btnSubmitDash31").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid31").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash32").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid31").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash33").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid31").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash34").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid31").html());
+            });
+        });
+
+        $(function () {
+            $("#btnSubmitDash41").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid41").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash42").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid41").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash43").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid41").html());
+            });
+        });
+        $(function () {
+            $("#btnSubmitDash44").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid41").html());
+            });
+        });
+
+
+        //dp client master
+        $(function () {
+            $("#btnSubmitDash99").click(function () {
+                $("input[name='GridHtml']").val($("#ExportedGrid1").html());
+            });
+        });
+
+    </script>
+
+
+
+    <script>
+        window.onscroll = function () { myFunction() };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+
+    <script>
+        $(function (e) {
+            $('#exampleFrom').DataTable();
+        });
+    </script>
+
+    <script>
+        $(function (e) {
+            $('#exampleTo').DataTable();
+        });
+    </script>
+
+    @*<script type="text/javascript">
+            function preventBack() { window.history.forward(); }
+            setTimeout("preventBack()", 0);
+            window.onunload = function () { null };
+        </script>*@
+    <script type=text/javascript>
+        $(document).ready(function () {
+            $('#ClientCodeFrom').change(function () {
+                var x = $('#ClientCodeFrom').val();
+                $('#ClientCodeTo').val(x);
+            });
+        });
+    </script>
+
+    <script type=text/javascript>
+        function myFunction(idd) {
+            document.getElementById(idd).style.color = "red";
+            var x = document.getElementById(idd).innerText;
+            $('#ClientCodeFrom').val(x);
+            $('#ClientCodeTo').val(x);
+            document.getElementById("btnCloseCodeFrom").click();
+        }
+    </script>
+
+    <script type=text/javascript>
+        function myFunction1(idd) {
+            document.getElementById(idd).style.color = "red";
+            var x = document.getElementById(idd).innerText;
+            $('#ClientCodeTo').val(x);
+            document.getElementById("btnCloseCodeTo").click();
+        }
+    </script>
+
+
+    <script type=text/javascript>
+        function myFunction2(idd) {
+            document.getElementById(idd).style.color = "red";
+            var x = document.getElementById(idd).innerText;
+            $('#ClientCode').val(x);
+            document.getElementById("btnCloseSTTCodeFrom").click();
+        }
+    </script>
+
+
+
+</head>
+<body data-layout="horizontal" class="">
+
+    <div class="modal fade" id="CodeFrom" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 630px;">
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Mobile</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int counter = 0;
+                                        List<ClientDetail> ClientDetails = Session["ClientDetails"] as List<ClientDetail>;
+                                        foreach (ClientDetail rw in ClientDetails)
+                                        {
+                                            string idd = "txtSearchCodeFrom_" + @counter;
+                                            <tr>
+                                                <th><a href="#"><literal id="@idd" onclick="myFunction('@idd')">@rw.ClientCode</literal></a></th>
+                                                <td>@rw.ClientName</td>
+                                                <td>@rw.ClientMobileNo</td>
+                                            </tr>
+                                            counter++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="btnCloseCodeFrom" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="CodeTo" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <div class="card-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table id="exampleTo" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Mobile</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int counter1 = 0;
+                                        List<ClientDetail> ClientDetails1 = Session["ClientDetails"] as List<ClientDetail>;
+                                        foreach (ClientDetail rw in ClientDetails1)
+                                        {
+                                            string idd = "txtSearchCodeTo_" + @counter1;
+                                            <tr>
+                                                <th><a href="#"><literal id="@idd" onclick="myFunction1('@idd')">@rw.ClientCode</literal></a></th>
+                                                <td>@rw.ClientName</td>
+                                                <td>@rw.ClientMobileNo</td>
+                                            </tr>
+                                            counter1++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="btnCloseCodeTo" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="STTCodeFrom" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 630px;">
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="datatable2" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Mobile</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int counter2 = 0;
+                                        List<ClientDetail> ClientDetails2 = Session["ClientDetails"] as List<ClientDetail>;
+                                        foreach (ClientDetail rw in ClientDetails2)
+                                        {
+                                            string idd = "txtSearchCodeFrom_" + @counter2;
+                                            <tr>
+                                                <th><a href="#"><literal id="@idd" onclick="myFunction2('@idd')">@rw.ClientCode</literal></a></th>
+                                                <td>@rw.ClientName</td>
+                                                <td>@rw.ClientMobileNo</td>
+                                            </tr>
+                                            counter2++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="btnCloseSTTCodeFrom" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        @if (TempData["AlertMessage"] != null)
+        {
+            <script type="text/javascript">
+                alert("@TempData["AlertMessage"]");
+            </script>
+            TempData["AlertMessage"] = null;
+        }
+        @{
+            WebUser webUser = Session["WebUser"] as WebUser;
+            if (webUser.LoginValidationStatus == false)
+            {
+
+            }
+            else
+            {
+                <div class="topbar">
+                    <div class="brand"><a href="@Url.Action("Index", "ClientHome")" class="logo"><span><img src="~/Content/assets_new/images/logo.jpg" alt="logo-small" class="site-logo"></span><span><img src="~/Content/assets_new/images/logo.png" alt="logo-large" class="logo-lg logo-light"></span></a></div>
+                    <nav class="navbar-custom">
+
+                        <ul class="list-unstyled topbar-nav float-right mb-0">
+
+                            @if (webUser.UserType == UserType.Client)
+                            {
+                                <li class="creat-btn">
+                                    <div class="nav-link"><div class="">@*<i class="fas fa-user mr-2"></i>@Html.Label("" + webUser.UserName + "", new { @class = "profile_name" })*@ <a href="http://182.71.53.36:9999/CAP/" target="_blank"><u>Switch to old version</u></a></div></div>
+                                </li>
+                            }
+                            @if (webUser.UserType == UserType.Branch)
+                            {
+                                <li class="creat-btn">
+                                    <div class="nav-link"><div class="">@*<i class="fas fa-user mr-2"></i>@Html.Label("" + webUser.UserName + "", new { @class = "profile_name" })*@ <a href="http://182.71.53.36:9999/CAPB/" target="_blank"><u>Switch to old version</u></a></div></div>
+                                </li>
+                            }
+                            <li class="creat-btn" style="margin-top: 15px;">
+                                <div class="nav-link">
+                                    <a class="btn btn-md btn-danger" href="@Url.Action("LogOut", "ClientHome")" role="button"><span style="color:white;">Logout</span></a>
+                                </div>
+                            </li>
+                            <li class="menu-item">
+                                <!-- Mobile menu toggle-->
+                                <a class="navbar-toggle nav-link" id="mobileToggle">
+                                    <div class="lines"><span></span> <span></span> <span></span></div>
+                                </a>
+                                <!-- End mobile menu toggle-->
+                            </li>
+                        </ul>
+
+                        <div class="navbar-custom-menu">
+
+                            <div id="navigation">
+                                <ul class="navigation-menu">
+                                    <li class="has-submenu">
+                                        <a href="@Url.Action("Index", "ClientHome")"><span><i class="ti ti-home"></i>Dashboard</span></a>
+                                    </li>
+                                    <li class="has-submenu">
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>Year( @Session["SelectedYear"])</span></a>
+                                        <ul class="submenu">
+                                            @foreach (var year in MvcApplication.YearLists)
+                                            {
+                                                <li><a href="@Url.Action("changeYear", "ClientHome", new RouteValueDictionary(new { id = year.ConnName }))">@year.YearName</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>Segment( @Session["SelectedDBGroup"])</span></a>
+                                        <ul class="submenu">
+                                            @foreach (var dbl in MvcApplication.DBLists.Select(o => o.Group).Distinct())
+                                            {
+                                                <li><a href="@Url.Action("changeSegment1", "ClientHome", new RouteValueDictionary(new { id = dbl.Replace("&","---") }))">@dbl</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li class="has-submenu">
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>Reports</span></a>
+                                        <ul class="submenu">
+                                            @foreach (MenuItem menu in MvcApplication.MenuItems)
+                                            {
+                                                if (menu.Group == Session["SelectedDBGroup"].ToString())
+                                                {
+                                                    <li><a href="@Url.Action(@menu.ActionName, @menu.ControllerName)">@menu.MenuName</a></li>}
+                                            }
+                                        </ul>
+                                    </li>
+
+
+
+
+
+                                    <li class="has-submenu">
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>Information</span></a>
+                                        <ul class="submenu">
+                                            <li class="has-submenu">
+                                                <a href="#">Corporate Action</a>
+                                                <ul class="submenu megamenu">
+                                                    <li>
+                                                        <ul>
+                                                            <li><a href="https://www1.nseindia.com/corporates/corporateHome.html?id=eqCorpActions" target="_blank"><i class="ti ti-angle-right"></i>NSE</a></li>
+                                                            <li><a href="https://www.bseindia.com/corporates/corporate_act.aspx" target="_blank"><i class="ti ti-angle-right"></i>BSE</a></li>
+
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="https://www1.nseindia.com/live_market/dynaContent/live_watch/margincalc/CMInputMargincalc.jsp" target="_blank">Margin Calculator</a>
+
+                                            </li>
+                                            <!--end has-submenu-->
+                                            <li class="has-submenu">
+                                                <a href="#">Regulatory Circulars</a>
+                                                <ul class="submenu">
+                                                    <li><a href="https://www.bseindia.com/markets/MarketInfo/NoticesCirculars.aspx?id=0&txtscripcd=&pagecont=&subject=" target="_blank"><i class="ti ti-angle-right"></i>BSE</a></li>
+                                                    <li><a href="https://www.cdslindia.com/Publications/Communique.aspx" target="_blank"><i class="ti ti-angle-right"></i>CDSL</a></li>
+                                                    <li><a href="https://nsdl.co.in/business/circular.php" target="_blank"><i class="ti ti-angle-right"></i>NSDL</a></li>
+                                                    <li><a href="https://www1.nseindia.com/circulars/circular.htm" target="_blank"><i class="ti ti-angle-right"></i>NSE</a></li>
+                                                    <li><a href="https://www.mcxindia.com/" target="_blank"><i class="ti ti-angle-right"></i>MCX</a></li>
+                                                    <li><a href="https://www.sebi.gov.in/" target="_blank"><i class="ti ti-angle-right"></i>SEBI</a></li>
+                                                    <li><a href="https://www.ncdex.com/Circulars/CircularHome.aspx" target="_blank"><i class="ti ti-angle-right"></i>NCDEX</a></li>
+                                                </ul>
+                                            </li>
+                                            <!--end has-submenu-->
+                                            <li>
+                                                <a href="https://www.bseindia.com/markets/equity/EQReports/setcal.aspx?expandable=4" target="_blank">Settelment Calender</a>
+                                            </li>
+                                            <li><a href="@Url.Action("TradingHolidays", "ClientHome")">Trading Holidays</a></li>
+
+                                        </ul>
+                                        <!--end submenu-->
+                                    </li>
+                                    <li class="has-submenu">
+                                        <a href="https://rkfs.investwell.app/app/#/login" target="_blank"><span><i class="ti ti-money"></i>Mutual Fund</span></a>
+                                    </li>
+                                    <li class="has-submenu">
+                                        <a href="https://www.rkfs.org/ipo/rkfs.html" target="_blank"><span><i class="ti ti-money"></i>Apply For IPO</span></a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            }
+            @RenderBody()
+        }
+
+
+    </div>
+    <script>
+        radiobtn = document.getElementById("rad1");
+        radiobtn.checked = true;
+    </script>
+    <script src="~/Content/assets_new/js/jquery.min.js"></script>
+    <script src="~/Content/assets_new/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/assets_new/js/metismenu.min.js"></script>
+    <script src="~/Content/assets_new/js/waves.js"></script>
+    <script src="~/Content/assets_new/js/feather.min.js"></script>
+    <script src="~/Content/assets_new/js/simplebar.min.js"></script>
+    <script src="~/Content/assets_new/js/jquery-ui.min.js"></script>
+    <script src="~/Content/assets_new/js/moment.js"></script>
+    <script src="~/Content/assets_new/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets_new/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets_new/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets_new/pages/jquery.datatable.init.js"></script>
+    <script src="~/Content/assets_new/plugins/daterangepicker/daterangepicker.js"></script><!-- Plugins js -->
+    <script src="~/Content/assets_new/js/app.js"></script>
+    <script src="~/Content/assets_new/plugins/select2/select2.min.js"></script>
+    <script src="~/Content/assets_new/pages/jquery.forms-advanced.js"></script>
+
+</body>
+</html>

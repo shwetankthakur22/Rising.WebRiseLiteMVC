@@ -1,0 +1,111 @@
+﻿@using Rising.WebRise.Models
+@model ForgetPasswordModel
+
+
+@{
+    ViewBag.Title = "GetOTP";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<div class="container">
+    <div class="row px-3">
+        <div class="col-lg-10 col-xl-9 card flex-row mx-auto px-0">
+            <div class="img-left d-none d-md-flex"></div>
+            <div class="card-body">
+                <a href="@Url.Action("Index", "Login")" title="Home">
+                    <img src="~/Content/assets/img/logo.png" class="img-fluid" alt="Logo" style="height: 20%;float:right;">
+                </a>
+                <div class="form-box px-3" style="margin-top:85px">
+                    @using (Html.BeginForm("ValidateOTP", "ForgetPassword", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+            {
+                        @Html.AntiForgeryToken()
+
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="form-input">
+
+                            <a class="form-control" style="border-radius: 50px !important; border: 2px solid #007bff !important;height: 45px; margin-bottom: 20px;">@ViewBag.Data.UserID</a>
+                            @Html.ValidationMessageFor(m => m.UserID, "", new { @class = "text-danger" })
+
+                        </div>
+
+
+                            <div class="form-input">
+                                <span><i class="fa fa-qrcode "></i></span>
+
+                                @Html.TextBoxFor(m => m.OTP, new { @class = "", @placeholder = "Enter OTP" })
+                                @Html.ValidationMessageFor(m => m.OTP, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="mb-3">
+                               
+                                    <p class="custom-control-label">Resend OTP : <span id="timer"></span></p>
+                                   
+                               
+                            </div>
+                          
+                            <div class="mb-3" id="dvShowHide" style="display:none;">
+
+                                <button type="submit" class="btn btn-block text-uppercase" onclick="callResendOTP()" style="background: green !important;">Resend OTP</button>
+
+                            </div>
+                            <div class="mb-3">
+
+                                <button type="submit" class="btn btn-block text-uppercase">Continue</button>
+
+                            </div>
+
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let timerOn = true;
+
+    function callResendOTP() {
+        $.getJSON('/ForgetPassword/GetOTP', { key: "--", value: "--" }, function (data) {
+        });
+        document.getElementById("dvShowHide").style.display = "none";
+        timer(30);
+    }
+
+    function timer(remaining) {
+        var m = Math.floor(remaining / 60);
+        var s = remaining % 60;
+
+        m = m < 10 ? '0' + m : m;
+        s = s < 10 ? '0' + s : s;
+        document.getElementById('timer').innerHTML = m + ':' + s;
+        remaining -= 1;
+
+        if (remaining >= 0 && timerOn) {
+            setTimeout(function () {
+                timer(remaining);
+            }, 1000);
+            return;
+        }
+
+        if (!timerOn) {
+            // Do validate stuff here
+            return;
+        }
+
+        // Do timeout stuff here
+        document.getElementById("dvShowHide").style.display = "block";
+
+
+
+    }
+
+    timer(60);
+
+</script>
+
+
+

@@ -1,0 +1,80 @@
+﻿@using Rising.WebRise.Models
+@model SettlementSchedule
+@using System.Data
+@{
+    ViewBag.Title = "SettlementMasterImport";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+<div class="page-content" style="margin-top:115px;">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+
+        <div class="row">
+            <div class="col-12" style="margin-left:auto;margin-right:auto;">
+                <div class="card">
+                    <div class="card-header" style="background-color:#fbd857;">
+                        <h4 class="card-title">Settlement Import</h4>
+                    </div>
+                    @using (Html.BeginForm("SettlementMasterImport", "Master", new { ReturnUrl = ViewBag.ReturnUrl, @method = "TradeFile" }, FormMethod.Post, new { @class = "", role = "form", enctype = "multipart/form-data" }))
+            {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.StartDate, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.StartDate, null, new { @class = "form-control", @type = "date" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ml-auto">
+                                            @Html.LabelFor(m => m.NewFormat, new { @class = "col-sm-4 col-form-label custom-control-label" })
+                                            <div class="custom-control custom-checkbox">
+                                                @Html.CheckBoxFor(m => m.NewFormat, new { @class = "custom-control-input", @checked = "checked" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "BSE", "NFO" }), new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="file-upload" class="col-sm-4 col-form-label custom-file-upload">Choose a file...</label>
+                                        @*@Html.LabelFor(m => m.FileName, new { @class = "col-sm-4 col-form-label" })*@
+                                        <div class="col-sm-8">
+                                            <input id="file-upload" name="TradeFile" type="file" class="form-control" />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8 ml-auto">
+                                    <button type="submit" id="btnsubmit" class="btn btn-primary float-right">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+

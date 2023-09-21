@@ -1,0 +1,332 @@
+﻿@using Rising.WebRise.Models
+@model BranchMaintenance
+@using System.Data
+@{
+    ViewBag.Title = "BranchMaintenance";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.bankdetails').click(function () {
+                $("#code").val("").html("");
+                $("#name").val("").html("");
+                $("#mgr").val("").html("");
+                $("#add1").val("").html("");
+                $("#add2").val("").html("");
+                $("#add3").val("").html("");
+                $("#add4").val("").html("");
+                $("#phn").val("").html("");
+                $("#fax").val("").html("");
+                $("#mail").val("").html("");
+                $("#icode").val("").html("");
+                $("#int").val("").html("");
+                $("#gc").val("").html("");
+                $("#ac").val("").html("");
+                $("#aoc").val("").html("");
+                $("#admin").val("").html("");
+                $("#gcode").val("").html("");
+                $("#rcode").val("").html("");
+                $("#rmcode").val("").html("");
+                $("#rrid").val("").html("");
+
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/GetRMDetails/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (rm) {
+                        debugger
+                        const d = new Date(rm.JoiningDate.match(/\d+/)[0] * 1);
+                        const formattedDate = d.getFullYear() + '-' + ("0" + (d.getMonth() + 1)).slice(-2) + '-' + ("0" + d.getDate()).slice(-2)
+                        $('#Jdate').val(formattedDate);
+                        const e = new Date(rm.CDate.match(/\e+/)[0] * 1);
+                        const formattedDate1 = e.getFullYear() + '-' + ("0" + (e.getMonth() + 1)).slice(-2) + '-' + ("0" + e.getDate()).slice(-2)
+                        $('#CDate').val(formattedDate1);
+                        $("#BranchCode").val(rm.BranchCode).html(rm.BranchCode);
+                        $("#RMDesc").val(rm.RMDesc).html(rm.RMDesc);
+                        $("#Designation").val(rm.Designation).html(rm.Designation);
+                        $("#RMCode").val(rm.RMCode).html(rm.RMCode);
+                        $("#Department").val(rm.Department).html(rm.Department);
+                        $("#Salary").val(rm.Salary).html(rm.Salary);
+                        $("#PerMonthTarget").val(rm.PerMonthTarget).html(rm.PerMonthTarget);
+                        $("#MobileNo").val(rm.MobileNo).html(rm.MobileNo);
+                        $("#EmailId").val(rm.EmailId).html(rm.EmailId);
+                        $("#Address1").val(rm.Address1).html(rm.Address1);
+                        $("#Address2").val(rm.Address2).html(rm.Address2);
+                        $("#City").val(rm.City).html(rm.City);
+                        $("#State").val(rm.State).html(rm.State);
+                        $("#PinCode").val(rm.PinCode).html(rm.PinCode);  
+                        $("#rwid").val(rm.Rwid).html(rm.Rwid);
+                        $('#RMCodeFrom').modal('hide');
+
+                    }
+                });
+
+            });
+        });
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+}
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">RM MASTER</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    @using (Html.BeginForm("RMMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="row">
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.BranchCode, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @id = "BranchCode", })
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+
+                                @Html.LabelFor(m => m.RMDesc, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.RMDesc, new { @class = "form-control", @id = "RMDesc", })
+
+                            </div>
+                            <div class="form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.Designation, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", @id = "Designation" })
+                            </div>
+                            <div class=" form-group col-md-2 col-12">
+                                @Html.LabelFor(m => m.RMCode, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.RMCode, new { @class = "form-control", @id = "RMCode", })
+                            </div>
+
+                            <div class=" form-group col-md-1 col-12">
+                                <label class="form-label" style="margin-top: 38px;"></label>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#RMCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.Department, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Department, new { @class = "form-control", @id = "Department" })
+
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.JoiningDate, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.JoiningDate, null, new { @Value = Model.JoiningDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "Jdate", @type = "date" })
+                                
+                            </div>
+                            <div class="form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.Salary, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Salary, new { @class = "form-control", @id = "Salary" })
+                            </div>
+                            <div class="form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.PerMonthTarget, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.PerMonthTarget, new { @class = "form-control", @id = "PerMonthTarget" })
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.MobileNo, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.MobileNo, new { @class = "form-control", @id = "MobileNo" })
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.EmailId, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", @id = "EmailId" })
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.Address1, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Address1, new { @class = "form-control", @id = "Address1" })
+                            </div>
+                            <div class="form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.Address2, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Address2, new { @class = "form-control", @id = "Address2" })
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.City, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.City, new { @class = "form-control", @id = "City" })
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.State, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.State, new { @class = "form-control", @id = "State" })
+
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.PinCode, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.PinCode, new { @class = "form-control", @id = "PinCode" })
+                            </div>
+                            <div class="form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.ClosingDate, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.ClosingDate, null, new { @Value = Model.ClosingDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "CDate", @type = "date" })
+                                
+                            </div>
+                            <!-- end col -->
+                        </div>
+
+                        <div class="row" style="margin-bottom: 15px; display:none;">
+                            <div class="col-md-4 col-12">
+                                @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <input type="submit" value="Save" name="Submit" class="btn btn-success pull-right" />
+                            <input type="submit" class="btn btn-danger pull-left" name="Submit" value="Delete" />
+                            <a href="javascript:void(0);" class="btn btn-dark" style="float: right;" onclick="history.go(-1);">Back</a>
+                        </div>
+
+                    }
+
+                </div>
+                <!-- container -->
+                <!--end footer-->
+                <div class="row mt-100">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                        <div class="card" id="ExportedGrid">
+                            <div class="box">
+                                @if (Model.result.Tables.Count > 0)
+                                {
+
+                                    <div>
+                                        <table class="table-bordered table-box table">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (var cl in Model.result.Tables[0].Columns)
+                                                    {
+                                                        <th class="table-header">@cl</th>
+
+                                                    }
+                                                    <th class="table-header">ACTION(EDIT)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow dr in Model.result.Tables[0].Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (var cl in dr.ItemArray)
+                                                        {
+                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</td>
+                                                        }                
+                                                    </tr>
+
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                }
+
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="RMCodeFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Select</</th>
+                                <th>RMCODE</th>
+                                <th>RMDESC</th>
+                            </tr>
+                        </thead>
+                        @if (Model.result.Tables.Count > 0)
+                        {
+                            <tbody>
+                                @{
+
+                                    foreach (DataRow rw in Model.result.Tables[0].Rows)
+                                    {
+                                        <tr>
+                                            <td><button type="button" class="btn btn-success bankdetails" data-model-id="@rw["ID"]">Select</button></td>
+                                            <td>@rw["RMCODE"]</td>
+                                            <td>@rw["RMDESC"]</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnClosebranch" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

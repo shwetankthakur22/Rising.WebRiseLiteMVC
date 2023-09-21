@@ -1,0 +1,120 @@
+﻿.container
+{	
+	width: 1000px;
+    margin: 0 auto;
+    padding: 0px;
+    background-color: #FFFFFF;
+	height:auto;
+	font-family:MS Sans Serif;
+	font-size:8pt;
+	color:#666666;
+	}
+.container_header
+{	
+    background-color: #FFFFFF;
+    font-family:MS Sans Serif;
+	font-size:25pt;
+	color:#1f84cb;
+	
+	}
+.line_bottom
+{	
+	border-bottom:1px solid #1f84cb;
+
+	}
+
+.logout
+{
+	font-family:MS Sans Serif;
+	font-size:10pt;
+	color:#1f84cb;
+	cursor:pointer;
+	outline:none;
+}	
+
+.line_bottom_white
+{	
+	border-bottom:1px solid #fff;
+	}
+
+
+.Databox
+{
+	height:auto;
+	width:60%;
+	background-color: #00A6CC;
+	-webkit-border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+}
+
+.container_data_head
+{	
+	height:20px;
+	width:30%;
+	text-align:center;
+	background-color: #fff;
+    font-family:MS Sans Serif;
+	font-size:10pt;
+	-webkit-border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	
+	-webkit-border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	}
+.container_data
+{	
+	height:30px;
+	width:70%;
+    background-color: #eeefff;
+    font-family:MS Sans Serif;
+	font-size:12pt;
+	color:#666666;	
+	
+	}
+.outlineoff
+{
+	outline:none;
+
+}
+.SendButton
+{
+	height:30px;
+	width:50%;
+    background-color: #ffffff;
+    font-family:MS Sans Serif;
+	font-size:15pt;
+	color:#00A6CC;
+	-webkit-border-top-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	
+	-webkit-border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	cursor:pointer;
+}
+.getreport
+{
+	
+	color: #fff;
+	height:40px;
+    font-family:MS Sans Serif;
+    font-size:15pt;
+    border-bottom:1px solid #fff;
+}
+.ddlborder
+{
+	border:1px solid #fff;
+	outline:none;
+	color: #666666;
+
+}
+

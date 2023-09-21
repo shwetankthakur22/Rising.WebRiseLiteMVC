@@ -1,0 +1,122 @@
+﻿@model Rising.WebRise.Models.FinancialLedgerOutput
+@using GridMvc.Html
+
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12" id="_Ledger">
+        <div class="card">
+         
+            <!--end card-header-->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        
+
+                     <!--   <div class="btn btn-primary btn-sm mr-2"> Op Bal. : @Model.OpeningBalance    </div>
+                        <div class="btn btn-primary btn-sm mr-2"> Clos Bal. : @Model.ClosingBalance   </div>-->
+
+
+
+                        </div>
+                   
+
+                </div>
+
+                <!--end row-->
+
+
+                <div class="row">
+                  
+                                <div class="box-body" style="background-color:white;">
+                                    <div class="table-responsive table-box" style="height:100%">
+                                        <table class="table table-bordered table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">DATE</th>
+                                                    <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">NARRATION</th>
+                                                    <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">VALUE DATE</th>
+                                                    <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">BILLNO</th>
+                                                    <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">SETTNO</th>
+                                                    <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">DEBIT</th>
+                                                    <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">CREDIT</th>
+                                                    <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">NET</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @{
+                                                    string ccode = "gsdfgsdfgfdgdf";
+                                                    string clBal = "0.00";
+                                                    foreach (Rising.WebRise.Models.FinancialLedgerOutputRow rw in Model.listFinancialLedgerOutputRow)
+                                                    {
+                                                        if (ccode != rw.ClientCode)
+                                                        {
+                                                            if (ccode != "gsdfgsdfgfdgdf")
+                                                            {
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td class="table-header">Closing Balance : </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td class="table-header">@clBal</td>
+                                                                </tr>
+                                                            }
+
+                                                        }
+
+                                                        <tr>
+                                                            <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">@rw.Date.ToString("dd-MM-yyyy")</td>
+                                                            <td class="td-font" style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw.Narration</td>
+                                                            <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">@rw.ValueDate.ToString("dd-MM-yyyy")</td>
+
+                                                            @if (rw.BillNo.Contains("FDLY") == true || rw.BillNo.Contains("FEXP") == true || rw.BillNo.Contains("OPTDLY") == true || rw.BillNo.Contains("OPTEXAS") == true || rw.BillNo.Contains("OPEXP") == true || rw.BillNo.Contains("DLV") == true)
+                                                            {
+                                                                <td class="td-font">
+                                                                    @Html.ActionLink(rw.BillNo, "BillDetails", "FinancialLedger", new { billno = rw.BillNo.Replace("/", "__"), trndate = rw.ValueDate, segment = rw.Segment, cd = rw.ClientCode }, null)
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="td-font" style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw.BillNo</td>
+                                                            }
+
+                                                            <td class="td-font" style="text-align: left;font-size:12px;border: 1px solid  #6497b5;">@rw.SETTNO</td>
+                                                            <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">@rw.Debit</td>
+                                                            <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">@rw.Credit</td>
+                                                            <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">@rw.RUNBAL</td>
+                                                        </tr>
+                                                        ccode = rw.ClientCode;
+                                                        clBal = rw.RUNBAL;
+                                                    }
+                                                    <tr>
+                                                        <td style="background:#dbdbdb"></td>
+                                                        <td class="td-font" style="background:#dbdbdb"><b>Closing Balance : </b></td>
+                                                        <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;"></td>
+                                                        <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;"></td>
+                                                        <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;"></td>
+                                                        <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;"></td>
+                                                        <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;"></td>
+                                                        <td class="td-font" style="background:#dbdbdb"><b>@clBal</b></td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td colspan="8" style="font-weight:600">Unless constituent notifies us within 30 days of reciept of this statement of any discrepancy found by him/her in this statement of account, it will be taken that he/she has found his account correct</td>
+
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     

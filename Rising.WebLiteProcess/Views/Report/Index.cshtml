@@ -1,0 +1,633 @@
+﻿@using Rising.WebRise.Models
+@model FinancialLedgerInput
+
+@{
+    ViewBag.Title = "Financial Ledger";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+
+}
+
+
+@section Scripts {
+
+    @*Setting cursor focus on 1st text box of page i.e Cilent Code*@
+    <script>
+        $(function () {
+            var text = $(".text");
+            text.focus();
+        });
+    </script>
+    <script>
+        function getDa() {
+            debugger
+            var input1 = document.getElementById("date-start");
+            var st1 = input1.value;
+            var st1_1;
+
+            if (st1.length === 10 && st1.indexOf("-") > 1) {
+                st1_1 = st1;
+            }
+            else {
+                if (st1.length === 6) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-20" + st1.substr(4, 2);
+                }
+                else if (st1.length === 5) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-200" + st1.substr(4, 2);
+                }
+                else if (st1.length === 7) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-2" + st1.substr(4, 3);
+                }
+                else {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-" + st1.substr(4, 4);
+                }
+                var pattern = /(\d{2})\-(\d{2})\-(\d{4})/;
+                //var dt1 = new Date(st1_1.replace(pattern, '$3-$2-$1'));
+                //if (dt1 == "Invalid Date") {
+                //    st1_1 = null; document.getElementById("date-start").focus();
+                //    document.getElementById("date-start").style.backgroundColor = '#fff0e6';
+                //    alert(dt1);
+                //}
+                //else {
+                //    debugger
+                //    document.getElementById("date-start").value = st1_1;
+                //}
+            }
+            document.getElementById("date-start").value = st1_1;
+        }
+    </script>
+
+    <script>
+        function getDate() {
+            debugger
+            var input1 = document.getElementById("date-end");
+            var st1 = input1.value;
+            var st1_1;
+
+            if (st1.length === 10 && st1.indexOf("-") > 1) {
+                st1_1 = st1;
+            }
+            else {
+                if (st1.length === 6) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-20" + st1.substr(4, 2);
+                }
+                else if (st1.length === 5) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-200" + st1.substr(4, 2);
+                }
+                else if (st1.length === 7) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-2" + st1.substr(4, 3);
+                }
+                else {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-" + st1.substr(4, 4);
+                }
+                var pattern = /(\d{2})\-(\d{2})\-(\d{4})/;
+                //var dt1 = new Date(st1_1.replace(pattern, '$3-$2-$1'));
+                //if (dt1 == "Invalid Date") {
+                //    st1_1 = null; document.getElementById("date-end").focus();
+                //    document.getElementById("date-end").style.backgroundColor = '#fff0e6';
+                //    alert(dt1);
+                //}
+                //else {
+                //    debugger
+                //    document.getElementById("date-end").value = st1_1;
+                //}
+            }
+            document.getElementById("date-end").value = st1_1;
+        }
+    </script>
+    @*Date validation*@
+    <script>
+        function validateDates() {
+            var dateFrom = new Date(document.getElementById("date-start").value);
+            var dateTo = new Date(document.getElementById("date-end").value);
+            if (dateFrom > dateTo) {
+
+                Swal.fire({
+                    title: "Invalid Date!!",
+                    text: "Date To should always be greater than Date From!",
+                    icon: "warning",
+                    buttons: true,
+                })
+                return false; // Return false to prevent form submission
+
+            }
+
+            return true; // Continue with form submission
+        }
+    </script>
+    @*Search Code Ajex Call*@
+    <script>
+
+        $(document).ready(function () {
+            debugger;
+
+            $('.SearchCode').on('input', function () {
+                var id = $("#ClientCodeFrom").val()
+                debugger
+                $("#OpeningBalance").val("").html("");
+                $("#SecurityBalance").val("").html("");
+                $("#ClosingBalance").val("").html("");
+                $("#DailyMarginBalance").val("").html("");
+                $("#UnReleasedVoucherBal").val("").html("");
+                $("#MtmAcBal").val("").html("");
+                $("#CashMarginBal").val("").html("");
+                $("#ClosingBalOtherBal").val("").html("");
+                // var id = $(this).data('id');
+
+                $.ajax({
+                    url: '/Report/GetData',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { code: id },
+                    success: function (model) {
+                        debugger
+                        $("#ClientCodeFrom").val(model.ClientCodeFrom).html(model.ClientCodeFrom);
+                        $("#ClientName").val(model.ClientName).html(model.ClientName);
+                    }
+                });
+            });
+        });
+    </script>
+
+ @if (TempData.ContainsKey("modeldata"))
+    {
+    <script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+
+        var ClientCod = localStorage.ClientCodeFrom;
+        var ClientNam = localStorage.ClientName;
+        var DateFro = localStorage.DateFrom;
+        var DateT = localStorage.DateTo;
+        var Exch = localStorage.Exchange;
+        var SEGM = localStorage.Segment;
+        var order = localStorage.OrderBy;
+        var trx = localStorage.FinancialTranxactionType;
+        console.log(ClientCod, ClientNam, DateFro, DateT, Exch, SEGM, order, trx);
+        debugger;
+        if (ClientCod != undefined && ClientNam != undefined && DateFro !== undefined && DateT !== undefined && Exch !== undefined && SEGM !== undefined && order !== undefined && trx !== undefined) {
+            document.getElementById("ClientCodeFrom").value = ClientCod;
+            document.getElementById("ClientName").value = ClientNam;
+            document.getElementById("date-start").value = DateFro;
+            document.getElementById("date-end").value = DateT;
+            document.getElementById("Exchange").value = Exch;
+            document.getElementById("Segment").value = SEGM;
+            document.getElementById("OrderBy").value = order;
+            document.getElementById("trxtype").value = trx;
+            // document.getElementById("IngnoreOpeningBalance").value = opbal;
+        }
+        // var opbal = localStorage.IngnoreOpeningBalance;
+
+    })
+
+
+    // Set local storage on click of next button
+
+    var getNextButton = document.getElementById("nextButton");
+
+    getNextButton.addEventListener("click", function () {
+
+     // localStorage.removeItem("IngnoreOpeningBalance");
+        localStorage.ClientCodeFrom = document.getElementById("ClientCodeFrom").value;
+        localStorage.ClientName = document.getElementById("ClientName").value;
+        localStorage.DateFrom = document.getElementById("date-start").value;
+        localStorage.DateTo = document.getElementById("date-end").value;
+        localStorage.Exchange = document.getElementById("Exchange").value;
+        localStorage.Segment = document.getElementById("Segment").value;
+        localStorage.OrderBy = document.getElementById("OrderBy").value;
+        localStorage.FinancialTranxactionType = document.getElementById("trxtype").value;
+        // localStorage.IngnoreOpeningBalance = document.getElementById("IngnoreOpeningBalance").value;
+
+    })
+
+    </script>
+ }
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">FINANCIAL LEDGER</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("Ledger", "Report", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form", onsubmit = "return validateDates();" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+
+                                    @if ((Session["CodeSearchFilterType"] as List<string>).Count > 0)
+                                    {
+
+                                        <div class="col-md-2">
+                                            @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "text form-control SearchCode", @required = true })
+                                        </div>
+
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                            </div>
+                                            <div class="col-md-5">
+                                                @Html.TextBoxFor(m => m.ClientName, null, new { @class = "form-control", @ReadOnly = "true" })
+                                            </div>
+                                    }
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.DateFrom, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.DateFrom, "{0:dd-MM-yyyy}", new { @class = "form-control", @id = "date-start", @onChange = "getDa()", @placeholder = "DD-MM-YYYY" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.DateTo, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-4">
+                                                @Html.TextBoxFor(m => m.DateTo, "{0:dd-MM-yyyy}", new { @class = "form-control", @id = "date-end", @onChange = "getDate()", @placeholder = "DD-MM-YYYY" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "ALL", "NSE", "INX", "IBX", "IFSC" }), new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.DropDownListFor(m => m.Exchange, ViewBag.ExchangeList as SelectList, "Segment", new { @class = "form-control", @id = "Segment" })
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.OrderBy, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.DropDownListFor(m => m.OrderBy, new SelectList(new[] { "Date", "Narration", "Value Date", "Bill No" }), new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.SearchNarration, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.SearchNarration, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.FinancialTranxactionType, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.FinancialTranxactionType, (IEnumerable<SelectListItem>)ViewBag.enumFinancialTranxactionType, new { @class = "form-control", @id = "trxtype" })
+                                    </div>
+                                    <!--Start of CheckBox Menu Items-->
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.Include0Trn, new { @class = "" })
+                                            @Html.LabelFor(m => m.Include0Trn, new { @class = "me-30", @style = "" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.BgFDRamt, new { @class = "" })
+                                            @Html.LabelFor(m => m.BgFDRamt, new { @class = "me-30", @style = "" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.IncludeSecurityVal, new { @class = "" })
+                                            @Html.LabelFor(m => m.IncludeSecurityVal, new { @class = "me-30", @style = "" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.Dematvalue, new { @class = "" })
+                                            @Html.LabelFor(m => m.Dematvalue, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.Lastmargin, new { @class = "" })
+                                            @Html.LabelFor(m => m.Lastmargin, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.IncludemarginAc, new { @class = "" })
+                                            @Html.LabelFor(m => m.IncludemarginAc, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.IngnoreOpeningBalance, new { @class = "" })
+                                            @Html.LabelFor(m => m.IngnoreOpeningBalance, new { @class = "me-30", @style = "" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.IncludeNseCash, new { @class = "" })
+                                            @Html.LabelFor(m => m.IncludeNseCash, new { @class = "", @style = "me-30" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.ExcludeMG13Entries, new { @class = "" })
+                                            @Html.LabelFor(m => m.ExcludeMG13Entries, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.IncludeEarlypayin, new { @class = "" })
+                                            @Html.LabelFor(m => m.IncludeEarlypayin, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.Showlastmargin, new { @class = "" })
+                                            @Html.LabelFor(m => m.Showlastmargin, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.OnRealDateBasis, new { @class = "" })
+                                            @Html.LabelFor(m => m.OnRealDateBasis, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.IncludeUnReleaseVoucher, new { @class = "" })
+                                            @Html.LabelFor(m => m.IncludeUnReleaseVoucher, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.Lastpeakmargin, new { @class = "" })
+                                            @Html.LabelFor(m => m.Lastpeakmargin, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.IgnoreOptMTMBal, new { @class = "" })
+                                            @Html.LabelFor(m => m.IgnoreOptMTMBal, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 1px">
+                                            @Html.CheckBoxFor(m => m.ConsiderINR, new { @class = "" })
+                                            @Html.LabelFor(m => m.ConsiderINR, new { @class = "me-30", @style = "" })
+
+                                        </div>
+                                    </div>
+                                </div>   <!--Row-->
+                            </div>      <!--Column-->
+                            <!--Start Of Right Menu Items-->
+                            <div class="col-md-4">
+                                <div class="row">
+
+                                    <div class="col-md-7">
+                                        @Html.LabelFor(m => m.OpeningBalance, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.OpeningBalance, null, new { @class = "form-control", @ReadOnly = "true", @style = "text-align:right" })
+                                    </div>
+
+                                    <div class="col-md-7">
+                                        @Html.LabelFor(m => m.SecurityBalance, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.SecurityBalance, null, new { @class = "form-control", @ReadOnly = "true", @style = "text-align:right" })
+                                    </div>
+                                    <div class="col-md-7">
+                                        @Html.LabelFor(m => m.ClosingBalance, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.ClosingBalance, null, new { @class = "form-control", @ReadOnly = "true", @style = "text-align:right" })
+                                    </div>
+                                    <div class="col-md-7">
+                                        @Html.LabelFor(m => m.DailyMarginBalance, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.DailyMarginBalance, null, new { @class = "form-control", @ReadOnly = "true", @style = "text-align:right" })
+                                    </div>
+                                    <div class="col-md-7">
+                                        <strong>@Html.LabelFor(m => m.UnReleasedVoucherBal, new { @class = "form-label" })</strong>
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.UnReleasedVoucherBal, null, new { @class = "form-control", @ReadOnly = "true", @style = "text-align:right" })
+                                    </div>
+                                    <div class="col-md-7">
+                                        @Html.LabelFor(m => m.MtmAcBal, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.MtmAcBal, null, new { @class = "form-control", @ReadOnly = "true", @style = "text-align:right" })
+                                    </div>
+                                    <div class="col-md-7">
+                                        @Html.LabelFor(m => m.CashMarginBal, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.CashMarginBal, null, new { @class = "form-control", @ReadOnly = "true", @style = "text-align:right" })
+                                    </div>
+                                    <div class="col-md-7">
+                                        @Html.LabelFor(m => m.ClosingBalOtherBal, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.ClosingBalOtherBal, null, new { @class = "form-control", @ReadOnly = "true", @style = "text-align:right" })
+                                    </div>
+
+                                </div>  <!--Row-->
+                            </div>      <!--Column-->
+                        </div>
+                        <div class="box-footer">
+                            <input type="submit" value="Show" id="nextButton" class="btn btn-sm btn-success pull-right" name="viewSave" />
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="history.go(-1);">Back</a>
+                            <div style="float:right; ">
+
+                                @using (Html.BeginForm("ExportExcel", "ReportExport", FormMethod.Post))
+                                {
+
+                                    <input type="hidden" name="GridHtml1" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit1">Excel</button>
+                                }
+                            </div>
+                            <div style="float:right">
+
+                                @using (Html.BeginForm("ExportWord", "ReportExport", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="GridHtml2" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit2">Word</button>
+
+                                }
+                            </div>
+                            <div style="float:right">
+
+                                @using (Html.BeginForm("ExportPdf", "ReportExport", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="GridHtml3" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2 portrait" id="btnSubmit3">Pdf</button>
+
+                                }
+                            </div>
+                            <div style="float:right">
+
+                                @using (Html.BeginForm("SendEmail", "ReportExport", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="GridHtml4" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit4">Email</button>
+
+                                }
+                            </div>
+                            <div style="float:right">
+                                @using (Html.BeginForm("ExportPrint", "ReportExport", FormMethod.Post, new { target = "_blank" }))
+                                {
+
+                                    <input type="hidden" name="GridHtml5" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit5">Print</button>
+                                }
+                            </div>
+                        </div>
+
+                        if (Model.financialLedgerOutputs != null)
+
+                        {
+                            <div class="page-wrapper">
+                                <!-- Page Content-->
+                                <div class="page-content">
+                                    <!-- Page-Title -->
+                                    @Html.Partial("_Ledger", Model.financialLedgerOutputs)
+
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const content = document.querySelector("");
+        const itemsPerPage = 10;
+        let currentPage = 0;
+        const items = Array.from(content.getElementsByTagName('tr')).slice(1);
+
+        function showPage(page) {
+            const startIndex = page * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            items.forEach((item, index) => {
+                item.classList.toggle('hidden', index < startIndex || index >= endIndex);
+            });
+            updateActiveButtonStates();
+        }
+
+        function createPageButtons() {
+            const totalPages = Math.ceil(items.length / itemsPerPage);
+            const paginationContainer = document.createElement('div');
+            const paginationDiv = document.body.appendChild(paginationContainer);
+            paginationContainer.classList.add('pagination');
+
+            // Add page buttons
+            for (let i = 0; i < totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i + 1;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    showPage(currentPage);
+                    updateActiveButtonStates();
+                });
+
+                content.appendChild(paginationContainer);
+                paginationDiv.appendChild(pageButton);
+            }
+        }
+
+        function updateActiveButtonStates() {
+            const pageButtons = document.querySelectorAll('.pagination button');
+            pageButtons.forEach((button, index) => {
+                if (index === currentPage) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        createPageButtons(); // Call this function to create the page buttons initially
+        showPage(currentPage);
+    });
+</script>
+<style>
+    /*  body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 0px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        border-width: 1px 1px 0;
+        background-color: #f7f7f7;
+    }*/
+
+    .content {
+        margin: 20px;
+    }
+
+    .pagination {
+        text-align: center;
+    }
+
+        .pagination button {
+            padding: 1px 10px;
+            margin: 0 1px;
+            cursor: pointer;
+            outline: 1px solid #494a4f;
+            border-radius: 1px;
+            border: none;
+        }
+
+    .hidden {
+        clip: rect(0 0 0 0);
+        clip-path: inset(100%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    .pagination button.active {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
+
+
+

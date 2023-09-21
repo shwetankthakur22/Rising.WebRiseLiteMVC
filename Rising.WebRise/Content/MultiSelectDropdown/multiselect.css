@@ -1,0 +1,14 @@
+*, *:after, *:before{
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+}
+
+
+.multi_select_box{
+    /*width: 300px;*/
+    margin: 5px auto;
+}
+
+.multi_select_box select{
+    width: 100%;
+}

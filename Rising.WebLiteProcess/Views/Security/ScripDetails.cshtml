@@ -1,0 +1,200 @@
+﻿@using Rising.WebRise.Models
+@model ScripDetails
+@using System.Data
+@{
+    ViewBag.Title = "ScripDetails";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.bankdetails').click(function () {
+                $("#code").val("").html("");
+                $("#name").val("").html("");
+                $("#micr").val("").html("");
+                $("#rrid").val("").html("");
+
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/GetBankDetails/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (bank) {
+                        debugger
+                        $("#bcode").val(bank.BankCode).html(bank.BankCode);
+                        $("#bname").val(bank.BankName).html(bank.BankName);
+                        $("#micr").val(bank.Micr).html(bank.Micr);
+                        $("#rwid").val(bank.Rwid).html(bank.Rwid);
+                        $('#BankCodeFrom').modal('hide');
+
+                    }
+                });
+
+            });
+        });
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+}
+
+
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">SCRIP DETAILS</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("ScripDetails", "Security", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ScripCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ScripCode, null, new { @class = "form-control", @id = "scripcode" })
+                                </div>
+                                <div class="col-md-1 mb-3">
+                                    <label class="form-label" style="margin-top: 48px;"></label>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ScripCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.NseSymbol, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.NseSymbol, null, new { @class = "form-control", @id = "nsesymbol" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Limit, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Limit, null, new { @class = "form-control", @id = "limit"})
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.BseSymbol, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BseSymbol, null, new { @class = "form-control", @id = "bsesymbol" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ISINCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ISINCode, null, new { @class = "form-control" , @id = "isin" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Series, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Series, null, new { @class = "form-control", @id = "series" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Variance, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Variance, null, new { @class = "form-control", @id = "variance" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Iliquid, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Iliquid, new SelectList(new[] { "", "Y", "N" }), new { @class = "form-control", @id = "iliquid" })
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input type="submit" value="Save" name="Submit" class="btn btn-success pull-right" />
+                                <input type="submit" class="btn btn-danger pull-left" name="Submit" value="Delete" />
+                                <a href="javascript:void(0);" class="btn btn-dark" style="float: right;" onclick="history.go(-1);">Back</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="ScripCodeFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    @*<table class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Select</</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Micr</th>
+                            </tr>
+                        </thead>
+                        @if (Model.result.Tables.Count > 0)
+                        {
+                            <tbody>
+                                @{
+
+                                    foreach (DataRow rw in Model.result.Tables[0].Rows)
+                                    {
+                                        <tr>
+                                            <td><button type="button" class="btn btn-success bankdetails" data-model-id="@rw["ID"]">Select</button></td>
+                                            <td>@rw["BANKCODE"]</td>
+                                            <td>@rw["BANKNAME"]</td>
+                                            <td>@rw["MICR"]</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                      }
+                    </table>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnClosebank" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

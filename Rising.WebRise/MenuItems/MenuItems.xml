@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Menus>
+  <MenuItem Key="FinancialLedger" MenuName="Financial Ledger" ControllerName="FinancialLedger" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="NetPosition" MenuName="NetPosition" ControllerName="NetPosition" ActionName="DateRange" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="TradeConfirmation" MenuName="Trade Confirmation" ControllerName="TradeConf" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="Holding" MenuName="Holding" ControllerName="Demat" ActionName="DematHolding" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="DetailFinancialLedger" MenuName="Detail Financial Ledger" ControllerName="FinancialLedger" ActionName="DetailFinancialLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="ScripWiseLedger" MenuName="Scrip Wise Ledger" ControllerName="NetPosition" ActionName="ScripWisepPosition" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="LongShortTerm" MenuName="Capital Gains(P &#38; L Statement)" ControllerName="LongShortTerm" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+
+
+
+
+  <MenuItem Key="FinancialLedger" MenuName="Financial Ledger" ControllerName="FinancialLedger" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Future &#38; Option"> </MenuItem>
+  
+  <MenuItem Key="NetPosition" MenuName="NetPosition" ControllerName="NetPosition" ActionName="AsOnDate" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Future &#38; Option"> </MenuItem>
+  
+  <MenuItem Key="TradeConfirmation" MenuName="Trade Confirmation" ControllerName="TradeConf" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Future &#38; Option"> </MenuItem>
+  
+  <MenuItem Key="DetailFinancialLedger" MenuName="Detail Financial Ledger" ControllerName="FinancialLedger" ActionName="DetailFinancialLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Future &#38; Option"> </MenuItem>
+
+  <MenuItem Key="ScripWiseLedger" MenuName="ScripWise Ledger" ControllerName="FinancialLedger" ActionName="ScripWiseLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Future &#38; Option"> </MenuItem>
+
+  <MenuItem Key="M2MLedger" MenuName="M2M Ledger" ControllerName="FinancialLedger" ActionName="M2MLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Future &#38; Option"> </MenuItem>
+
+
+
+  <MenuItem Key="FinancialLedger" MenuName="Financial Ledger" ControllerName="FinancialLedger" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Commodity"> </MenuItem>
+
+  <MenuItem Key="NetPosition" MenuName="NetPosition" ControllerName="NetPosition" ActionName="AsOnDate" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Commodity"> </MenuItem>
+  
+  <MenuItem Key="TradeConfirmation" MenuName="Trade Confirmation" ControllerName="TradeConf" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Commodity"> </MenuItem>
+
+  <MenuItem Key="DetailFinancialLedger" MenuName="Detail Financial Ledger" ControllerName="FinancialLedger" ActionName="DetailFinancialLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Commodity"> </MenuItem>
+
+  <MenuItem Key="ScripWiseLedger" MenuName="ScripWise Ledger" ControllerName="FinancialLedger" ActionName="ScripWiseLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Commodity"> </MenuItem>
+
+  <MenuItem Key="M2MLedger" MenuName="M2M Ledger" ControllerName="FinancialLedger" ActionName="M2MLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Commodity"> </MenuItem>
+
+
+
+  <MenuItem Key="FinancialLedger" MenuName="Financial Ledger" ControllerName="FinancialLedger" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Currency"> </MenuItem>
+  
+  <MenuItem Key="NetPosition" MenuName="NetPosition" ControllerName="NetPosition" ActionName="AsOnDate" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Currency"> </MenuItem>
+  
+  <MenuItem Key="TradeConfirmation" MenuName="Trade Confirmation" ControllerName="TradeConf" ActionName="Index" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Currency"> </MenuItem>
+
+  <MenuItem Key="DetailFinancialLedger" MenuName="Detail Financial Ledger" ControllerName="FinancialLedger" ActionName="DetailFinancialLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Currency"> </MenuItem>
+
+  <MenuItem Key="ScripWiseLedger" MenuName="ScripWise Ledger" ControllerName="FinancialLedger" ActionName="ScripWiseLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Currency"> </MenuItem>
+
+  <MenuItem Key="M2MLedger" MenuName="M2M Ledger" ControllerName="FinancialLedger" ActionName="M2MLedger" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Currency"> </MenuItem>
+
+
+
+
+  <MenuItem Key="ClientMaster" MenuName="Client Master" ControllerName="DP" ActionName="ClientMaster" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Demat"> </MenuItem>
+
+  <MenuItem Key="TrxnStatement" MenuName="Trxn Statement" ControllerName="DP" ActionName="TrxnStatement" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Demat"> </MenuItem>
+
+
+  <MenuItem Key="BranchMaster" MenuName="Branch Master" ControllerName="DP" ActionName="BranchMaster" ParentMenuName="" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Demat"> </MenuItem>
+</Menus>
+

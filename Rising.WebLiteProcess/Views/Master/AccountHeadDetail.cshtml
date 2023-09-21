@@ -1,0 +1,677 @@
+﻿@using Rising.WebRise.Models
+@using System.Data
+@model AccountHeadDetail
+@{
+    ViewBag.Title = "AccountHeadDetail";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            var text = $(".text");
+            text.focus();
+        });
+    </script>
+
+
+    <script>
+    function onlyAlphabets(e, t) {
+        try {
+            if (window.event) {
+                var charCode = window.event.keyCode;
+            }
+            else if (e) {
+                var charCode = e.which;
+            }
+            else { return true; }
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 32)
+                return true;
+            else
+                return false;
+        }
+        catch (err) {
+            alert(err.Description);
+        }
+    }
+    </script>
+    @*<script>
+        function validateNumber(e) {
+            const pattern = /^[0-9]$/;
+
+            return pattern.test(e.key)
+        }
+    </script>*@
+
+<script type=text/javascript>
+        var selectedElementId = null; // Store the ID of the currently selected element
+
+        function myAccHeadFunction(idd) {
+
+            // Remove color from the previously selected element
+            if (selectedElementId) {
+                document.getElementById(selectedElementId).style.color = "";
+            }
+
+            // Apply color to the newly selected element
+            document.getElementById(idd).style.color = "red";
+
+            // Store the ID of the newly selected element
+            selectedElementId = idd;
+
+            var x = document.getElementById(idd).innerText;
+            debugger
+          //  var arry = $(idd).val();
+            var y = idd.split("_");
+
+
+            $('#AccountCode').val(x);
+          //  $('#ClientCodeTo').val(x);
+            $('#AccountDesc').val(y[0]);
+            $('#Group').val(y[1]);
+            $('#GroupDesc').val(y[2]);
+
+            document.getElementById("btnCloseAccHead").click();
+        }
+</script>
+
+<script type=text/javascript>
+        var selectedElementId = null; // Store the ID of the currently selected element
+
+        function myAccHeadbranch(idd) {
+
+            // Remove color from the previously selected element
+            if (selectedElementId) {
+                document.getElementById(selectedElementId).style.color = "";
+            }
+
+            // Apply color to the newly selected element
+            document.getElementById(idd).style.color = "red";
+
+            // Store the ID of the newly selected element
+            selectedElementId = idd;
+
+            var x = document.getElementById(idd).innerText;
+            debugger
+          //  var arry = $(idd).val();
+            var y = idd.split("_");
+
+
+            $('#Branch').val(x);
+          //  $('#ClientCodeTo').val(x);
+            $('#SubBranch').val(y[0]);
+
+            document.getElementById("btnCloseAccHeadbranch").click();
+        }
+</script>
+
+
+<script type=text/javascript>
+        var selectedElementId = null; // Store the ID of the currently selected element
+
+        function myAccHeadGroupFunction(idd) {
+
+            // Remove color from the previously selected element
+            if (selectedElementId) {
+                document.getElementById(selectedElementId).style.color = "";
+            }
+
+            // Apply color to the newly selected element
+            document.getElementById(idd).style.color = "red";
+
+            // Store the ID of the newly selected element
+            selectedElementId = idd;
+
+            var x = document.getElementById(idd).innerText;
+            debugger
+          //  var arry = $(idd).val();
+            var y = idd.split("_");
+
+
+            $('#Group').val(x);
+          //  $('#ClientCodeTo').val(x);
+            $('#GroupDesc').val(y[0]);
+
+            document.getElementById("btnCloseAccHeadGroup").click();
+        }
+</script>
+@*<script>
+
+        $(document).ready(function () {
+            $('.SearchCode').on('input', function () {
+                var id = $("#AccountCode").val()
+                debugger
+                $("#SubBranch").val("").html("");
+                $("#AccountCode").val("").html("");
+                $("#AccountDesc").val("").html("");
+                $("#Group").val("").html("");
+                $("#GroupDesc").val("").html("");
+                $("#Grouplvl2").val("").html("");
+                $("#Grouplvl3").val("").html("");
+                $("#Branch").val("").html("");
+               // var id = $(this).data('id');
+                $.ajax({
+                    url: '/Master/GetData',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { code: id },
+                    success: function (model) {
+                        debugger
+                        $("#AccountCode").val(model.AccountCode).html(model.AccountCode);
+                        $("#AccountDesc").val(model.AccountDesc).html(model.AccountDesc);
+
+
+
+
+
+                    }
+                });
+            });
+
+
+
+
+        });
+</script>*@
+
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.editButtonAcc').click(function () {
+                $("#SubBranch").val("").html("");
+                $("#AccountCode").val("").html("");
+                $("#AccountDesc").val("").html("");
+                $("#Group").val("").html("");
+                $("#GroupDesc").val("").html("");
+                $("#Grouplvl2").val("").html("");
+                $("#Grouplvl3").val("").html("");
+                $("#Branch").val("").html("");
+                //$("#rrid").val("").html("");
+                var id = $(this).data("id");
+                debugger
+                $.ajax({
+                    url: '/Master/GetAccountHeadDetails/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { id: id },
+                    success: function (bdetails) {
+                        debugger
+                        $("#subbrn").val(bdetails.SubBranch).html(bdetails.SubBranch);
+                        $("#bacno").val(bdetails.AccountCode).html(bdetails.AccountCode);
+                        $("#bname").val(bdetails.AccountDesc).html(bdetails.AccountDesc);
+                        $("#grp").val(bdetails.Group).html(bdetails.Group);
+                        $("#grpdesc").val(bdetails.GroupDesc).html(bdetails.GroupDesc);
+                        $("#grp2").val(bdetails.Grouplvl2).html(bdetails.Grouplvl2);
+                        $("#grp3").val(bdetails.Grouplvl3).html(bdetails.Grouplvl3);
+                        $("#brnch").val(bdetails.Branch).html(bdetails.Branch);
+                        //$("#rwid").val(bdetails.Rwid).html(bdetails.Rwid);
+                        $('#BankCode').modal('hide');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+         function clearTextBox() {
+             $("#SUBBRANCHIND").val("");
+             $("#PAR_CODE").val("");
+             $("#PAR_NAME").val("");
+             $("#GROUPCODE").val("");
+             $("#GROUPLEVEL1").val("");
+             $("#GROUPLEVEL2").val("");
+             $("#GROUPLEVEL3").val("");
+             $("#BRANCHIND").val("");
+         }
+    </script>
+
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                         Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["DeleteMessage"]",
+                    timer: 3000,
+                    showConfirmButton: true,
+                })
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    timer: 3000,
+                    showConfirmButton: true,
+                })
+            });
+        </script>
+    }
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Account Head Details</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("AccountHeadDetail", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX", "IBX", "IFSC" }), new { @class = "form-control text" })
+                                </div>
+
+                                <div class="col-md-2">
+                                    @Html.LabelFor(m => m.AccountCode, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.AccountCode, null, new { @class = "SearchCode form-control", @required = true })
+                                </div>
+                                <div class="col-md-1" style="padding-bottom:2px">
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#AccHeadFrom"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.LabelFor(m => m.Grouplvl2, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.Grouplvl2, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.LabelFor(m => m.AccountDesc, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.AccountDesc, null, new { @class = "form-control", runat = "server", @required = true })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.LabelFor(m => m.Group, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.Group, null, new { @class = "form-control", @required = true, @readonly = true })
+                                </div>
+                                <div class="col-md-1" style="padding-bottom:2px">
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#GroupForm"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.LabelFor(m => m.Grouplvl3, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.Grouplvl3, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.LabelFor(m => m.GroupDesc, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.GroupDesc, null, new { @class = "form-control", runat = "server", @required = true })
+                                </div>
+
+                                <div class="col-md-2">
+                                    @Html.LabelFor(m => m.Branch, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.Branch, null, new { @class = "form-control", @required = true })
+                                </div>
+                                <div class="col-md-1" style="padding-bottom:2px">
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#BranchForm"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-1">
+                                    @Html.LabelFor(m => m.Remarks, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.Remarks, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.LabelFor(m => m.SubBranch, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.SubBranch, null, new { @class = "form-control", @required = true })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.LabelFor(m => m.OpeningBal, new { @class = "form-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.OpeningBal, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownListFor(m => m.OpeningBal, new SelectList(new[] { "Debit", "Credit" }), new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2" style="margin-bottom: 15px; display:none;">
+                                    @Html.LabelFor(m => m.CONTRACT, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.CONTRACT, new SelectList(new[] { "N" }), new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input type="submit" value="Save" name="Submit" class="btn btn-success pull-right" />
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row mt-100">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+                        <div class="card" id="ExportedGrid">
+                            <div class="box">
+                                @if (Model.result.Tables.Count > 0)
+                                {
+                                    <div>
+                                        <table class="table data-table table-striped table-bordered dataTable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (var cl in Model.result.Tables[0].Columns)
+                                                    {
+                                                        <th class="table-header">@cl</th>
+                                                    }
+                                                    <th class="table-header">ACTION(EDIT)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow dr in Model.result.Tables[0].Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (var cl in dr.ItemArray)
+                                                        {
+                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</td>
+                                                        }
+                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">
+                                                            @*<button type="submit" id="btnedit" onclick="MaintenanceList(@Convert.ToString(dr[0]),@Convert.ToString(dr[1]),@Convert.ToString(dr[2]),@Convert.ToString(dr[3]),@Convert.ToString(dr[4]),@Convert.ToString(dr[5]),@Convert.ToString(dr[6]))" class="btn btn-success btn-xs">Edit</button>*@
+                                                            <button type="submit" style="height:18px; width:18px" class="btn btn-sm editButtonAcc" data-toggle="modal" data-target="#UpdateFrom" id="edit" data-id="@Convert.ToString(dr[0])"><i class="dripicons dripicons-pencil"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xl-12 col-lg-12">
+    <div class="card">
+        <div class="modal fade bd-example-modal-lg" id="UpdateFrom" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Account Head Detail</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <div class="new-user-info">
+                                @using (Html.BeginForm("EditBankHeadDetails", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX", "IBX", "IFSC" }), new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.AccountCode, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.AccountCode, null, new { @class = "form-control", @id = "bacno", @readonly = true })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.AccountDesc, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.AccountDesc, null, new { @class = "form-control", @id = "bname", runat = "server", onkeypress = "return onlyAlphabets(event,this);" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Group, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.Group, null, new { @class = "form-control", @id = "grp", @readonly = true })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.OpeningBal, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.OpeningBal, null, new { @class = "form-control", @id = "address3" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Branch, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.Branch, null, new { @class = "form-control", @id = "brnch" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.SubBranch, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.SubBranch, null, new { @class = "form-control", @id = "subbrn" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.GroupDesc, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.GroupDesc, null, new { @class = "form-control", @id = "grpdesc", runat = "server", onkeypress = "return onlyAlphabets(event,this);" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Grouplvl2, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.Grouplvl2, null, new { @class = "form-control", @id = "grp2" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Grouplvl3, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.Grouplvl3, null, new { @class = "form-control", @id = "grp3" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Remarks, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.TextBoxFor(m => m.Remarks, null, new { @class = "form-control", @id = "ifsc" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:10px">
+                                        <div class="form-group col-12 ">
+                                            <input type="submit" id="btnSave" class="btn btn-danger" name="Submit" value="Delete" onclick="return confirm('Are you sure want to delete?')" />
+                                            <input type="submit" id="btnCancel" class="btn btn-primary pull-right" name="Submit" value="Update" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="AccHeadFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="exampleTo" class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+
+                                <th>PAR_CODE</th>
+                                <th>PAR_NAME</th>
+                                <th>GROUPCODE</th>
+                                <th>GROUPLEVEL1</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter3 = 0;
+                                List<AccountHeadDetail> bdetails = Session["bdetails"] as List<AccountHeadDetail>;
+                                foreach (AccountHeadDetail rw in bdetails)
+                                {
+                                    string idd = @rw.AccountDesc + "_" + @rw.Group + "_" + @rw.GroupDesc + "_" + @counter3;
+                                    <tr>
+                                        <th><a href="#"><literal id="@idd" onclick="myAccHeadFunction('@idd')">@rw.AccountCode</literal></a></th>
+                                        <td>@rw.AccountDesc</td>
+                                        <td>@rw.Group</td>
+                                        <td>@rw.GroupDesc</td>
+                                    </tr>
+                                    counter3++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseAccHead" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="GroupForm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="exampleTo" class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>GROUPCD</th>
+                                <th>GROUPDES</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter4 = 0;
+                                List<AccountHeadDetail> bdetail = Session["bdetail"] as List<AccountHeadDetail>;
+                                foreach (AccountHeadDetail rw in bdetail)
+                                {
+                                    string idd = @rw.GroupDesc + "_" + @counter4;
+                                    <tr>
+                                        <th><a href="#"><literal id="@idd" onclick="myAccHeadGroupFunction('@idd')">@rw.Group</literal></a></th>
+                                        <td>@rw.GroupDesc</td>
+                                    </tr>
+                                    counter4++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseAccHeadGroup" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="BranchForm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="exampleTo" class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>BRANCHIND</th>
+                                <th>SUBBRANCHIND</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter6 = 0;
+                                List<AccountHeadDetail> bdetai = Session["bdetai"] as List<AccountHeadDetail>;
+                                foreach (AccountHeadDetail rw in bdetai)
+                                {
+                                    string idd = @rw.SubBranch + "_" + @counter6;
+                                    <tr>
+                                        <th><a href="#"><literal id="@idd" onclick="myAccHeadbranch('@idd')">@rw.Branch</literal></a></th>
+                                        <td>@rw.SubBranch</td>
+                                    </tr>
+                                    counter6++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseAccHeadbranch" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>

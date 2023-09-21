@@ -1,0 +1,338 @@
+﻿@using Rising.WebRise.Models
+@model ImportFileInput
+
+
+@{
+    ViewBag.Title = "PositionFileImport";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+
+    AjaxOptions opt = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnFailure = "OnFailure",
+        OnSuccess = "OnSuccess"
+    };
+}
+<script>
+    /*    const { error } = require("jquery");*/
+
+    function OnSuccess(data) {
+        debugger;
+        if (data.validated) {
+
+            var pageURL = $(location).attr("href");
+            window.location.href = pageURL;
+            if (confirm("Do you want to save data?")) {
+                input.val("Yes");
+            } else {
+                input.val("No");
+            }
+        }
+        else {
+            alert.error("error occurred");
+        }
+    }
+    function OnFailure(data) {
+        debugger;
+        alert.error("something went wrong");
+    }
+</script>
+@*@using (Ajax.BeginForm("PositionFileImport", "Process", new { @method = "PositionFile" }, opt, new { enctype = "multipart/form-data" }))*@
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Position File Import</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("PositionFileImport", "Process", new { @method = "PositionFile" }, FormMethod.Post, new { enctype = "multipart/form-data" ,id= "positionFileImport" }))
+
+                    {
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control", @id = "exchange" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.Date, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Date, null, new { @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.ImportBasis, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.ImportBasis, new SelectList(new[] { "Actual Code", "Short Name" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.SessionId, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.SessionId, new SelectList(new[] { "1", "3" }), new { @class = "form-control", @id = "session" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.File, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="custom-file">
+                                            <input id="file-upload" name="TradeFile" class="custom-file-input" type="file" />
+                                            <label class="custom-file-label" for="TradeFile">Choose file</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Records, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(m => m.Records, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.DeleteOnly, new { @class = "" })
+                                            @Html.LabelFor(m => m.DeleteOnly, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="box-footer">
+                            @*<button type="submit" class="btn btn-sm btn-primary" formaction="/Process/PositionFileImportResult" onclick="checkDataEquality();">Import</button>*@
+                            <button type="submit" class="btn btn-sm btn-primary"  onclick="checkDataEquality();">Import</button>
+
+                            <input type="submit" value="View" class="btn btn-sm btn-primary pull-right" formaction="/Process/PositionFileImportReport" />
+                            <input type="submit" value="Matching" class="btn btn-sm btn-primary pull-right" formaction="/Process/PositionMatching" />
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="history.go(-1);">Back</a>
+                        </div>
+
+                        if (Model.importFileOutput != null)
+
+                        {
+                            <div class="page-wrapper">
+                                <!-- Page Content-->
+                                <div class="page-content">
+                                    <!-- Page-Title -->
+                                    @Html.Partial("_PositionFileImport", Model.importFileOutput)
+
+                                </div>
+                            </div>
+                        }
+
+                        if (Model.importMatchingRecord != null)
+
+                        {
+                            <div class="page-wrapper">
+                                <!-- Page Content-->
+                                <div class="page-content">
+                                    <!-- Page-Title -->
+                                    @Html.Partial("_PositionFileMatching", Model.importMatchingRecord)
+
+                                </div>
+                            </div>
+                        }
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $("#positionFileImport").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Process", "PositionFileImport")',
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    getLoadPanelInstance().show();
+                },
+    })
+</script>
+
+
+
+<script>
+
+    var isFormSubmitted = false;
+    $(document).ready(function () {
+        $('#positionFileImport').submit(function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            debugger;
+            var formData = new FormData(this); // Create a FormData object with form data
+        },
+
+            //isFormSubmitted = true
+    
+    
+    
+        $.ajax({
+            url: '/Process/PositionFileImportResult',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+        })
+
+    //$(document).ready(function () {
+        if (TempData["sweetAlertOptions"] != null) {
+            var sweetAlertOptions = @Html.Raw(TempData["sweetAlertOptions"]);
+
+            if (sweetAlertOptions) {
+                Swal.fire(sweetAlertOptions)
+            }
+        }
+
+    });
+</script>
+
+<script>
+    //var isFormSubmitted = false; // Define and initialize the variable
+
+    function checkDataEquality() {
+        // Get the selected trade date value
+        debugger;
+        var exchange = document.getElementById("exchange").value;
+        var tradeDate = document.getElementById("date-end").value;
+        var fileInput = document.getElementById("file-upload").value;
+        var extractName = fileInput.substring(0, 19);
+        var fileName = extractName.substring(extractName.length - 7);
+        var sessionId = document.getElementById("session").value;
+        var sessionExt = fileInput.substring(28, 29);
+
+        if (isFormSubmitted) {
+            return false; // Form is already submitted, no need to submit again
+        }
+        if (exchange == "NSE" && fileName == "G_T_PS0" && sessionId == sessionId) {
+            var dateresult = fileInput.substr(fileInput.length - 12, 8);
+            var dateObject = dateresult.replace(/(\d\d)(\d\d)(\d\d\d\d)/, "$3-$2-$1");
+            if (tradeDate != dateObject) {
+                Swal.fire({
+                    title: "Date Mismatch",
+                    text: "The Date Doesn't Match The File Date...!",
+                    icon: "information",
+                    confirmButtonText: "OK",
+                });
+                //return false;
+
+
+            }
+            $.ajax({
+                url: '/Process/PositionFileOverrideConfirmation',
+                type: 'GET',
+                data: { TradeDate: tradeDate, Exchange: exchange, SessionId: sessionId },
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    debugger;
+                    if (response.IsConfirmed == true) {
+                        if (confirm("want to override data?")) {
+
+                            $.ajax({
+                                url: '/Process/PositionFileImportResult',
+                                type: 'GET',
+                                data: {  },
+                                dataType: "json",
+                                async: false,
+                                success: function (response) {
+                                    debugger;
+                                    if (response.IsConfirmed == true) {
+                                        if (confirm("want to override data?")) {
+
+                                            $('#positionFileImport').submit();
+                                        }
+                                        else {
+
+                                        }
+                                    }
+                                    // Handle the response from the server here
+                                    //console.log(response);
+                                    //return false;
+                                }
+
+                            });
+
+                        }
+                        else {
+                           
+                        }
+                    }
+                    // Handle the response from the server here
+                    //console.log(response);
+                    //return false;
+                }
+
+            });
+            return false;
+        }
+        //else (exchange == "INX" && fileName == "INX_MS_") {
+        //    var dateResult = fileInput.substr(fileInput.length - 14, 8);
+        //    var dateobject = dateResult.replace(/(\d\d\d\d)(\d\d)(\d\d)/, "$1-$2-$3");
+        //    if (tradeDate != dateobject) {
+        //        Swal.fire({
+        //            title: "Date Mismatch",
+        //            text: "The Date Doesn't Match The File Date...!",
+        //            icon: "information",
+        //            confirmButtonText: "OK",
+        //        });
+        //        return false;
+        //    }
+
+        //    if (document.getElementById("session").value != sessionId) {
+        //        Swal.fire({
+        //            title: "Check Session",
+        //            text: "Wrong Session Selection...!",
+        //            icon: "information",
+        //            confirmButtonText: "OK",
+        //        });
+        //        return false;
+        //    }
+        //}
+
+
+    }
+</script>
+
+

@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewBag.Title = "TradingHolidays";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    <style>
+      
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #808080;
+            border-collapse: collapse;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            color: #fff;
+            background: #00bcd4;
+        }
+    </style>
+}
+
+
+<div class="page-wrapper" style="margin-top: 72px;">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7" id="Ledger" style="margin: auto;">
+
+
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header" style="background-color:#eb2c2e70;">
+                        <h4 class="card-title" style="color:black">Trading Holidays List</h4>
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">                     
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 14px;font-weight: bold;color:white;text-align:center;">SR.NO</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 14px;font-weight: bold;color:white;text-align:center;">Date</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 14px;font-weight: bold;color:white;text-align:center;">Day</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 14px;font-weight: bold;color:white;text-align:center;">Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="text-align:center">
+                                                        <td>1</td>
+                                                        <td>26-Jan-2021</td>
+                                                        <td>Tuesday</td>
+                                                        <td>Republic Day</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>2</td>
+                                                        <td>11-Mar-2021</td>
+                                                        <td>Thursday</td>
+                                                        <td>Mahashivratri</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>3</td>
+                                                        <td>29-Mar-2021</td>
+                                                        <td>Monday</td>
+                                                        <td>Holi</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>4</td>
+                                                        <td>02-Apr-2021</td>
+                                                        <td>Friday</td>
+                                                        <td>Good Friday</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>5</td>
+                                                        <td>14-Apr-2021</td>
+                                                        <td>Wednesday</td>
+                                                        <td>Dr.Baba Saheb Ambedkar Jayanti</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>6</td>
+                                                        <td>21-Apr-20211</td>
+                                                        <td>Wednesday</td>
+                                                        <td>Ram Navami</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>7</td>
+                                                        <td>13-May-2021	</td>
+                                                        <td>Thursday</td>
+                                                        <td>Id-Ul-Fitr (Ramzan ID)</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>8</td>
+                                                        <td>21-Jul-2021</td>
+                                                        <td>Wednesday</td>
+                                                        <td>Bakri Id</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>9</td>
+                                                        <td>19-Aug-2021</td>
+                                                        <td>Thursday</td>
+                                                        <td>Moharram</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>10</td>
+                                                        <td>10-Sep-2021</td>
+                                                        <td>Friday</td>
+                                                        <td>Ganesh Chaturthi</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>11</td>
+                                                        <td>15-Oct-2021</td>
+                                                        <td>Friday</td>
+                                                        <td>Dussehra</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>12</td>
+                                                        <td>05-Nov-2021</td>
+                                                        <td>Friday</td>
+                                                        <td>Diwali-Balipratipada</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>13</td>
+                                                        <td>19-Nov-2021</td>
+                                                        <td>Friday</td>
+                                                        <td>Gurunanak Jayanti</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <p><b>The holidays falling on Saturday / Sunday are as follows:</b></p>
+
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 14px;font-weight: bold;color:white;text-align:center;">SR.NO</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 14px;font-weight: bold;color:white;text-align:center;">Date</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 14px;font-weight: bold;color:white;text-align:center;">Day</th>
+                                                        <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 14px;font-weight: bold;color:white;text-align:center;">Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="text-align:center">
+                                                        <td>1</td>
+                                                        <td>25-Apr-2021</td>
+                                                        <td>Sunday</td>
+                                                        <td>Mahavir Jayanti</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>2</td>
+                                                        <td>01-May-2021</td>
+                                                        <td>Saturday</td>
+                                                        <td>Maharashtra Day</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>3</td>
+                                                        <td>15-Aug-2021</td>
+                                                        <td>Sunday</td>
+                                                        <td>Independence Day</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>4</td>
+                                                        <td>02-Oct-2021</td>
+                                                        <td>Saturday</td>
+                                                        <td>Mahatma Gandhi Jayanti</td>
+                                                    </tr>
+                                                    <tr style="text-align:center">
+                                                        <td>5</td>
+                                                        <td>25-Dec-2021</td>
+                                                        <td>Saturday</td>
+                                                        <td>Christmas</td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Menus>
+ <MenuItem Key="UserIDMaintenance" MenuName="User ID Maintenance" ControllerName="Master" ActionName="UserIDMaintenance" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="BranchMaintenance" MenuName="Branch Maintenance" ControllerName="Master" ActionName="BranchMaintenance" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="ClientMaster" MenuName="Client Master" ControllerName="Master" ActionName="ClientMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="HolidayMaster" MenuName="Holiday Master" ControllerName="Master" ActionName="HolidayMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+  
+ <MenuItem Key="BankMaster" MenuName="Bank Master" ControllerName="Master" ActionName="BankMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+    
+ <MenuItem Key="StateMaster" MenuName="State Master" ControllerName="Master" ActionName="StateMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+  
+ <MenuItem Key="ExchangeMaster" MenuName="Exchange Master" ControllerName="Master" ActionName="ExchangeMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="ContractNote" MenuName="Contract Specification" ControllerName="Master" ActionName="ContractSpecification" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+ 
+  
+  <!--<MenuItem Key="ContractNote" MenuName="Contract Note" ControllerName="Report" ActionName="ContractNote" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>-->
+
+  <MenuItem Key="GST Report" MenuName="GST Report" ControllerName="Report" ActionName="GSTReport" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+  
+  <MenuItem Key="Day Summary" MenuName="Day Summary" ControllerName="Report" ActionName="DaySummary" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="Day Book" MenuName="Day Book" ControllerName="Report" ActionName="DayBook" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="UserIDWiseSummary" MenuName="UserIDWise Summary" ControllerName="Report" ActionName="UserIDWiseSummary" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="PortfolioAndExposure" MenuName="Portfolio And Exposure" ControllerName="Report" ActionName="PortfolioAndExposure" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="IncomeTaxTurnOver" MenuName="IncomeTax TurnOver Report" ControllerName="Report" ActionName="IncomeTaxTurnOver" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="PositionFileImport" MenuName="Position Import" ControllerName="Process" ActionName="PositionFileImport" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+  
+  
+  <!--<MenuItem Key="ContractNoteCustodian" MenuName="Contract Note Custodian" ControllerName="Report" ActionName="ContractNoteCustodian" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>-->
+  
+ 
+  <!--<MenuItem Key="TMMaster" MenuName="TM Master" ControllerName="Master" ActionName="TMMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="SettlementMasterImport" MenuName="Settlement Schedule Creation" ControllerName="Master" ActionName="SettlementMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+ 
+ <MenuItem Key="SettlementMasterImport" MenuName="Settlement Import" ControllerName="Master" ActionName="SettlementMasterImport" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="SettlementTypeEntry" MenuName="Settlement Type Entry/Edit" ControllerName="Master" ActionName="SettlementTypeEntry" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="ScripMaster" MenuName="Scrip Master" ControllerName="Master" ActionName="ScripMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="RateImport" MenuName="Rate Import" ControllerName="RateImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="STTImport" MenuName="STT Import" ControllerName="STTImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="StampDutyImport" MenuName="StampDuty Import" ControllerName="StampDutyImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="PositionImport" MenuName="Position Import" ControllerName="PositionImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="MarginImport" MenuName="Margin Import" ControllerName="MarginImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+ 
+ <MenuItem Key="TradeEdit" MenuName="Trade Edit" ControllerName="TradeEdit" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>-->
+
+  <MenuItem Key="TradeImport" MenuName="Trade Import" ControllerName="Process" ActionName="TradeImport" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="ClosingPriceImport" MenuName="Closing Import" ControllerName="Process" ActionName="ClosingPriceImport" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+ 
+  <MenuItem Key="CloseRateEntry" MenuName="Closing Rate Entry" ControllerName="Process" ActionName="CloseRateEntry" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="CloseRateExpiry" MenuName="Closing Rate Entry(on Exp.)" ControllerName="Process" ActionName="CloseRateExpiry" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+
+  <MenuItem Key="DebtorsCreditors" MenuName="Debtors Creditors List" ControllerName="Financial" ActionName="DebtorsCreditors" ParentMenuName="Financial" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+ 
+ <MenuItem Key="TrialBalance" MenuName="Trial Balance" ControllerName="Financial" ActionName="TrialBalanceInput" ParentMenuName="Financial" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+ 
+ 
+ <MenuItem Key="TransactionDeletion" MenuName="Transaction Deletion" ControllerName="Utility" ActionName="TransactionDelete" ParentMenuName="Utilities" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="ContractDeletion" MenuName="Contract Deletion" ControllerName="Utility" ActionName="ContractDelete" ParentMenuName="Utilities" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="ExpiryUpdate" MenuName="Expiry Update" ControllerName="Utility" ActionName="ExpiryUpdate" ParentMenuName="Utilities" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ 
+
+ <MenuItem Key="FinancialLedger" MenuName="Financial Ledger" ControllerName="Report" ActionName="Index" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="TradeReport" MenuName="Trade Confirmation" ControllerName="TradeConf" ActionName="Index" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+ 
+ <MenuItem Key="DematLedger" MenuName="Demat Ledger" ControllerName="Report" ActionName="DematLedger" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ <MenuItem Key="BillSummary" MenuName="Bill Summary" ControllerName="Report" ActionName="BillSummary" ParentMenuName="Bills" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+ 
+
+ <MenuItem Key="TradeImport" MenuName="Trade Import" ControllerName="Process" ActionName="TradeImportFO" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Future &#38; Option"> </MenuItem>
+ 
+ <MenuItem Key="TradeImport" MenuName="Trade Import" ControllerName="Process" ActionName="TradeImportComm" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Commodity"> </MenuItem>
+
+ <MenuItem Key="TradeImport" MenuName="Trade Import" ControllerName="Process" ActionName="TradeImportCurr" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Currency"> </MenuItem>
+
+  <MenuItem Key="BankAccountDetails" MenuName="Bank Account Details" ControllerName="Master" ActionName="BankAccountDetails" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="AccountHeadDetail" MenuName="Account Head Detail" ControllerName="Master" ActionName="AccountHeadDetail" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+  
+  <MenuItem Key="TMMaster" MenuName="TM Master" ControllerName="Master" ActionName="TMMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+
+</Menus>
+

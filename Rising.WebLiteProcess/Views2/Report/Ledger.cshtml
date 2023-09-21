@@ -1,0 +1,218 @@
+﻿@model Rising.WebRise.Models.FinancialLedgerOutput
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Financial Ledger";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+
+
+}
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="Ledger">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>FINANCIAL LEDGER</h5>
+                        
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-lg-8">
+                                <div class="btn btn-danger btn-sm mr-2"> Client : @Model.ClientCode </div>
+                                
+                                <div class="btn btn-primary btn-sm mr-2"> Opening Balance : @Model.OpeningBalance    </div>
+                                 <div class="btn btn-danger btn-sm mr-2"> Closing Balance : @Model.ClosingBalance   </div>
+                                
+                              
+                             
+                                <div class="btn btn-info btn-sm mr-2">Date Range  : @Model.DateFrom.ToString("dd-MM-yyyy")  to   @Model.DateTo.ToString("dd-MM-yyyy")</div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div style="float:right">
+
+                                    <a href="javascript:void(0);" class="btn btn-dark btn-sm mr-2" onclick="history.go(-1);">Back</a>
+
+                                </div>
+                                <div style="float:right; ">
+
+                                    @using (Html.BeginForm("ExportExcel", "ReportExport", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml1" />
+                                        <button type="submit" class="btn btn-success btn-sm mr-2" id="btnSubmit1">Excel</button>
+
+                                    }
+
+
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportWord", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml2" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit2">Word</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportPdf", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml3" />
+                                        <button type="submit" class="btn btn-danger btn-sm mr-2" id="btnSubmit3">Pdf</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("SendEmail", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml4" />
+                                        <button type="submit" class="btn btn-warning btn-sm mr-2" id="btnSubmit4">Email</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+                                    @using (Html.BeginForm("ExportPrint", "ReportExport", FormMethod.Post, new { target = "_blank" }))
+                                    {
+
+                                        <input type="hidden" name="GridHtml5" />
+                                        <button type="submit" class="btn btn-info btn-sm mr-2" id="btnSubmit5">Print</button>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!--end row-->
+
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="box-body" style="background-color:white;">
+                                            <div class="table-responsive table-box"  style="height:100%">
+                                                <table class="table table-bordered table-responsive">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="table-header">DATE</th>
+                                                            <th class="table-header">NARRATION</th>
+                                                            <th class="table-header">TRADE DATE</th>
+                                                            <th class="table-header">BILLNO</th>
+                                                            <th class="table-header">CHQNO</th>
+                                                            <th class="table-header">DEBIT</th>
+                                                            <th class="table-header">CREDIT</th>
+                                                            <th class="table-header">NET</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            string ccode = "gsdfgsdfgfdgdf";
+                                                            string clBal = "0.00";
+                                                            foreach (Rising.WebRise.Models.FinancialLedgerOutputRow rw in Model.listFinancialLedgerOutputRow)
+                                                            {
+                                                                if (ccode != rw.ClientCode)
+                                                                {
+                                                                    if (ccode != "gsdfgsdfgfdgdf")
+                                                                    {
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td class="table-header">Closing Balance : </td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td class="table-header">@clBal</td>
+                                                                        </tr>
+                                                                    }
+                                                                    @*<tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td class="td-font">Code : @rw.ClientCode</td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>*@
+                                                                }
+
+                                                                <tr>
+                                                                    <td class="td-font">@rw.Date.ToString("dd/MM/yyyy")</td>
+                                                                    <td class="td-font">@rw.Narration</td>
+                                                                    <td class="td-font">@rw.ValueDate.ToString("dd/MM/yyyy")</td>
+
+                                                                    @if (rw.BillNo.Contains("FDLY") == true || rw.BillNo.Contains("FEXP") == true || rw.BillNo.Contains("OPTDLY") == true || rw.BillNo.Contains("OPTEXAS") == true || rw.BillNo.Contains("OPEXP") == true || rw.BillNo.Contains("DLV") == true)
+                                                                    {
+                                                                        <td class="td-font">
+                                                                            @Html.ActionLink(rw.BillNo, "BillDetail", "FinancialLedger", new { billno = rw.BillNo.Replace("/", "__"), trndate = rw.ValueDate, segment = rw.Segment, cd = rw.ClientCode }, null)
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td class="td-font">@rw.BillNo</td>
+                                                                    }
+                                                                    @*(@rw.CHQNO=="" ? "" : (@rw.CHQNO.Length > 6 ? @rw.CHQNO.Substring(@rw.CHQNO.Length - 5) : @rw.CHQNO;))*@
+                                                                    <td class="td-font">@rw.CHQNO</td>
+                                                                    <td class="td-font">@rw.Debit</td>
+                                                                    <td class="td-font">@rw.Credit</td>
+                                                                    <td class="td-font">@rw.RUNBAL</td>
+                                                                </tr>
+                                                                ccode = rw.ClientCode;
+                                                                clBal = rw.RUNBAL;
+                                                            }
+                                                            <tr>
+                                                                <td style="background:#dbdbdb"></td>
+                                                                <td class="td-font" style="background:#dbdbdb"><b>Closing Balance : </b></td>
+                                                                <td style="background:#dbdbdb"></td>
+                                                                <td style="background:#dbdbdb"></td>
+                                                                <td style="background:#dbdbdb"></td>
+                                                                <td style="background:#dbdbdb"></td>
+                                                                <td style="background:#dbdbdb"></td>
+                                                                <td class="td-font" style="background:#dbdbdb"><b>@clBal</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                              
+                                                                <td colspan="8" style="font-weight:600">Unless constituent notifies us within 30 days of reciept of this statement of any discrepancy found by him/her in this statement of account, it will be taken that he/she has found his account correct</td>
+
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,137 @@
+﻿@using Rising.WebRise.Models
+@model TrialBalanceInOut
+@using System.Data
+
+@{
+    ViewBag.Title = "TrialBalance";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="Ledger">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Trial Balance</h5>
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-lg-8">
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div style="float:right">
+
+                                    <a href="javascript:void(0);" class="btn btn-dark btn-sm mr-2" onclick="history.go(-1);">Back</a>
+
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportExcel", "ReportExport", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml1" />
+                                        <button type="submit" class="btn btn-success btn-sm mr-2" id="btnSubmit1">Excel</button>
+
+                                    }
+
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportWord", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml2" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit2">Word</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportPdf", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml3" />
+                                        <button type="submit" class="btn btn-danger btn-sm mr-2" id="btnSubmit3">Pdf</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("SendEmail", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml4" />
+                                        <button type="submit" class="btn btn-warning btn-sm mr-2" id="btnSubmit4">Email</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+                                    @using (Html.BeginForm("ExportPrint", "ReportExport", FormMethod.Post, new { target = "_blank" }))
+                                    {
+
+                                        <input type="hidden" name="GridHtml5" />
+                                        <button type="submit" class="btn btn-success btn-sm mr-2" id="btnSubmit5">Print</button>
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!--end row-->
+
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="box-body" style="background-color: beige;">
+                                            <div class="table-responsive table-box">
+                                                <table style="width:1335px">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="table-header">CLIENT CODE</th>
+                                                            <th class="table-header">CLIENT NAME</th>
+                                                            <th class="table-header">OPBAL</th>                                                     
+                                                            <th class="table-header">DEBIT</th>
+                                                            <th class="table-header">CREDIT</th>
+                                                            <th class="table-header">NET DEBIT</th>
+                                                            <th class="table-header">NET CREDIT</th>
+                                                        </tr>
+                                                    </thead>
+                                                   <tbody>
+                                                       @foreach (DataRow dr in Model.dsOut.Tables[0].Rows)
+                                                       {
+                                                           <tr>
+                                                               <td style="border: 1px solid  #d3d3d3;font-size:13px">@dr.ItemArray[4]</td>
+                                                               <td style="border: 1px solid  #d3d3d3;font-size:13px">@dr.ItemArray[5]</td>
+                                                               <td style="border: 1px solid  #d3d3d3;font-size:13px">@dr.ItemArray[6]</td>
+                                                               <td style="border: 1px solid  #d3d3d3;font-size:13px">@dr.ItemArray[7]</td>
+                                                               <td style="border: 1px solid  #d3d3d3;font-size:13px">@dr.ItemArray[8]</td>
+                                                               <td style="border: 1px solid  #d3d3d3;font-size:13px">@dr.ItemArray[12]</td>
+                                                               <td style="border: 1px solid  #d3d3d3;font-size:13px">@dr.ItemArray[13]</td>
+                                                           </tr>
+                                                       }
+
+
+                                                   </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

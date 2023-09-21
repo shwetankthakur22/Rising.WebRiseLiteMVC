@@ -1,0 +1,71 @@
+﻿@using Rising.WebRise.Models
+@model ContractSpecification
+@{
+    ViewBag.Title = "ContractSpecification";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+}
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">CONTRACT SPECIFICATION</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("ContractSpecification", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.InstrumentType, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.InstrumentType, new SelectList(new[] { "FUTCUR", "OPTCUR","FUTCOM","FUTSTK","FUTIDX","OPTIDX" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Symbol, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Symbol, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-1 mb-3">
+                                    <label class="form-label" style="margin-top: 48px;"></label>
+                                    <button type="button" class="btn btn-primary editButton" data-toggle="modal" data-target="#SymbolCode"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+
+                                    @Html.LabelFor(m => m.ExpiryDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ExpiryDate, null, new { @Value = Model.ExpiryDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.LotSize, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.LotSize, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="box-footer">
+                                <input type="submit" value="Save" class="btn btn-success pull-right" />
+                                <a href="javascript:void(0);" class="btn btn-danger" onclick="history.go(-1);">Back</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

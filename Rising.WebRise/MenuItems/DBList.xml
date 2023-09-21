@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DB>
+  <DBItem DBName="NSE" FinDBUser="SYSADM" OtherDBUser="SYSADM" Exchange="NSE" Visible="1" Group="Cash Segment" CompGroup="1"> </DBItem>
+  <DBItem DBName="BSE" FinDBUser="SYSADM" OtherDBUser="SYSADM" Exchange="BSE" Visible="1" Group="Cash Segment" CompGroup="1"> </DBItem>
+  
+  <DBItem DBName="NFO" FinDBUser="SYSADM" OtherDBUser="SYSADM" Exchange="NFO" Visible="1" Group="Future &#38; Option" CompGroup="2"> </DBItem>
+  
+  <DBItem DBName="MCOM" FinDBUser="COMM" OtherDBUser="COMM" Exchange="MCOM" Visible="1" Group="Commodity" CompGroup="3"> </DBItem>
+  <DBItem DBName="NCDEX" FinDBUser="COMM" OtherDBUser="COMM" Exchange="NDEX" Visible="1" Group="Commodity" CompGroup="3"> </DBItem>
+  
+  <DBItem DBName="NSECD" FinDBUser="SYSADM" OtherDBUser="CURR" Exchange="NCD" Visible="1" Group="Currency" CompGroup="4"> </DBItem>
+  
+  <DBItem DBName="CDSL" FinDBUser="SYSADM" OtherDBUser="SYSADM" Exchange="CDSL" Visible="1" Group="Demat" CompGroup="5"> </DBItem>
+</DB>

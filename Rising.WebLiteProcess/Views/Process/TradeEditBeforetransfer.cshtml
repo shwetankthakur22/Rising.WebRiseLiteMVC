@@ -1,0 +1,168 @@
+﻿@using Rising.WebRise.Models
+@model TradeEditAftertransferIn
+
+@using System.Data
+@{
+    ViewBag.Title = "TradeEditBeforetransfer";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Trade Edi tAfter Transfer</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("TradeEditAftertransfer", "Process", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div>
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-3 col-12">
+
+                                    @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "BSE", "NFO" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.TradeDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.TradeDate, null, new { @class = "form-control datearea", @onclick = "showCalendarControl(this);" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.brokercode, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.brokercode, new SelectList(new[] { "1" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Index, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Index, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Contract, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Contract, new { @class = "form-control" })
+                                </div>
+
+                                <div class="col-md-3 col-12" style="margin-top:40px">
+                                    @Html.LabelFor(m => m.Custodian, new { @class = "form-label" })
+                                    <div class="checkbox d-inline-block mr-3">
+                                        <input type="checkbox" class="checkbox-input" id="checkbox2">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12" style="margin-top:40px">
+                                    @Html.LabelFor(m => m.showClient, new { @class = "form-label" })
+                                    <div class="checkbox d-inline-block mr-3">
+                                        <input type="checkbox" class="checkbox-input" id="checkbox2">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12" style="margin-top:40px">
+                                    @Html.LabelFor(m => m.showTransactions, new { @class = "form-label" })
+                                    <div class="checkbox d-inline-block mr-3">
+                                        <input type="checkbox" class="checkbox-input" id="checkbox2">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-3 col-12">
+
+                                    @Html.LabelFor(m => m.Client, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Client, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.userid, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.userid, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Search, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Search, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.option, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.option, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.tradepp, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.tradepp, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.orderby, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.orderby, new SelectList(new[] { "Symbol-Time" }), new { @class = "form-control" })
+                                </div>
+
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.originalcid, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.originalcid, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.replacecode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.replacecode, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.buyqty, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.buyqty, new { @class = "form-control" })
+                                </div>
+
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.saleqty, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.saleqty, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.CtclId, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.CtclId, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="custom-control custom-checkbox custom-control-inline rtl-mr-0">
+                                    <input type="checkbox" class="custom-control-input" checked id="customCheck5">
+                                    <label class="custom-control-label" for="customCheck5">Buy Trxn</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline rtl-mr-0">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
+                                    <label class="custom-control-label" for="customCheck6">Sale Trxn</label>
+                                </div>
+
+                                <div class="custom-control custom-checkbox custom-control-inline rtl-mr-0">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                    <label class="custom-control-label" for="customCheck7">All</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12 ">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-success pull-right">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="row mt-100">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                        <div class="card" id="ExportedGrid">
+                            <div class="box">
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

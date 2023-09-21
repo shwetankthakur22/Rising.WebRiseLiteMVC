@@ -1,0 +1,183 @@
+﻿@using Rising.WebRise.Models
+@model CloseRateEntryOut
+@using GridMvc.Html
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="Ledger">
+                <div class="card">
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="box-body" style="background-color: white;">
+                                            <div class="table-responsive table-box" style="height:100%">
+                                                <table style="width:1050px" id="myTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">WDATE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">CONT NAME</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">EXPIRY DATE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">CLOSE PRICE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">STRIKE PRICE</th>
+                                                            <th class="table-header" style="background-color: #2b6f97; color: white; text-align:center; vertical-align: top;">OPTION TYPE</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody >
+                                                        @{
+                                                            foreach (Rising.WebRise.Models.CloseRateEntryOutRow rw in Model.listCloseRateEntryOutRow)
+                                                            {
+                                                                <tr>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.TrDate.ToShortDateString()</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.ContName</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.ExpiryDate.ToShortDateString()</td>
+                                                                    <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;" contenteditable="true" onkeypress="return validateNumber(e)"> @rw.ClosePrice</td>
+                                                                    <td class="td-font" style="text-align: right;font-size:12px;border: 1px solid  #6497b5;">@rw.StrikePrice</td>
+                                                                    <td class="td-font" style="text-align: center;font-size:12px;border: 1px solid  #6497b5;">@rw.OptionType</td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script>
+    $(document).ready(function () {
+        $('#myTable td').keydown(function (event) {
+            if (event.keyCode == 38) { // Up Arrow Key
+                event.preventDefault();
+                var cellindex = $(this).index();
+                var rowindex = $(this).parents('tr').index() - 0;
+                $(this).parents('table').find('tr:eq(' + rowindex + ') td').focus();
+            } else if (event.keyCode == 40) { // Down Arrow Key
+                event.preventDefault();
+                var cellindex = $(this).index();
+                var rowindex = $(this).parents('tr').index() + 2;
+                $(this).parents('table').find('tr:eq(' + rowindex + ') td').focus();
+            }
+            else if (event.keyCode == 13) { // Enter Key
+                event.preventDefault();
+                var cellindex = $(this).index();
+                var rowindex = $(this).parents('tr').index() + 2;
+                $(this).parents('table').find('tr:eq(' + rowindex + ') td').focus();
+            }
+
+            //if (event.keyCode == 38 || event.keyCode == 40 || event.keyCode == 13) { // Up, Down, or Enter Key
+            //    event.preventDefault();
+            //    var cell = $(this)[0];
+            //    var range = document.createRange();
+            //    range.selectNodeContents(cell);
+            //    var selection = window.getSelection();
+            //    selection.removeAllRanges();
+            //    selection.addRange(range);
+            //}
+
+
+        });
+    });
+</script>*@
+
+
+<script>
+    function updateClosePrice() {
+        // Get the table element.
+        var table = document.getElementById("myTable");
+
+        // Get all the rows in the table.
+        var rows = table.querySelectorAll("tr");
+
+        // Loop through the rows and update the close price in each row.
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var closePriceCell = row.querySelector("td.td-font:nth-child(4)");
+            closePriceCell.innerHTML = "100";
+        }
+    }
+
+    // Attach the updateClosePrice() function to a button click event.
+    document.getElementById("performBulkUpdate").addEventListener("click", updateClosePrice);
+
+</script>
+
+<script>
+        function validateNumber(e) {
+            const pattern = /^[0-9]$/;
+
+            return pattern.test(e.key)
+        }
+</script>
+
+
+
+
+<!--This JavaScript/jQuery code enhances a table with the ID 'myTable' to allow keyboard navigation using the 
+    Up and Down arrow keys. It selects and focuses on adjacent cells while selecting their content for editing. 
+    The Enter key functions similarly to the Down arrow key, facilitating efficient table interaction.-->
+<script>
+    $(document).ready(function () {
+        $('#myTable td').keydown(function (event) {
+            if (event.keyCode == 38) { // Up Arrow Key
+                event.preventDefault();
+                var cell = $(this);
+                var cellindex = cell.index();
+                var row = cell.closest('tr');
+                var rowIndex = row.index();
+                if (rowIndex > 0) {
+                    var newRow = row.prev('tr');
+                    var newCell = newRow.find('td:eq(' + cellindex + ')');
+                    newCell.focus();
+                    selectCellContent(newCell);
+                }
+            } else if (event.keyCode == 40) { // Down Arrow Key
+                event.preventDefault();
+                var cell = $(this);
+                var cellindex = cell.index();
+                var row = cell.closest('tr');
+                var rowIndex = row.index();
+                var numRows = row.closest('tbody').find('tr').length;
+                if (rowIndex < numRows - 1) {
+                    var newRow = row.next('tr');
+                    var newCell = newRow.find('td:eq(' + cellindex + ')');
+                    newCell.focus();
+                    selectCellContent(newCell);
+                }
+            } else if (event.keyCode == 13) { // Enter Key
+                event.preventDefault();
+                var cell = $(this);
+                var cellindex = cell.index();
+                var row = cell.closest('tr');
+                var rowIndex = row.index();
+                var numRows = row.closest('tbody').find('tr').length;
+                if (rowIndex < numRows - 1) {
+                    var newRow = row.next('tr');
+                    var newCell = newRow.find('td:eq(' + cellindex + ')');
+                    newCell.focus();
+                    selectCellContent(newCell);
+                }
+            }
+        });
+    });
+
+    function selectCellContent(cell) {
+        var range = document.createRange();
+        range.selectNodeContents(cell[0]);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+</script>

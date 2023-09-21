@@ -1,0 +1,144 @@
+﻿@using Rising.WebRise.Models
+@model DebtorsCreditorsOutput
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "DebtorCredtorList";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="Ledger">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>DEBTOR CREDITOR LIST</h5>
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-lg-8">
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div style="float:right">
+
+                                    <a href="javascript:void(0);" class="btn btn-dark btn-sm mr-2" onclick="history.go(-1);">Back</a>
+
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportExcel", "ReportExport", FormMethod.Post))
+                                    {
+
+                                        <input type="hidden" name="GridHtml1" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit1">Excel</button>
+
+                                    }
+
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportWord", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml2" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit2">Word</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("ExportPdf", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml3" />
+                                        <button type="submit" class="btn btn-danger btn-sm mr-2" id="btnSubmit3">Pdf</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+
+                                    @using (Html.BeginForm("SendEmail", "ReportExport", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="GridHtml4" />
+                                        <button type="submit" class="btn btn-warning btn-sm mr-2" id="btnSubmit4">Email</button>
+
+                                    }
+                                </div>
+                                <div style="float:right">
+                                    @using (Html.BeginForm("ExportPrint", "ReportExport", FormMethod.Post, new { target = "_blank" }))
+                                    {
+
+                                        <input type="hidden" name="GridHtml5" />
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2" id="btnSubmit5">Print</button>
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!--end row-->
+
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="box-body" style="background-color: beige;">
+                                            <div class="table-responsive table-box">
+                                                <table class="table table-bordered table-responsive"style="width:1200px">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="table-header">Branch</th>
+                                                            <th class="table-header">Code</th>
+                                                            <th class="table-header">Name</th>
+                                                            <th class="table-header">Debit</th>
+                                                            <th class="table-header">Credit</th>
+                                                            <th class="table-header">Balance</th>
+                                                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+
+                                                            foreach (Rising.WebRise.Models.DebtorsCreditorsOutputRow rw in Model.listDebtorsCreditorsOutputRow)
+                                                            {
+
+
+                                                                <tr>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;">@rw.Branch</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;">@rw.Code</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;">@rw.Name</td>
+                                                                    <td style="text-align: center;font-size:12px;border: 1px solid  #d3d3d3;">@rw.Debit</td>
+                                                                    <td style="text-align: center; font-size:12px;border: 1px solid  #d3d3d3;">@rw.Credit</td>
+                                                                    <td style="text-align: center; font-size:12px;border: 1px solid  #d3d3d3;">@rw.Balance</td>
+                                                                    
+
+
+                                                                </tr>
+                                                            }
+                                                        }
+                                                       
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

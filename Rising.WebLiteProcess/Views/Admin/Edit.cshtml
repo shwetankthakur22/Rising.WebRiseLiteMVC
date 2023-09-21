@@ -1,0 +1,231 @@
+﻿@using Rising.WebRise.Models
+@model WebUserModel
+@using Rising.OracleDBHelper
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <section id="loginForm">
+            @using (Html.BeginForm("Save", "Admin", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.Label(("User Management").ToString(), new { @class = "card-title" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.ActionLink("Back to List", "Index", "Admin", new { area = "" }, new { @class = "btn btn-dark" })
+
+                    @*<div class="col-md-pull-1">
+                        @Html.LabelFor(m => m.UserID, new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.UserID)
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </div>*@
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(m => m.UserID, new { @class = "form-label" })
+                                        </div>
+                                        <div class="col-sm-9">@Html.TextBoxFor(m => m.UserID, null, new { @readonly = true, @Value = ViewBag.WebUserModel.UserID, @class = "form-control" })</div>
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(m => m.EmailID, new { @class = "form-label" })
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.TextBox("EmailID", null, new { @readonly = true, @Value = ViewBag.WebUserModel.EmailID, @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(m => m.DisableStatus, new { @class = "form-label" })
+                                        </div>
+                                    <div class="col-sm-9">
+                                        @if (ViewBag.WebUserModel.DisableStatus == true)
+                                        {@Html.CheckBoxFor(m => m.DisableStatus, new { @checked = "checked" });
+                                        }
+                                        else
+                                        { @Html.CheckBoxFor(m => m.DisableStatus);
+                                        }
+                                    </div>
+                                    </div>
+                                </div>
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(m => m.DisableDate, new { @class = "form-label" })
+                                        </div>
+                                    <div class="col-sm-9">
+                                        @Html.TextBox("DisableDate", null, new { @readonly = false, @Value = ViewBag.WebUserModel.DisableDate.ToString("dd-MMM-yyyy"), @class = "form-control" })
+                                    </div>
+                                    </div>
+                                </div>
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(m => m.RequiredPasswordPolicy, new { @class = "form-label" })
+                                        </div>
+                                    <div class="col-sm-8">
+                                        @if (ViewBag.WebUserModel.RequiredPasswordPolicy == true)
+                                        {@Html.CheckBoxFor(m => m.RequiredPasswordPolicy, new { @checked = "checked" });
+                                        }
+                                        else
+                                        { @Html.CheckBoxFor(m => m.RequiredPasswordPolicy);
+                                        }
+                                    </div>
+                                    </div>
+                                </div>
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(m => m.UserType, new { @class = "form-label" })
+                                        </div>
+                                    <div class="col-sm-9">
+                                        @Html.DropDownList("UserType", new SelectList(Enum.GetValues(typeof(UserType))), "UserType", new { @class = "form-control select2" })
+                                    </div>
+                                    </div>
+                                </div>
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(m => m.ResetPassword, new { @class = "form-label" })
+                                        </div>
+                                    <div class="col-sm-9">
+                                        @Html.TextBox("ResetPassword", null, new { @Value = ViewBag.WebUserModel.ResetPassword, @class = "form-control" })
+                                    </div>
+                                    </div>
+                                </div>
+                            <div class="form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(m => m.ResetStatus, new { @class = "form-label" })
+                                        </div>
+                                    <div class="col-sm-9">
+                                        @if (ViewBag.WebUserModel.ResetStatus == true)
+
+                                        {@Html.CheckBoxFor(m => m.ResetStatus, new { @checked = "checked" });
+                                        }
+                                        else
+                                        { @Html.CheckBoxFor(m => m.ResetStatus);
+                                        }
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-3">
+                                                @Html.LabelFor(m => m.UserName, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-sm-9">
+                                                @Html.TextBox("UserName", null, new { @readonly = true, @Value = ViewBag.WebUserModel.UserName, @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-3">
+                                                @Html.LabelFor(m => m.MobileNo, new { @class = "form-label" })
+                                                </div>
+                                            <div class="col-sm-9">
+                                                @Html.TextBox("MobileNo", null, new { @readonly = true, @Value = ViewBag.WebUserModel.MobileNo, @class = "form-control" })
+                                            </div>
+                                            </div>
+                                        </div>
+                                    <div class="form-group">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-3">
+                                                @Html.LabelFor(m => m.AllowMultiLogin, new { @class = "form-label" })
+                                                </div>
+                                            <div class="col-sm-9">
+                                                @if (ViewBag.WebUserModel.AllowMultiLogin == true)
+                                                {@Html.CheckBoxFor(m => m.AllowMultiLogin, new { @checked = "checked" });
+                                                }
+                                                else
+                                                { @Html.CheckBoxFor(m => m.AllowMultiLogin);
+                                                }
+                                                </div>
+                                            </div>
+                                       </div>
+                                    <div class="form-group">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-3">
+                                                @Html.LabelFor(m => m.ResetDate, new { @class = "form-label" })
+                                                </div>
+                                            <div class="col-sm-9">
+                                                @Html.TextBox("ResetDate", null, new { @readonly = false, @Value = ViewBag.WebUserModel.ResetDate.ToString("dd-MMM-yyyy"), @class = "form-control" })
+                                            </div>
+                                            </div>
+                                        </div>
+                                    <div class="form-group">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-3">
+                                                @Html.LabelFor(m => m.LoginStatus, new { @class = "form-label" })
+                                                </div>
+                                            <div class="col-sm-9">
+                                                @if (ViewBag.WebUserModel.LoginStatus == true)
+                                                {@Html.CheckBoxFor(m => m.LoginStatus, new { @checked = "checked" });
+                                                }
+                                                else
+                                                { @Html.CheckBoxFor(m => m.LoginStatus);
+                                                }
+                                                </div>
+                                                </div>
+                                            </div>
+                                    <div class="form-group">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-3">
+                                                @Html.LabelFor(m => m.MachineName, new { @class = "form-label" })
+                                                </div>
+                                            <div class="col-sm-9">
+                                                @Html.TextBox("MachineName", null, new { @Value = ViewBag.WebUserModel.MachineName, @class = "form-control" })
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-3">
+                                                    @Html.LabelFor(m => m.UserRights, new { @class = "form-label" })
+                                                    </div>
+                                                <div class="col-sm-9">
+                                                    @Html.TextBox("UserRights", null, new { @Value = ViewBag.WebUserModel.UserRights, @class = "form-control" })
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                        </div>
+                    
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-1">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+

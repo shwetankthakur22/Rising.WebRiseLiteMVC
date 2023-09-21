@@ -1,0 +1,322 @@
+﻿@using Rising.WebRise.Models
+@model Parameters
+@using System.Data
+@{
+    ViewBag.Title = "Parameter";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="btn btn-outline-info">Parameters</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-pills mb-12 nav-fill" id="pills-tab-1" role="tablist" style="margin-bottom: 15px;">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-home-tab-fill" data-toggle="pill" href="#pills-home-fill" role="tab" aria-controls="pills-home" aria-selected="true">Parameter Group1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab-fill" data-toggle="pill" href="#pills-profile-fill" role="tab" aria-controls="pills-profile" aria-selected="false">Parameter Group2</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-contact-tab-fill" data-toggle="pill" href="#pills-contact-fill" role="tab" aria-controls="pills-contact" aria-selected="false">Parameter Group3</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent-1">
+                    @using (Html.BeginForm("Parameter", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="tab-pane fade show active" id="pills-home-fill" role="tabpanel" aria-labelledby="pills-home-tab-fill">
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.FAYearFrom, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FAYearFrom, new { @class = "form-control", @id = "name" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.FAYearTo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FAYearTo, new { @class = "form-control", @id = "manager" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.SebiReg, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.SebiReg, new { @class = "form-control", @id = "phone" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ExpiryBillDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ExpiryBillDate, new { @class = "form-control", @id = "address1" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ServiceTaxRegNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ServiceTaxRegNo, new { @class = "form-control", @id = "address2" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.FaxNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FaxNo, new { @class = "form-control", @id = "address3" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.PhoneNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.PhoneNo, new { @class = "form-control", @id = "faxno" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.DataLockDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DataLockDate, new { @class = "form-control", @id = "gst" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.MTM, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.MTM, new { @class = "form-control", @id = "introcode" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Juridiction, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Juridiction, new { @class = "form-control", @id = "grpcode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.TraderId, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.TraderId, new SelectList(new[] { " ", "Y", "N" }), new { @class = "form-control", @id = "openchrg" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.DefaultExchange, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DefaultExchange, new { @class = "form-control", @id = "accharge" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.BrokAcCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BrokAcCode, new { @class = "form-control", @id = "regncode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.BrokAc, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BrokAc, new { @class = "form-control", @id = "rmcode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ProCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ProCode, new { @class = "form-control", @id = "rmcode" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ClgAccCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClgAccCode, new { @class = "form-control", @id = "regncode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ClearingBankAcc, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClearingBankAcc, new { @class = "form-control", @id = "rmcode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.DailyMargin, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DailyMargin, new { @class = "form-control", @id = "rmcode" })
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: 15px; display:none;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-profile-fill" role="tabpanel" aria-labelledby="pills-profile-tab-fill">
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.STaxOldRate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.STaxOldRate, new { @class = "form-control", @id = "name" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.STaxNewRate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.STaxNewRate, new { @class = "form-control", @id = "manager" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.SebiReg, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.SebiReg, new { @class = "form-control", @id = "phone" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ExpiryBillDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ExpiryBillDate, new { @class = "form-control", @id = "address1" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ServiceTaxRegNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ServiceTaxRegNo, new { @class = "form-control", @id = "address2" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.FaxNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FaxNo, new { @class = "form-control", @id = "address3" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.PhoneNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.PhoneNo, new { @class = "form-control", @id = "faxno" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.DataLockDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DataLockDate, new { @class = "form-control", @id = "gst" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.MTM, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.MTM, new { @class = "form-control", @id = "introcode" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Juridiction, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Juridiction, new { @class = "form-control", @id = "grpcode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.TraderId, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.TraderId, new SelectList(new[] { " ", "Y", "N" }), new { @class = "form-control", @id = "openchrg" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.DefaultExchange, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DefaultExchange, new { @class = "form-control", @id = "accharge" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.BrokAcCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BrokAcCode, new { @class = "form-control", @id = "regncode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.BrokAc, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BrokAc, new { @class = "form-control", @id = "rmcode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ProCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ProCode, new { @class = "form-control", @id = "rmcode" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ClgAccCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClgAccCode, new { @class = "form-control", @id = "regncode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.ClearingBankAcc, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClearingBankAcc, new { @class = "form-control", @id = "rmcode" })
+                                </div>
+                                <div class="form-group col-md-4 col-12">
+                                    @Html.LabelFor(m => m.DailyMargin, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DailyMargin, new { @class = "form-control", @id = "rmcode" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px; display:none;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="tab-pane fade" id="pills-contact-fill" role="tabpanel" aria-labelledby="pills-contact-tab-fill">
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.STaxOldRate, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.STaxOldRate, new { @class = "form-control", @id = "name" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.STaxNewRate, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.STaxNewRate, new { @class = "form-control", @id = "manager" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.SebiReg, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.SebiReg, new { @class = "form-control", @id = "phone" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.ExpiryBillDate, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.ExpiryBillDate, new { @class = "form-control", @id = "address1" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.ServiceTaxRegNo, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.ServiceTaxRegNo, new { @class = "form-control", @id = "address2" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.FaxNo, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.FaxNo, new { @class = "form-control", @id = "address3" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.PhoneNo, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.PhoneNo, new { @class = "form-control", @id = "faxno" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.DataLockDate, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.DataLockDate, new { @class = "form-control", @id = "gst" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.MTM, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.MTM, new { @class = "form-control", @id = "introcode" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.Juridiction, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.Juridiction, new { @class = "form-control", @id = "grpcode" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.TraderId, new { @class = "form-label" })
+                                        @Html.DropDownListFor(m => m.TraderId, new SelectList(new[] { " ", "Y", "N" }), new { @class = "form-control", @id = "openchrg" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.DefaultExchange, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.DefaultExchange, new { @class = "form-control", @id = "accharge" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.BrokAcCode, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.BrokAcCode, new { @class = "form-control", @id = "regncode" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.BrokAc, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.BrokAc, new { @class = "form-control", @id = "rmcode" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.ProCode, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.ProCode, new { @class = "form-control", @id = "rmcode" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.ClgAccCode, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.ClgAccCode, new { @class = "form-control", @id = "regncode" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.ClearingBankAcc, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.ClearingBankAcc, new { @class = "form-control", @id = "rmcode" })
+                                    </div>
+                                    <div class="form-group col-md-4 col-12">
+                                        @Html.LabelFor(m => m.DailyMargin, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.DailyMargin, new { @class = "form-control", @id = "rmcode" })
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 15px; display:none;">
+                                    <div class="col-md-4 col-12">
+                                        @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

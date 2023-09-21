@@ -1,0 +1,20 @@
+﻿1>------ Build started: Project: Rising.WebLiteProcess, Configuration: Debug Any CPU ------
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\TradeEditController.cs(53,30,53,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\TradeEditController.cs(78,30,78,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\FinancialLedgerController.cs(88,30,88,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\FinancialController.cs(131,24,131,27): warning CS0219: The variable 'nul' is assigned but its value is never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\Loader.cs(30,20,30,23): warning CS0168: The variable 'xxx' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\ProcessController.cs(177,30,177,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\ProcessController.cs(439,30,439,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\ProcessController.cs(694,30,694,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\ReportController.cs(364,23,364,32): warning CS1717: Assignment made to same variable; did you mean to assign something else?
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\ReportController.cs(524,30,524,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\MasterController.cs(170,13,170,19): warning CS0162: Unreachable code detected
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\MasterController.cs(412,13,412,19): warning CS0162: Unreachable code detected
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Models\Common.cs(136,30,136,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\MasterController.cs(1879,30,1879,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\MasterController.cs(1913,30,1913,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\MasterController.cs(1995,30,1995,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\MasterController.cs(2099,30,2099,32): warning CS0168: The variable 'ex' is declared but never used
+1>G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\Controllers\Loader.cs(21,29,21,38): warning CS0414: The field 'Loader.inProcess' is assigned but its value is never used
+1>  Rising.WebLiteProcess -> G:\RISING_PROJECT\Rising.WebRiseLiteMVC\Rising.WebLiteProcess\bin\Rising.WebRise.dll

@@ -1,0 +1,288 @@
+﻿@using Rising.WebRise.Models
+@model ImportFileInput
+
+
+@{
+    ViewBag.Title = "PositionImportTest";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<script>
+    @*var IsOverrideConfirmed = '@Model.IsOverrideConfirmed';*@
+
+
+    $(document).ready(function () {
+        debugger
+         var data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model,
+              Newtonsoft.Json.Formatting.Indented, new Newtonsoft.Json.JsonSerializerSettings {
+              ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+          }));
+        //document.getElementById("exchange").value = data.Exchange;
+        //document.getElementById("date-end").value = new Date(data.Date).toLocaleDateString('en-US');;
+        //document.getElementById("session").value = data.Session;
+        //document.getElementById("file-upload").value = data.FilePath;
+
+
+        if (data.IsOverrideConfirmed == true) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to perform an override action.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    debugger
+                    $.ajax({
+                        url: '/Process/PositionFileOverrideConfirmation',
+                        type: 'GET',
+                        data: { TradeDate: data.Date, Exchange: data.Exchange, SessionId: data.SessionId, IsOverrideConfirmed: data.IsOverrideConfirmed, IsDeleteConfirmed: data.IsDeleteConfirmed },
+                        dataType: "json",
+                        async: false,
+                        success: function (response) {
+                            debugger;
+
+                            if (response.success == true) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Data overridden Successfully!.',
+                                    icon: 'success',
+
+                                });
+                            }
+                            else {
+
+                            }
+
+                        }
+
+                    });
+
+                } else {
+                    // The user clicked "No" or closed the dialog
+                    Swal.fire(
+                        'Action canceled',
+                        'Your action was not performed.',
+                        'error'
+                    );
+                }
+            });
+        }
+        else if (data.IsDeleteConfirmed == true) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to perform an delete action, once deleted cannot be reverted back',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    debugger
+                    $.ajax({
+                        url: '/Process/PositionFileOverrideConfirmation',
+                        type: 'GET',
+                        data: { TradeDate: data.Date, Exchange: data.Exchange, SessionId: data.SessionId, IsOverrideConfirmed: data.IsOverrideConfirmed, IsDeleteConfirmed: data.IsDeleteConfirmed },
+                        dataType: "json",
+                        async: false,
+                        success: function (response) {
+                            debugger;
+
+                            if (response.success == true) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Data deleted Successfully!.',
+                                    icon: 'success',
+
+                                });
+                            }
+                            else {
+
+                            }
+
+                        }
+
+                    });
+
+                } else {
+                    // The user clicked "No" or closed the dialog
+                    Swal.fire(
+                        'Action canceled',
+                        'Your action was not performed.',
+                        'error'
+                    );
+                }
+            });
+        }
+
+        if (data.IsImportedSuccess == true) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Data Imported Successfully!.',
+                icon: 'success',
+
+            });
+        }
+    });
+
+    function checkFileValidation() {
+        debugger;
+        const exchange = document.getElementById("exchange").value;
+        const date = document.getElementById("date-end").value;
+        const session = document.getElementById("session").value;
+        const fileInput = document.getElementById("file-upload");
+
+        // Define the allowed values or patterns
+        debugger;
+        const allowedExchanges = ["NSE", "INX"];
+        const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+        const allowedSessions = ["1", "2"];
+
+
+        // Get the selected file name
+        debugger;
+        const tradeFileName = fileInput.value;
+        const fileName = fileInput.value.substring(16, 20);
+        const fileDateString = fileInput.value.substring(27, 35);
+        const fileDate = fileDateString.replace(/(\d\d)(\d\d)(\d\d\d\d)/, "$3-$2-$1");
+        const fileSession = fileInput.value.substring(21, 22);
+        // Validate exchange
+        if ((exchange != "NSE" || fileName != "PS03") || (date != fileDate || session != fileSession)) {
+            alert("Inavild File for Selection");
+            return false;
+        }
+
+
+        // If all validations pass, you can submit the form
+        return true;
+
+    }
+
+</script>
+
+
+
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Position File Import</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("PositionFileImportResult", "Process", new { @method = "PositionFile" }, FormMethod.Post, new { enctype = "multipart/form-data", id = "positionFileImport" }))
+
+                    {
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control", @id = "exchange" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.Date, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Date, null, new { @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.ImportBasis, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.ImportBasis, new SelectList(new[] { "Actual Code", "Short Name" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.SessionId, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.SessionId, new SelectList(new[] { "1", "2" }), new { @class = "form-control", @id = "session" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.File, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="custom-file">
+                                            <input id="file-upload" name="TradeFile" class="custom-file-input" type="file" />
+                                            <label class="custom-file-label" for="TradeFile">Choose file</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Records, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(m => m.Records, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.DeleteOnly, new { @class = "" })
+                                            @Html.LabelFor(m => m.DeleteOnly, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="box-footer">
+                            @*<button type="submit" class="btn btn-sm btn-primary" formaction="/Process/PositionFileImportResult" onclick="checkDataEquality();">Import</button>*@
+                            <button type="submit" class="btn btn-sm btn-primary" onclick="return checkFileValidation();">Import</button>
+                            <input type="submit" value="View" class="btn btn-sm btn-primary pull-right" formaction="/Process/PositionFileImportReport" />
+                            <input type="submit" value="Matching" class="btn btn-sm btn-primary pull-right" formaction="/Process/PositionMatching" />
+                            <a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="history.go(-1);">Back</a>
+                        </div>
+
+                        if (Model.importFileOutput != null)
+
+                        {
+                            <div class="page-wrapper">
+                                <!-- Page Content-->
+                                <div class="page-content">
+                                    <!-- Page-Title -->
+                                    @Html.Partial("_PositionFileImport", Model.importFileOutput)
+
+                                </div>
+                            </div>
+                        }
+
+                        if (Model.importMatchingRecord != null)
+
+                        {
+                            <div class="page-wrapper">
+                                <!-- Page Content-->
+                                <div class="page-content">
+                                    <!-- Page-Title -->
+                                    @Html.Partial("_PositionFileMatching", Model.importMatchingRecord)
+
+                                </div>
+                            </div>
+                        }
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,53 @@
+﻿@using Rising.WebRise.Models
+@model ForgetPasswordModel
+
+@{
+    ViewBag.Title = "ValidateOTP";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+
+<div class="container">
+    <div class="row px-3">
+        <div class="col-lg-10 col-xl-9 card flex-row mx-auto px-0">
+            <div class="img-left d-none d-md-flex"></div>
+            <div class="card-body">
+                <a href="@Url.Action("Index", "Login")" title="Home"><img src="~/Content/assets/img/logo.png" class="img-fluid" alt="Logo" style="height: 20%;float:right;"></a>
+                <div class="form-box px-3" style="margin-top:85px">
+                    @using (Html.BeginForm("Success", "ForgetPassword", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-input">
+                           
+                            <a class="form-control" style="border-radius: 50px !important; border: 2px solid #007bff !important;height: 45px; margin-bottom: 20px;">@ViewBag.Data.UserID</a>
+                            @Html.ValidationMessageFor(m => m.UserID, "", new { @class = "text-warning" })
+
+                        </div>
+                        <div class="form-input">
+                            <span><i class="fa fa-key"></i></span>
+                            @Html.PasswordFor(m => m.NewPassword, new { @class = "", @placeholder = "New Password" })
+                            @*@Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger" })*@
+                        </div>
+
+                        <div class="form-input">
+                            <span><i class="fa fa-key"></i></span>
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "", @placeholder = "Confirm Password" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-warning" })
+                        </div>
+                        <div class="mb-3">
+                            <p style="color:red">password must contain at least uppercase characters (A through Z),<br />
+                            lowercase characters (a through z),Numerals (0 through 9),Non-alphabetic characters (such as !, $, #, %)</p>
+                        </div>
+                        <div class="mb-3">
+
+                            <button type="submit" class="btn btn-block text-uppercase">Continue</button>
+
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

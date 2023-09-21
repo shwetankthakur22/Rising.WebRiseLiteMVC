@@ -1,0 +1,1299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8D77C518-5FD2-42F8-9010-905269B8172F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rising.WebRise</RootNamespace>
+    <AssemblyName>Rising.WebRise</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grid.Mvc.2.3.0\lib\net40\GridMvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.13\lib\itextsharp.xmlworker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\DllOut\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Rising.OracleDBHelper">
+      <HintPath>..\DllOut\Rising.OracleDBHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Rising.OracleDBManager">
+      <HintPath>..\DllOut\Rising.OracleDBManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\Accounts\AdminController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\Accounts\ForgetPasswordController.cs" />
+    <Compile Include="Controllers\Accounts\LoginController.cs" />
+    <Compile Include="Controllers\ClientHomeController.cs" />
+    <Compile Include="Controllers\Accounts\ResetPasswordController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Controllers\ProcessController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ReportExportController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TMMaster.cs" />
+    <Compile Include="Models\TradeUserIds.cs" />
+    <Compile Include="Models\ImportFileInput.cs" />
+    <Compile Include="Models\ClientDetail.cs" />
+    <Compile Include="Models\DBList.cs" />
+    <Compile Include="Models\Accounts\ForgetPasswordModel.cs" />
+    <Compile Include="Models\ClientCodeInput.cs" />
+    <Compile Include="Models\Accounts\ResetPasswordModel.cs" />
+    <Compile Include="Models\Accounts\LoginViewModels.cs" />
+    <Compile Include="Models\Accounts\IdentityModels.cs" />
+    <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\Accounts\UserLogs.cs" />
+    <Compile Include="Models\Accounts\WebUserModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\assets\css\Style.css" />
+    <Content Include="Content\assets\fonts\feather\feather-webfont6cfa.svg" />
+    <Content Include="Content\assets\fonts\fonts\font-awesome.min.css" />
+    <Content Include="Content\assets\fonts\fonts\fontawesome-webfont3e6e.svg" />
+    <Content Include="Content\assets_new\css\bootstrap.min.css" />
+    <Content Include="Content\assets_new\flags\1x1\ad.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ae.svg" />
+    <Content Include="Content\assets_new\flags\1x1\af.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ag.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ai.svg" />
+    <Content Include="Content\assets_new\flags\1x1\al.svg" />
+    <Content Include="Content\assets_new\flags\1x1\am.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ao.svg" />
+    <Content Include="Content\assets_new\flags\1x1\aq.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ar.svg" />
+    <Content Include="Content\assets_new\flags\1x1\as.svg" />
+    <Content Include="Content\assets_new\flags\1x1\at.svg" />
+    <Content Include="Content\assets_new\flags\1x1\au.svg" />
+    <Content Include="Content\assets_new\flags\1x1\aw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ax.svg" />
+    <Content Include="Content\assets_new\flags\1x1\az.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ba.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bb.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bd.svg" />
+    <Content Include="Content\assets_new\flags\1x1\be.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bf.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bh.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bi.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bj.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bl.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bo.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bq.svg" />
+    <Content Include="Content\assets_new\flags\1x1\br.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bs.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bt.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bv.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\by.svg" />
+    <Content Include="Content\assets_new\flags\1x1\bz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ca.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cc.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cd.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cf.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ch.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ci.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ck.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cl.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\co.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cu.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cv.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cx.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cy.svg" />
+    <Content Include="Content\assets_new\flags\1x1\cz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\de.svg" />
+    <Content Include="Content\assets_new\flags\1x1\dj.svg" />
+    <Content Include="Content\assets_new\flags\1x1\dk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\dm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\do.svg" />
+    <Content Include="Content\assets_new\flags\1x1\dz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ec.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ee.svg" />
+    <Content Include="Content\assets_new\flags\1x1\eg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\eh.svg" />
+    <Content Include="Content\assets_new\flags\1x1\er.svg" />
+    <Content Include="Content\assets_new\flags\1x1\es-ct.svg" />
+    <Content Include="Content\assets_new\flags\1x1\es.svg" />
+    <Content Include="Content\assets_new\flags\1x1\et.svg" />
+    <Content Include="Content\assets_new\flags\1x1\eu.svg" />
+    <Content Include="Content\assets_new\flags\1x1\fi.svg" />
+    <Content Include="Content\assets_new\flags\1x1\fj.svg" />
+    <Content Include="Content\assets_new\flags\1x1\fk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\fm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\fo.svg" />
+    <Content Include="Content\assets_new\flags\1x1\fr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ga.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gb-eng.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gb-nir.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gb-sct.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gb-wls.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gb.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gd.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ge.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gf.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gh.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gi.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gl.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gp.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gq.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gs.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gt.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gu.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\gy.svg" />
+    <Content Include="Content\assets_new\flags\1x1\hk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\hm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\hn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\hr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ht.svg" />
+    <Content Include="Content\assets_new\flags\1x1\hu.svg" />
+    <Content Include="Content\assets_new\flags\1x1\id.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ie.svg" />
+    <Content Include="Content\assets_new\flags\1x1\il.svg" />
+    <Content Include="Content\assets_new\flags\1x1\im.svg" />
+    <Content Include="Content\assets_new\flags\1x1\in.svg" />
+    <Content Include="Content\assets_new\flags\1x1\io.svg" />
+    <Content Include="Content\assets_new\flags\1x1\iq.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ir.svg" />
+    <Content Include="Content\assets_new\flags\1x1\is.svg" />
+    <Content Include="Content\assets_new\flags\1x1\it.svg" />
+    <Content Include="Content\assets_new\flags\1x1\je.svg" />
+    <Content Include="Content\assets_new\flags\1x1\jm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\jo.svg" />
+    <Content Include="Content\assets_new\flags\1x1\jp.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ke.svg" />
+    <Content Include="Content\assets_new\flags\1x1\kg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\kh.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ki.svg" />
+    <Content Include="Content\assets_new\flags\1x1\km.svg" />
+    <Content Include="Content\assets_new\flags\1x1\kn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\kp.svg" />
+    <Content Include="Content\assets_new\flags\1x1\kr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\kw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ky.svg" />
+    <Content Include="Content\assets_new\flags\1x1\kz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\la.svg" />
+    <Content Include="Content\assets_new\flags\1x1\lb.svg" />
+    <Content Include="Content\assets_new\flags\1x1\lc.svg" />
+    <Content Include="Content\assets_new\flags\1x1\li.svg" />
+    <Content Include="Content\assets_new\flags\1x1\lk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\lr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ls.svg" />
+    <Content Include="Content\assets_new\flags\1x1\lt.svg" />
+    <Content Include="Content\assets_new\flags\1x1\lu.svg" />
+    <Content Include="Content\assets_new\flags\1x1\lv.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ly.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ma.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mc.svg" />
+    <Content Include="Content\assets_new\flags\1x1\md.svg" />
+    <Content Include="Content\assets_new\flags\1x1\me.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mf.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mh.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ml.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mo.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mp.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mq.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ms.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mt.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mu.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mv.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mx.svg" />
+    <Content Include="Content\assets_new\flags\1x1\my.svg" />
+    <Content Include="Content\assets_new\flags\1x1\mz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\na.svg" />
+    <Content Include="Content\assets_new\flags\1x1\nc.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ne.svg" />
+    <Content Include="Content\assets_new\flags\1x1\nf.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ng.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ni.svg" />
+    <Content Include="Content\assets_new\flags\1x1\nl.svg" />
+    <Content Include="Content\assets_new\flags\1x1\no.svg" />
+    <Content Include="Content\assets_new\flags\1x1\np.svg" />
+    <Content Include="Content\assets_new\flags\1x1\nr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\nu.svg" />
+    <Content Include="Content\assets_new\flags\1x1\nz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\om.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pa.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pe.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pf.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ph.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pl.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ps.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pt.svg" />
+    <Content Include="Content\assets_new\flags\1x1\pw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\py.svg" />
+    <Content Include="Content\assets_new\flags\1x1\qa.svg" />
+    <Content Include="Content\assets_new\flags\1x1\re.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ro.svg" />
+    <Content Include="Content\assets_new\flags\1x1\rs.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ru.svg" />
+    <Content Include="Content\assets_new\flags\1x1\rw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sa.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sb.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sc.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sd.svg" />
+    <Content Include="Content\assets_new\flags\1x1\se.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sh.svg" />
+    <Content Include="Content\assets_new\flags\1x1\si.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sj.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sl.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\so.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ss.svg" />
+    <Content Include="Content\assets_new\flags\1x1\st.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sv.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sx.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sy.svg" />
+    <Content Include="Content\assets_new\flags\1x1\sz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tc.svg" />
+    <Content Include="Content\assets_new\flags\1x1\td.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tf.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\th.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tj.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tl.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\to.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tr.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tt.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tv.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tw.svg" />
+    <Content Include="Content\assets_new\flags\1x1\tz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ua.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ug.svg" />
+    <Content Include="Content\assets_new\flags\1x1\um.svg" />
+    <Content Include="Content\assets_new\flags\1x1\un.svg" />
+    <Content Include="Content\assets_new\flags\1x1\us.svg" />
+    <Content Include="Content\assets_new\flags\1x1\uy.svg" />
+    <Content Include="Content\assets_new\flags\1x1\uz.svg" />
+    <Content Include="Content\assets_new\flags\1x1\va.svg" />
+    <Content Include="Content\assets_new\flags\1x1\vc.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ve.svg" />
+    <Content Include="Content\assets_new\flags\1x1\vg.svg" />
+    <Content Include="Content\assets_new\flags\1x1\vi.svg" />
+    <Content Include="Content\assets_new\flags\1x1\vn.svg" />
+    <Content Include="Content\assets_new\flags\1x1\vu.svg" />
+    <Content Include="Content\assets_new\flags\1x1\wf.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ws.svg" />
+    <Content Include="Content\assets_new\flags\1x1\xk.svg" />
+    <Content Include="Content\assets_new\flags\1x1\ye.svg" />
+    <Content Include="Content\assets_new\flags\1x1\yt.svg" />
+    <Content Include="Content\assets_new\flags\1x1\za.svg" />
+    <Content Include="Content\assets_new\flags\1x1\zm.svg" />
+    <Content Include="Content\assets_new\flags\1x1\zw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ad.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ae.svg" />
+    <Content Include="Content\assets_new\flags\4x3\af.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ag.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ai.svg" />
+    <Content Include="Content\assets_new\flags\4x3\al.svg" />
+    <Content Include="Content\assets_new\flags\4x3\am.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ao.svg" />
+    <Content Include="Content\assets_new\flags\4x3\aq.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ar.svg" />
+    <Content Include="Content\assets_new\flags\4x3\as.svg" />
+    <Content Include="Content\assets_new\flags\4x3\at.svg" />
+    <Content Include="Content\assets_new\flags\4x3\au.svg" />
+    <Content Include="Content\assets_new\flags\4x3\aw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ax.svg" />
+    <Content Include="Content\assets_new\flags\4x3\az.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ba.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bb.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bd.svg" />
+    <Content Include="Content\assets_new\flags\4x3\be.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bf.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bh.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bi.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bj.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bl.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bo.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bq.svg" />
+    <Content Include="Content\assets_new\flags\4x3\br.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bs.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bt.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bv.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\by.svg" />
+    <Content Include="Content\assets_new\flags\4x3\bz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ca.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cc.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cd.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cf.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ch.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ci.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ck.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cl.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\co.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cu.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cv.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cx.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cy.svg" />
+    <Content Include="Content\assets_new\flags\4x3\cz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\de.svg" />
+    <Content Include="Content\assets_new\flags\4x3\dj.svg" />
+    <Content Include="Content\assets_new\flags\4x3\dk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\dm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\do.svg" />
+    <Content Include="Content\assets_new\flags\4x3\dz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ec.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ee.svg" />
+    <Content Include="Content\assets_new\flags\4x3\eg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\eh.svg" />
+    <Content Include="Content\assets_new\flags\4x3\er.svg" />
+    <Content Include="Content\assets_new\flags\4x3\es-ct.svg" />
+    <Content Include="Content\assets_new\flags\4x3\es.svg" />
+    <Content Include="Content\assets_new\flags\4x3\et.svg" />
+    <Content Include="Content\assets_new\flags\4x3\eu.svg" />
+    <Content Include="Content\assets_new\flags\4x3\fi.svg" />
+    <Content Include="Content\assets_new\flags\4x3\fj.svg" />
+    <Content Include="Content\assets_new\flags\4x3\fk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\fm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\fo.svg" />
+    <Content Include="Content\assets_new\flags\4x3\fr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ga.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gb-eng.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gb-nir.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gb-sct.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gb-wls.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gb.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gd.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ge.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gf.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gh.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gi.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gl.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gp.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gq.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gs.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gt.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gu.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\gy.svg" />
+    <Content Include="Content\assets_new\flags\4x3\hk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\hm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\hn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\hr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ht.svg" />
+    <Content Include="Content\assets_new\flags\4x3\hu.svg" />
+    <Content Include="Content\assets_new\flags\4x3\id.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ie.svg" />
+    <Content Include="Content\assets_new\flags\4x3\il.svg" />
+    <Content Include="Content\assets_new\flags\4x3\im.svg" />
+    <Content Include="Content\assets_new\flags\4x3\in.svg" />
+    <Content Include="Content\assets_new\flags\4x3\io.svg" />
+    <Content Include="Content\assets_new\flags\4x3\iq.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ir.svg" />
+    <Content Include="Content\assets_new\flags\4x3\is.svg" />
+    <Content Include="Content\assets_new\flags\4x3\it.svg" />
+    <Content Include="Content\assets_new\flags\4x3\je.svg" />
+    <Content Include="Content\assets_new\flags\4x3\jm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\jo.svg" />
+    <Content Include="Content\assets_new\flags\4x3\jp.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ke.svg" />
+    <Content Include="Content\assets_new\flags\4x3\kg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\kh.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ki.svg" />
+    <Content Include="Content\assets_new\flags\4x3\km.svg" />
+    <Content Include="Content\assets_new\flags\4x3\kn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\kp.svg" />
+    <Content Include="Content\assets_new\flags\4x3\kr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\kw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ky.svg" />
+    <Content Include="Content\assets_new\flags\4x3\kz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\la.svg" />
+    <Content Include="Content\assets_new\flags\4x3\lb.svg" />
+    <Content Include="Content\assets_new\flags\4x3\lc.svg" />
+    <Content Include="Content\assets_new\flags\4x3\li.svg" />
+    <Content Include="Content\assets_new\flags\4x3\lk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\lr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ls.svg" />
+    <Content Include="Content\assets_new\flags\4x3\lt.svg" />
+    <Content Include="Content\assets_new\flags\4x3\lu.svg" />
+    <Content Include="Content\assets_new\flags\4x3\lv.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ly.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ma.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mc.svg" />
+    <Content Include="Content\assets_new\flags\4x3\md.svg" />
+    <Content Include="Content\assets_new\flags\4x3\me.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mf.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mh.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ml.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mo.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mp.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mq.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ms.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mt.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mu.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mv.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mx.svg" />
+    <Content Include="Content\assets_new\flags\4x3\my.svg" />
+    <Content Include="Content\assets_new\flags\4x3\mz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\na.svg" />
+    <Content Include="Content\assets_new\flags\4x3\nc.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ne.svg" />
+    <Content Include="Content\assets_new\flags\4x3\nf.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ng.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ni.svg" />
+    <Content Include="Content\assets_new\flags\4x3\nl.svg" />
+    <Content Include="Content\assets_new\flags\4x3\no.svg" />
+    <Content Include="Content\assets_new\flags\4x3\np.svg" />
+    <Content Include="Content\assets_new\flags\4x3\nr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\nu.svg" />
+    <Content Include="Content\assets_new\flags\4x3\nz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\om.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pa.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pe.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pf.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ph.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pl.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ps.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pt.svg" />
+    <Content Include="Content\assets_new\flags\4x3\pw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\py.svg" />
+    <Content Include="Content\assets_new\flags\4x3\qa.svg" />
+    <Content Include="Content\assets_new\flags\4x3\re.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ro.svg" />
+    <Content Include="Content\assets_new\flags\4x3\rs.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ru.svg" />
+    <Content Include="Content\assets_new\flags\4x3\rw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sa.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sb.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sc.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sd.svg" />
+    <Content Include="Content\assets_new\flags\4x3\se.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sh.svg" />
+    <Content Include="Content\assets_new\flags\4x3\si.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sj.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sl.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\so.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ss.svg" />
+    <Content Include="Content\assets_new\flags\4x3\st.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sv.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sx.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sy.svg" />
+    <Content Include="Content\assets_new\flags\4x3\sz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tc.svg" />
+    <Content Include="Content\assets_new\flags\4x3\td.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tf.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\th.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tj.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tl.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\to.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tr.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tt.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tv.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tw.svg" />
+    <Content Include="Content\assets_new\flags\4x3\tz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ua.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ug.svg" />
+    <Content Include="Content\assets_new\flags\4x3\um.svg" />
+    <Content Include="Content\assets_new\flags\4x3\un.svg" />
+    <Content Include="Content\assets_new\flags\4x3\us.svg" />
+    <Content Include="Content\assets_new\flags\4x3\uy.svg" />
+    <Content Include="Content\assets_new\flags\4x3\uz.svg" />
+    <Content Include="Content\assets_new\flags\4x3\va.svg" />
+    <Content Include="Content\assets_new\flags\4x3\vc.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ve.svg" />
+    <Content Include="Content\assets_new\flags\4x3\vg.svg" />
+    <Content Include="Content\assets_new\flags\4x3\vi.svg" />
+    <Content Include="Content\assets_new\flags\4x3\vn.svg" />
+    <Content Include="Content\assets_new\flags\4x3\vu.svg" />
+    <Content Include="Content\assets_new\flags\4x3\wf.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ws.svg" />
+    <Content Include="Content\assets_new\flags\4x3\xk.svg" />
+    <Content Include="Content\assets_new\flags\4x3\ye.svg" />
+    <Content Include="Content\assets_new\flags\4x3\yt.svg" />
+    <Content Include="Content\assets_new\flags\4x3\za.svg" />
+    <Content Include="Content\assets_new\flags\4x3\zm.svg" />
+    <Content Include="Content\assets_new\flags\4x3\zw.svg" />
+    <Content Include="Content\assets_new\fonts\et-line.svg" />
+    <Content Include="Content\assets_new\fonts\feathere8ab.svg" />
+    <Content Include="Content\assets_new\fonts\fontawesome-webfont5b62.svg" />
+    <Content Include="Content\assets_new\fonts\ionicons28b528b5.svg" />
+    <Content Include="Content\assets_new\fonts\themify9f24.svg" />
+    <Content Include="Content\assets_new\images\author\author-img1.jpg" />
+    <Content Include="Content\assets_new\images\author\author-img2.jpg" />
+    <Content Include="Content\assets_new\images\author\author-img3.jpg" />
+    <Content Include="Content\assets_new\images\back_log.jpg" />
+    <Content Include="Content\assets_new\images\bg-img.jpg" />
+    <Content Include="Content\assets_new\images\bg.jpg" />
+    <Content Include="Content\assets_new\images\bg_lock.jpg" />
+    <Content Include="Content\assets_new\images\blank.html" />
+    <Content Include="Content\assets_new\images\blog-listing\03.jpg" />
+    <Content Include="Content\assets_new\images\blog-listing\04.jpg" />
+    <Content Include="Content\assets_new\images\blog\post-1.jpg" />
+    <Content Include="Content\assets_new\images\confirm.png" />
+    <Content Include="Content\assets_new\images\fancybox_loading%402x.gif" />
+    <Content Include="Content\assets_new\images\fancybox_loading.gif" />
+    <Content Include="Content\assets_new\images\fancybox_overlay.png" />
+    <Content Include="Content\assets_new\images\fancybox_sprite%402x.png" />
+    <Content Include="Content\assets_new\images\fancybox_sprite.png" />
+    <Content Include="Content\assets_new\images\favicon.png" />
+    <Content Include="Content\assets_new\images\icon-cross.png" />
+    <Content Include="Content\assets_new\images\image-attach.jpg" />
+    <Content Include="Content\assets_new\images\js-grid.png" />
+    <Content Include="Content\assets_new\images\lock-bg.jpg" />
+    <Content Include="Content\assets_new\images\login-bg.jpg" />
+    <Content Include="Content\assets_new\images\logo-dark.svg" />
+    <Content Include="Content\assets_new\images\logo-login.svg" />
+    <Content Include="Content\assets_new\images\logo.png" />
+    <Content Include="Content\assets_new\images\mobile-logo.svg" />
+    <Content Include="Content\assets_new\images\portfolio\bw1.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw10.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw2.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw3.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw4.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw5.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw6.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw7.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw8.jpg" />
+    <Content Include="Content\assets_new\images\portfolio\bw9.jpg" />
+    <Content Include="Content\assets_new\images\profile.png" />
+    <Content Include="Content\assets_new\images\register-bg.jpg" />
+    <Content Include="Content\assets_new\images\slider\slide1.jpg" />
+    <Content Include="Content\assets_new\images\slider\slide2.jpg" />
+    <Content Include="Content\assets_new\images\slider\slide3.jpg" />
+    <Content Include="Content\assets_new\images\team\member1.jpg" />
+    <Content Include="Content\assets_new\images\team\member2.jpg" />
+    <Content Include="Content\assets_new\images\user.jpg" />
+    <Content Include="Content\assets_new\images\user.png" />
+    <Content Include="Content\assets_new\js\init\C3chart-js.js" />
+    <Content Include="Content\assets_new\js\init\chart-js.js" />
+    <Content Include="Content\assets_new\js\init\chartist.js" />
+    <Content Include="Content\assets_new\js\init\code-editor.js" />
+    <Content Include="Content\assets_new\js\init\cropper.js" />
+    <Content Include="Content\assets_new\js\init\data-table.js" />
+    <Content Include="Content\assets_new\js\init\dropzone.js" />
+    <Content Include="Content\assets_new\js\init\editors.js" />
+    <Content Include="Content\assets_new\js\init\fancy.js" />
+    <Content Include="Content\assets_new\js\init\full-calendar.js" />
+    <Content Include="Content\assets_new\js\init\hop-scotch.js" />
+    <Content Include="Content\assets_new\js\init\js-grid.js" />
+    <Content Include="Content\assets_new\js\init\jsGrid-db.js" />
+    <Content Include="Content\assets_new\js\init\ladda-button.js" />
+    <Content Include="Content\assets_new\js\init\masonary.js" />
+    <Content Include="Content\assets_new\js\init\morris-js.js" />
+    <Content Include="Content\assets_new\js\init\sweet-alert.js" />
+    <Content Include="Content\assets_new\js\init\toastr.js" />
+    <Content Include="Content\assets_new\js\jquery.min.js" />
+    <Content Include="Content\assets_new\js\metisMenu.min.js" />
+    <Content Include="Content\assets_new\vendors\ace-editors\ace-builds\src-min\ace.js" />
+    <Content Include="Content\assets_new\vendors\am-charts\css\am-charts.css" />
+    <Content Include="Content\assets_new\vendors\am-charts\js\ammap.js" />
+    <Content Include="Content\assets_new\vendors\am-charts\js\continentsLow.js" />
+    <Content Include="Content\assets_new\vendors\am-charts\js\light.js" />
+    <Content Include="Content\assets_new\vendors\am-charts\js\worldLow.js" />
+    <Content Include="Content\assets_new\vendors\apex\js\apexcharts.min.js" />
+    <Content Include="Content\assets_new\vendors\charts\c3charts\c3.css" />
+    <Content Include="Content\assets_new\vendors\charts\c3charts\c3.min.js" />
+    <Content Include="Content\assets_new\vendors\charts\c3charts\d3-5.4.0.min.js" />
+    <Content Include="Content\assets_new\vendors\charts\chartist-bundle\chartist.css" />
+    <Content Include="Content\assets_new\vendors\charts\chartist-bundle\chartist.min.js" />
+    <Content Include="Content\assets_new\vendors\charts\charts-bundle\Chart.bundle.js" />
+    <Content Include="Content\assets_new\vendors\charts\float-bundle\jquery.flot.js" />
+    <Content Include="Content\assets_new\vendors\charts\float-bundle\jquery.flot.pie.js" />
+    <Content Include="Content\assets_new\vendors\charts\float-bundle\jquery.flot.resize.js" />
+    <Content Include="Content\assets_new\vendors\charts\morris-bundle\morris.css" />
+    <Content Include="Content\assets_new\vendors\charts\morris-bundle\morris.js" />
+    <Content Include="Content\assets_new\vendors\charts\morris-bundle\raphael.min.js" />
+    <Content Include="Content\assets_new\vendors\charts\sparkline\easy-pie-chart.js" />
+    <Content Include="Content\assets_new\vendors\charts\sparkline\sparklines.js" />
+    <Content Include="Content\assets_new\vendors\ck-editor\js\ckeditor.js" />
+    <Content Include="Content\assets_new\vendors\cropper\css\cropper.min.css" />
+    <Content Include="Content\assets_new\vendors\cropper\js\cropper.min.js" />
+    <Content Include="Content\assets_new\vendors\data-table\css\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\assets_new\vendors\data-table\css\jquery.dataTables.css" />
+    <Content Include="Content\assets_new\vendors\data-table\css\responsive.bootstrap.min.css" />
+    <Content Include="Content\assets_new\vendors\data-table\css\responsive.jqueryui.min.css" />
+    <Content Include="Content\assets_new\vendors\data-table\images\sort_asc.html" />
+    <Content Include="Content\assets_new\vendors\data-table\images\sort_asc_disabled.html" />
+    <Content Include="Content\assets_new\vendors\data-table\images\sort_both.html" />
+    <Content Include="Content\assets_new\vendors\data-table\images\sort_desc.html" />
+    <Content Include="Content\assets_new\vendors\data-table\images\sort_desc_disabled.html" />
+    <Content Include="Content\assets_new\vendors\data-table\js\dataTables.bootstrap4.min.js" />
+    <Content Include="Content\assets_new\vendors\data-table\js\dataTables.responsive.min.js" />
+    <Content Include="Content\assets_new\vendors\data-table\js\jquery.dataTables.js" />
+    <Content Include="Content\assets_new\vendors\data-table\js\jquery.dataTables.min.js" />
+    <Content Include="Content\assets_new\vendors\data-table\js\responsive.bootstrap.min.js" />
+    <Content Include="Content\assets_new\vendors\dropzone\css\dropzone.css" />
+    <Content Include="Content\assets_new\vendors\dropzone\js\dropzone.js" />
+    <Content Include="Content\assets_new\vendors\fullcalendar\dist\fullcalendar.min.css" />
+    <Content Include="Content\assets_new\vendors\fullcalendar\dist\fullcalendar.min.js" />
+    <Content Include="Content\assets_new\vendors\fullcalendar\dist\fullcalendar.print.min.css" />
+    <Content Include="Content\assets_new\vendors\hop-scotch\css\hopscotch.min.css" />
+    <Content Include="Content\assets_new\vendors\hop-scotch\img\sprite-green.png" />
+    <Content Include="Content\assets_new\vendors\hop-scotch\js\hopscotch.min.js" />
+    <Content Include="Content\assets_new\vendors\jquery-ui\jquery-ui.min.js" />
+    <Content Include="Content\assets_new\vendors\js-grid\css\jsgrid-theme.min.css" />
+    <Content Include="Content\assets_new\vendors\js-grid\css\jsgrid.min.css" />
+    <Content Include="Content\assets_new\vendors\js-grid\js\jsgrid.min.js" />
+    <Content Include="Content\assets_new\vendors\ladda-button\css\ladda-themeless.min.css" />
+    <Content Include="Content\assets_new\vendors\ladda-button\js\ladda.jquery.min.js" />
+    <Content Include="Content\assets_new\vendors\ladda-button\js\ladda.min.js" />
+    <Content Include="Content\assets_new\vendors\ladda-button\js\spin.min.js" />
+    <Content Include="Content\assets_new\vendors\moment\moment.js" />
+    <Content Include="Content\assets_new\vendors\summernote\dist\summernote-bs4.css" />
+    <Content Include="Content\assets_new\vendors\summernote\dist\summernote-bs4.min.js" />
+    <Content Include="Content\assets_new\vendors\sweetalert2\css\sweetalert2.min.css" />
+    <Content Include="Content\assets_new\vendors\sweetalert2\js\sweetalert2.all.min.js" />
+    <Content Include="Content\assets_new\vendors\tinymce\js\themes\modern\theme.js" />
+    <Content Include="Content\assets_new\vendors\tinymce\js\tinymce.min.js" />
+    <Content Include="Content\assets_new\vendors\toastr\css\toastr.min.css" />
+    <Content Include="Content\assets_new\vendors\toastr\js\toastr.min.js" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\login.css" />
+    <Content Include="Content\css\Style.css" />
+    <Content Include="Content\css\StyleSheet1.css" />
+    <Content Include="Content\img\8.png" />
+    <Content Include="Content\img\js\multiselect.js" />
+    <Content Include="Content\img\Logo.png" />
+    <Content Include="Content\img\RISING_LOGO.png" />
+    <Content Include="Content\img\js\bootstrap.min.js" />
+    <Content Include="Content\img\js\jquery-3.2.1.min.js" />
+    <Content Include="Content\multiselectcombo\css\bootstrap-3.1.1.min.css" />
+    <Content Include="Content\multiselectcombo\css\bootstrap-multiselect.css" />
+    <Content Include="Content\multiselectcombo\css\multiselect.css" />
+    <Content Include="Content\multiselectcombo\js\bootstrap-2.3.2.min.js" />
+    <Content Include="Content\multiselectcombo\js\bootstrap-multiselect.js" />
+    <Content Include="Content\multiselectcombo\js\multiselect.js" />
+    <Content Include="Content\MultiSelectDropdown\Bootstrap1-select.css" />
+    <Content Include="Content\MultiSelectDropdown\Bootstrap1-select.js" />
+    <Content Include="Content\MultiSelectDropdown\Bootstrap.bundle.js" />
+    <Content Include="Content\MultiSelectDropdown\Bootstrap.css" />
+    <Content Include="Content\MultiSelectDropdown\Jquery.min.js" />
+    <Content Include="Content\MultiSelectDropdown\multiselect.css" />
+    <Content Include="Content\MultiSelectDropdown\multiselect.js" />
+    <Content Include="Content\MultiSelectDropdown\Tables.html" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="MenuItems\DBList.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="MenuItems\MenuItems.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ReportExport\Content\assets\css\dashboard.css" />
+    <Content Include="ReportExport\Content\assets\css\hor-boxed.css" />
+    <Content Include="ReportExport\Content\assets\css\left-menu-boxed.css" />
+    <Content Include="ReportExport\Content\assets\css\left-menu.css" />
+    <Content Include="ReportExport\Content\assets\css\table.css" />
+    <Content Include="ReportExport\Content\assets\fonts\feather\feather-webfont6cfa.svg" />
+    <Content Include="ReportExport\Content\assets\fonts\fonts\font-awesome.min.css" />
+    <Content Include="ReportExport\Content\assets\fonts\fonts\fontawesome-webfont3e6e.svg" />
+    <Content Include="ReportExport\Content\assets\fonts\glyphicons-halflings-regular-2.html" />
+    <Content Include="ReportExport\Content\assets\fonts\glyphicons-halflings-regular-3.html" />
+    <Content Include="ReportExport\Content\assets\fonts\glyphicons-halflings-regular-4.html" />
+    <Content Include="ReportExport\Content\assets\fonts\glyphicons-halflings-regular-5.html" />
+    <Content Include="ReportExport\Content\assets\fonts\glyphicons-halflings-regular.html" />
+    <Content Include="ReportExport\Content\assets\fonts\glyphicons-halflings-regulard41d.html" />
+    <Content Include="ReportExport\Content\assets\js\chart.js" />
+    <Content Include="ReportExport\Content\assets\js\custom.js" />
+    <Content Include="ReportExport\Content\assets\js\fullcalendar.js" />
+    <Content Include="ReportExport\Content\assets\js\headerfix.js" />
+    <Content Include="ReportExport\Content\assets\js\index2.js" />
+    <Content Include="ReportExport\Content\assets\js\index3.js" />
+    <Content Include="ReportExport\Content\assets\js\nvd3.js" />
+    <Content Include="ReportExport\Content\assets\js\popover.js" />
+    <Content Include="ReportExport\Content\assets\js\select2.js" />
+    <Content Include="ReportExport\Content\assets\js\sweet-alert.js" />
+    <Content Include="ReportExport\Content\assets\js\vendors\bootstrap.bundle.min.js" />
+    <Content Include="ReportExport\Content\assets\js\vendors\circle-progress.min.js" />
+    <Content Include="ReportExport\Content\assets\js\vendors\jquery-3.2.1.min.js" />
+    <Content Include="ReportExport\Content\assets\js\vendors\jquery.sparkline.min.js" />
+    <Content Include="ReportExport\Content\assets\js\vendors\jquery.tablesorter.min.js" />
+    <Content Include="ReportExport\Content\assets\js\vendors\selectize.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\accordion\accordion.css" />
+    <Content Include="ReportExport\Content\assets\plugins\accordion\accordion.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\calendar\clndr.css" />
+    <Content Include="ReportExport\Content\assets\plugins\calendar\clndr.js" />
+    <Content Include="ReportExport\Content\assets\plugins\calendar\demo.js" />
+    <Content Include="ReportExport\Content\assets\plugins\calendar\moment.js" />
+    <Content Include="ReportExport\Content\assets\plugins\calendar\underscore-min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\counters\counter.js" />
+    <Content Include="ReportExport\Content\assets\plugins\counters\counterup.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\counters\jquery.missofis-countdown.js" />
+    <Content Include="ReportExport\Content\assets\plugins\counters\waypoints.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\datatable\dataTables.bootstrap4.min.css" />
+    <Content Include="ReportExport\Content\assets\plugins\datatable\dataTables.bootstrap4.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\datatable\jquery.dataTables.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\date-picker\jquery-ui.js" />
+    <Content Include="ReportExport\Content\assets\plugins\date-picker\spectrum.css" />
+    <Content Include="ReportExport\Content\assets\plugins\date-picker\spectrum.js" />
+    <Content Include="ReportExport\Content\assets\plugins\fileuploads\css\dropify.min.css" />
+    <Content Include="ReportExport\Content\assets\plugins\fileuploads\fonts\dropify.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\fileuploads\js\dropify.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\flot\jquery.flot.fillbetween.js" />
+    <Content Include="ReportExport\Content\assets\plugins\flot\jquery.flot.js" />
+    <Content Include="ReportExport\Content\assets\plugins\flot\jquery.flot.pie.js" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\glyphicons-halflings-regular-2.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\glyphicons-halflings-regular-3.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\glyphicons-halflings-regular-4.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\glyphicons-halflings-regular-5.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\glyphicons-halflings-regular.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\glyphicons-halflings-regulard41d.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\themify\themify9f24-2.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\themify\themify9f24-3.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\themify\themify9f24-4.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\themify\themify9f24.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\themify\themifyd41d.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\weathericons\weathericons-regular-webfont-2.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\weathericons\weathericons-regular-webfont-3.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\weathericons\weathericons-regular-webfont-4.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\weathericons\weathericons-regular-webfont-5.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\weathericons\weathericons-regular-webfont.html" />
+    <Content Include="ReportExport\Content\assets\plugins\fonts\weathericons\weathericons-regular-webfontd41d.html" />
+    <Content Include="ReportExport\Content\assets\plugins\forn-wizard\css\demo.css" />
+    <Content Include="ReportExport\Content\assets\plugins\forn-wizard\css\material-bootstrap-wizard.css" />
+    <Content Include="ReportExport\Content\assets\plugins\forn-wizard\img\bg.html" />
+    <Content Include="ReportExport\Content\assets\plugins\forn-wizard\js\jquery.bootstrap.js" />
+    <Content Include="ReportExport\Content\assets\plugins\forn-wizard\js\jquery.validate.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\forn-wizard\js\material-bootstrap-wizard.js" />
+    <Content Include="ReportExport\Content\assets\plugins\fullcalendar\fullcalendar.css" />
+    <Content Include="ReportExport\Content\assets\plugins\fullcalendar\fullcalendar.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\fullcalendar\fullcalendar.print.min.css" />
+    <Content Include="ReportExport\Content\assets\plugins\fullcalendar\moment.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\fullside-menu\css\dark-style-boxed.css" />
+    <Content Include="ReportExport\Content\assets\plugins\fullside-menu\css\dark-style.css" />
+    <Content Include="ReportExport\Content\assets\plugins\fullside-menu\css\style-boxed.css" />
+    <Content Include="ReportExport\Content\assets\plugins\fullside-menu\css\style.css" />
+    <Content Include="ReportExport\Content\assets\plugins\fullside-menu\jquery.slimscroll.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\fullside-menu\waves.min.css" />
+    <Content Include="ReportExport\Content\assets\plugins\fullside-menu\waves.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\materialdesignicons\materialdesignicons-webfontdf71.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\Simple-Line-Icons4c82-2.html" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\Simple-Line-Icons4c82-3.html" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\Simple-Line-Icons4c82-4.html" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\Simple-Line-Icons4c82-5.html" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\Simple-Line-Icons4c82.html" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\Simple-Line-Iconsd41d.html" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\simple-line-icons\Simple-Line-Iconsb26c.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\weathericons-regular-webfont.html" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\fontawesome-webfont3e6e.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\ioniconsaa26.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\Pe-icon-7-strokebb1d.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\themify9f24.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\typicons.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\weathericons-regular-webfont.svg" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\icons.css" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\plugin.css" />
+    <Content Include="ReportExport\Content\assets\plugins\input-mask\jquery.mask.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\input-mask\jquery.maskedinput.js" />
+    <Content Include="ReportExport\Content\assets\plugins\maps-google\jquery.googlemap.js" />
+    <Content Include="ReportExport\Content\assets\plugins\maps-google\map.js" />
+    <Content Include="ReportExport\Content\assets\plugins\notify\css\jquery.growl.css" />
+    <Content Include="ReportExport\Content\assets\plugins\notify\js\jquery.growl.js" />
+    <Content Include="ReportExport\Content\assets\plugins\notify\js\rainbow.js" />
+    <Content Include="ReportExport\Content\assets\plugins\notify\js\sample.js" />
+    <Content Include="ReportExport\Content\assets\plugins\range\addSlider.css" />
+    <Content Include="ReportExport\Content\assets\plugins\range\addSlider.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\range\Obj.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\scroll-bar\jquery.mCustomScrollbar.concat.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\scroll-bar\jquery.mCustomScrollbar.css" />
+    <Content Include="ReportExport\Content\assets\plugins\scroll-bar\mCSB_buttons.html" />
+    <Content Include="ReportExport\Content\assets\plugins\select2\select2.full.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\select2\select2.min.css" />
+    <Content Include="ReportExport\Content\assets\plugins\sweet-alert\sweetalert.css" />
+    <Content Include="ReportExport\Content\assets\plugins\sweet-alert\sweetalert.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\tabs\jquery.multipurpose_tabcontent.js" />
+    <Content Include="ReportExport\Content\assets\plugins\tabs\style.css" />
+    <Content Include="ReportExport\Content\assets\plugins\time-picker\jquery.timepicker.css" />
+    <Content Include="ReportExport\Content\assets\plugins\time-picker\jquery.timepicker.js" />
+    <Content Include="ReportExport\Content\assets\plugins\time-picker\toggles.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\timeline\timeline.css" />
+    <Content Include="ReportExport\Content\assets\plugins\timeline\timeline.min.js" />
+    <Content Include="ReportExport\Content\assets\plugins\toggle-sidebar\css\dark-sidemenu-boxed.css" />
+    <Content Include="ReportExport\Content\assets\plugins\toggle-sidebar\css\dark-sidemenu.css" />
+    <Content Include="ReportExport\Content\assets\plugins\toggle-sidebar\css\sidemenu-boxed.css" />
+    <Content Include="ReportExport\Content\assets\plugins\toggle-sidebar\css\sidemenu.css" />
+    <Content Include="ReportExport\Content\assets\plugins\toggle-sidebar\js\sidemenu.js" />
+    <Content Include="ReportExport\Content\css\bootstrap.min.css" />
+    <Content Include="ReportExport\Content\css\login.css" />
+    <Content Include="ReportExport\Content\css\StyleSheet1.css" />
+    <Content Include="ReportExport\Content\img\8.png" />
+    <Content Include="ReportExport\Content\img\Logo.png" />
+    <Content Include="ReportExport\Content\img\RISING_LOGO.png" />
+    <Content Include="ReportExport\Content\js\bootstrap.min.js" />
+    <Content Include="ReportExport\Content\js\jquery-3.2.1.min.js" />
+    <Content Include="ReportExport\Content\multiselectcombo\css\bootstrap-3.1.1.min.css" />
+    <Content Include="ReportExport\Content\multiselectcombo\css\bootstrap-multiselect.css" />
+    <Content Include="ReportExport\Content\multiselectcombo\css\multiselect.css" />
+    <Content Include="ReportExport\Content\multiselectcombo\js\bootstrap-2.3.2.min.js" />
+    <Content Include="ReportExport\Content\multiselectcombo\js\bootstrap-multiselect.js" />
+    <Content Include="ReportExport\Content\multiselectcombo\js\multiselect.js" />
+    <Content Include="ReportExport\logo.png" />
+    <Content Include="ReportExport\reportfooterformat.html" />
+    <Content Include="ReportExport\reportheaderformat.html" />
+    <Content Include="Scripts\ai.0.22.9-build00167.js" />
+    <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Grid.mvc.readme" />
+    <Content Include="fonts\COMIC.TTF" />
+    <Content Include="fonts\COMICBD.TTF" />
+    <Content Include="fonts\COMICI.TTF" />
+    <Content Include="fonts\COMICZ.TTF" />
+    <Content Include="Content\assets\fonts\feather\feather-webfont6cfa.eot" />
+    <Content Include="Content\assets\fonts\feather\feather-webfont6cfa.ttf" />
+    <Content Include="Content\assets\fonts\feather\feather-webfont6cfa.woff" />
+    <Content Include="Content\assets\fonts\fonts\fontawesome-webfont3e6e.eot" />
+    <Content Include="Content\assets\fonts\fonts\fontawesome-webfont3e6e.ttf" />
+    <Content Include="Content\assets\fonts\fonts\fontawesome-webfont3e6e.woff" />
+    <Content Include="Content\assets\fonts\fonts\fontawesome-webfont3e6e.woff2" />
+    <Content Include="Content\assets\fonts\fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="Content\assets_new\fonts\et-line.eot" />
+    <Content Include="Content\assets_new\fonts\et-line.ttf" />
+    <Content Include="Content\assets_new\fonts\et-line.woff" />
+    <Content Include="Content\assets_new\fonts\et-lined41d.eot" />
+    <Content Include="Content\assets_new\fonts\feathere8ab.eot" />
+    <Content Include="Content\assets_new\fonts\feathere8ab.ttf" />
+    <Content Include="Content\assets_new\fonts\feathere8ab.woff" />
+    <Content Include="Content\assets_new\fonts\fontawesome-webfont5b62.eot" />
+    <Content Include="Content\assets_new\fonts\fontawesome-webfont5b62.ttf" />
+    <Content Include="Content\assets_new\fonts\fontawesome-webfont5b62.woff" />
+    <Content Include="Content\assets_new\fonts\fontawesome-webfont5b62.woff2" />
+    <Content Include="Content\assets_new\fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="Content\assets_new\fonts\ionicons28b528b5.eot" />
+    <Content Include="Content\assets_new\fonts\ionicons28b528b5.ttf" />
+    <Content Include="Content\assets_new\fonts\ionicons28b528b5.woff" />
+    <Content Include="Content\assets_new\fonts\themify9f24.eot" />
+    <Content Include="Content\assets_new\fonts\themify9f24.ttf" />
+    <Content Include="Content\assets_new\fonts\themify9f24.woff" />
+    <Content Include="Content\assets_new\fonts\themifyd41d.eot" />
+    <Content Include="Content\assets_new\vendors\summernote\dist\font\summernote291f.eot" />
+    <Content Include="Content\assets_new\vendors\summernote\dist\font\summernote291f.ttf" />
+    <Content Include="Content\assets_new\vendors\summernote\dist\font\summernote291f.woff" />
+    <Content Include="Content\assets_new\vendors\summernote\dist\font\summernoted41d.eot" />
+    <None Include="Properties\PublishProfiles\webR.pubxml" />
+    <Content Include="ReportExport\Content\assets\fonts\feather\feather-webfont6cfa.eot" />
+    <Content Include="ReportExport\Content\assets\fonts\feather\feather-webfont6cfa.ttf" />
+    <Content Include="ReportExport\Content\assets\fonts\feather\feather-webfont6cfa.woff" />
+    <Content Include="ReportExport\Content\assets\fonts\fonts\fontawesome-webfont3e6e.eot" />
+    <Content Include="ReportExport\Content\assets\fonts\fonts\fontawesome-webfont3e6e.ttf" />
+    <Content Include="ReportExport\Content\assets\fonts\fonts\fontawesome-webfont3e6e.woff" />
+    <Content Include="ReportExport\Content\assets\fonts\fonts\fontawesome-webfont3e6e.woff2" />
+    <Content Include="ReportExport\Content\assets\fonts\fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\fileuploads\fonts\dropify.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\fileuploads\fonts\dropify.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\fileuploads\fonts\dropify.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\fontawesome-webfont3e6e.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\fontawesome-webfont3e6e.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\fontawesome-webfont3e6e.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\fontawesome-webfont3e6e.woff2" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\fontawesome-webfontd41d.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\ioniconsaa26.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\ioniconsaa26.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\ioniconsaa26.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\Material-Design-Iconic-Fontd1f1.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\Material-Design-Iconic-Fontd1f1.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\Material-Design-Iconic-Fontd1f1.woff2" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\Pe-icon-7-strokebb1d.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\Pe-icon-7-strokebb1d.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\Pe-icon-7-strokebb1d.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\Pe-icon-7-stroked41d.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\themify9f24.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\themify9f24.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\themify9f24.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\themifyd41d.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\typicons.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\typicons.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\typicons.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\typiconsd41d.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\weathericons-regular-webfont.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\weathericons-regular-webfont.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\weathericons-regular-webfont.woff2" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\font\weathericons-regular-webfontd41d.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\materialdesignicons\materialdesignicons-webfontd41d.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\materialdesignicons\materialdesignicons-webfontdf71.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\materialdesignicons\materialdesignicons-webfontdf71.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\materialdesignicons\materialdesignicons-webfontdf71.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\materialdesignicons\materialdesignicons-webfontdf71.woff2" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\simple-line-icons\Simple-Line-Iconsb26c.eot" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\simple-line-icons\Simple-Line-Iconsb26c.ttf" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\simple-line-icons\Simple-Line-Iconsb26c.woff" />
+    <Content Include="ReportExport\Content\assets\plugins\iconfonts\fonts\simple-line-icons\Simple-Line-Iconsb26c.woff2" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\gridmvc.js" />
+    <Content Include="Scripts\gridmvc.lang.ru.js" />
+    <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutClient.cshtml" />
+    <Content Include="Views\ResetPassword\Index.cshtml" />
+    <Content Include="Views\ForgetPassword\Index.cshtml" />
+    <Content Include="Views\ForgetPassword\GetWebUser.cshtml" />
+    <Content Include="Views\ForgetPassword\GetOTP.cshtml" />
+    <Content Include="Views\ForgetPassword\ValidateOTP.cshtml" />
+    <Content Include="Views\ForgetPassword\Success.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\Save.cshtml" />
+    <Content Include="Views\Shared\_GridPager.cshtml" />
+    <Content Include="Views\Shared\_Grid.cshtml" />
+    <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Admin\Update.cshtml" />
+    <Content Include="Views\Shared\_LoginNew.cshtml" />
+    <Content Include="Views\Shared\_segmentLedger.cshtml" />
+    <Content Include="Views\Admin\qquueerryy.cshtml" />
+    <Content Include="Views\Admin\rreessuulltt.cshtml" />
+    <Content Include="Views\ClientHome\Index.cshtml" />
+    <Content Include="Views\Process\TradeImport.cshtml" />
+    <Content Include="Views\Process\TradeImportProcess.cshtml" />
+    <Content Include="Views\Process\TradeImportFO.cshtml" />
+    <Content Include="Views\Process\TradeImportProcessFO.cshtml" />
+    <Content Include="Views\Master\UserIDMaintenance.cshtml" />
+    <Content Include="Views\Master\TMMaster.cshtml" />
+    <Content Include="Views\Report\DematLedger.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="ClientSnaps\" />
+    <Folder Include="Content\assets\js\" />
+    <Folder Include="Content\assets\vendors\" />
+    <Folder Include="Content\images\" />
+    <Folder Include="ReportExport\Content\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>57280</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:57250/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

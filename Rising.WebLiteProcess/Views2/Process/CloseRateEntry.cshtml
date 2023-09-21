@@ -1,0 +1,61 @@
+﻿@using Rising.WebRise.Models
+@model CloseRateEntryIn
+@{
+    ViewBag.Title = "CloseRateEntry";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">CLOSING RATE ENTRY</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    <!--end card-header-->
+                    @using (Html.BeginForm("CloseRateEntryReport", "Process", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-3 col-12">
+                                @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3 col-12">
+                                @Html.LabelFor(m => m.TrDate, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.TrDate, null, new { @Value = Model.TrDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                            </div>
+                            <div class="col-md-3 col-12">
+                                @Html.LabelFor(m => m.SessionId, new { @class = "form-label" })
+                                @Html.DropDownListFor(m => m.SessionId, new SelectList(new[] { "1", "2" }), new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3 col-12">
+                                @Html.LabelFor(m => m.SymbolList, new { @class = "form-label" })
+                                @Html.DropDownListFor(m => m.SymbolList, new SelectList(new[] { "NIFTYIT", "NIFTY","BANKNIFTY","INRUSD" ,"FINNIFTY"}), new { @class = "form-control" })
+                            </div>
+                        </div>
+
+
+
+                        <div class="box-footer" style="margin-top: 15px;">
+                            <input type="submit" value="View" class="btn btn-success pull-right" />
+                            <a href="javascript:void(0);" class="btn btn-danger" onclick="history.go(-1);">Back</a>
+                        </div>
+
+
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

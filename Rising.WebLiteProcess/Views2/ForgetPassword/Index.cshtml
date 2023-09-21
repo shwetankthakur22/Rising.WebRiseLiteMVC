@@ -1,0 +1,45 @@
+﻿@using Rising.WebRise.Models
+@model ForgetPasswordModel
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Login.cshtml";
+
+}
+
+<div class="container">
+    <div class="row px-3">
+        <div class="col-lg-10 col-xl-9 card flex-row mx-auto px-0">
+            <div class="img-left d-none d-md-flex"></div>
+            <div class="card-body">
+                <a href="@Url.Action("Index", "Login")" title="Home">
+                    <img src="~/Content/assets/img/logo.png" class="img-fluid" alt="Logo" style="height: 20%;float:right;"></a>
+                    @using (Html.BeginForm("GetWebUser", "ForgetPassword", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="login-form-body">
+                            <div class="form-box px-3" style="margin-top:85px">
+                                <div class="form-input">
+                                    <span><i class="fa fa-user"></i></span>
+                                    @Html.TextBoxFor(m => m.UserID, new { @class = "", @placeholder = "Client code" })
+                                    @Html.ValidationMessageFor(m => m.UserID, "", new { @class = "text-danger" })
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-block text-uppercase">Submit</button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    }
+</div>
+        </div>
+    </div>
+
+</div>
+
+

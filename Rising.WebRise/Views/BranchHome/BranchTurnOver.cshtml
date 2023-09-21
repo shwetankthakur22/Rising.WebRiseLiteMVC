@@ -1,0 +1,497 @@
+﻿@using Rising.WebRise.Models
+@model GenericModel
+@using System.Data
+
+@{
+    ViewBag.Title = "BranchTurnOver";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+
+    <style>
+        .table-box {
+            height: 530px !important;
+            overflow-y: scroll;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #808080;
+            border-collapse: collapse;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            color: #fff;
+            background: #00bcd4;
+        }
+    </style>
+}
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="Ledger" style="margin: auto;">
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header" style="background-color:#eb2c2e70;">
+                        <h4 class="card-title" style="color:white;margin-top: 10px;font-size:18px">Branch Turnover List</h4>
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+
+                        <!--end row-->
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <ul class="nav nav-pills" role="tablist">
+                                    <li class="nav-item waves-effect waves-light"><a class="nav-link active" data-toggle="tab" href="#home-1" role="tab" aria-selected="true">Annual</a></li>
+                                    <li class="nav-item waves-effect waves-light"><a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-selected="false">Monthly</a></li>
+                                    <li class="nav-item waves-effect waves-light"><a class="nav-link" data-toggle="tab" href="#settings-1" role="tab" aria-selected="false">Daily</a></li>
+                                    <li class="nav-item waves-effect waves-light"><a class="nav-link" data-toggle="tab" href="#client-1" role="tab" aria-selected="false">Client</a></li>
+                                </ul>
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+
+                            </div>
+                        </div>
+
+                        <div class="tab-content">
+                            <div class="tab-pane p-3 active" id="home-1" role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+
+                                            <div class="btn btn-info">Date Range  : @Model.DateFrom.ToString("dd-MM-yyyy")  to   @Model.DateTo.ToString("dd-MM-yyyy")</div>
+
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                <a href="javascript:void(0);" class="btn btn-dark" onclick="history.go(-1);"><i class="fa fa-arrow-left"></i></a>
+
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "ExcelNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-success" id="btnSubmitDash11"><i class="fa fa-file-excel"></i></button>
+
+                                                }
+
+                                            </div>
+
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "WordNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-info" id="btnSubmitDash12"><i class="fa fa-file-word"></i></button>
+
+                                                }
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "PdfNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-danger" id="btnSubmitDash13"><i class="fa fa-file-pdf"></i></button>
+
+                                                }
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "EmailNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-orange" id="btnSubmitDash14"><i class="fa fa-envelope"></i></button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if (Model.dsOut.Tables.Count > 0)
+                                    {
+                                        <div class="table-responsive browser_users" id="ExportedGrid11">
+
+                                            <table class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">YEAR</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">JOBBING TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">JOBBING BROKRAGE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DELIVERY TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DELIVERY BROKRAGE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TOTAL TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TOTAL BROKRAGE</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach (DataRow dr in Model.dsOut.Tables[0].Rows)
+                                                    {
+                                                        <tr>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[0]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[1]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[2]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[3]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[4]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[5]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[6]</td>
+
+
+
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    }
+
+                                </div>
+
+                            </div>
+                            <div class="tab-pane p-3" id="profile-1" role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+
+                                            <div class="btn btn-info">Date Range  : @Model.DateFrom.ToString("dd-MM-yyyy")  to   @Model.DateTo.ToString("dd-MM-yyyy")</div>
+
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                <a href="javascript:void(0);" class="btn btn-dark" onclick="history.go(-1);"><i class="fa fa-arrow-left"></i></a>
+
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "ExcelNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-success" id="btnSubmitDash21"><i class="fa fa-file-excel"></i></button>
+
+                                                }
+
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "WordNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-info" id="btnSubmitDash22"><i class="fa fa-file-word"></i></button>
+
+                                                }
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "PdfNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-danger" id="btnSubmitDash23"><i class="fa fa-file-pdf"></i></button>
+
+                                                }
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "EmailNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-orange" id="btnSubmitDash24"><i class="fa fa-envelope"></i></button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (Model.dsOut2.Tables.Count > 0)
+                                    {
+                                        <div class="table-responsive browser_users" id="ExportedGrid21">
+
+                                            <table id="datatable2" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">YEAR</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">JOBBING TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">JOBBING BROKRAGE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DELIVERY TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DELIVERY BROKRAGE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TOTAL TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TOTAL BROKRAGE</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach (DataRow dr in Model.dsOut2.Tables[0].Rows)
+                                                    {
+                                                        <tr>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[0]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[1]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[2]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[3]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[4]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[5]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[6]</td>
+
+
+
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    }
+
+                                </div>
+
+                            </div>
+                            <div class="tab-pane p-3" id="settings-1" role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                            <div class="btn btn-info">Date Range  : @Model.DateFrom.ToString("dd-MM-yyyy")  to   @Model.DateTo.ToString("dd-MM-yyyy")</div>
+
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                <a href="javascript:void(0);" class="btn btn-dark" onclick="history.go(-1);"><i class="fa fa-arrow-left"></i></a>
+
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "ExcelNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-success" id="btnSubmitDash31"><i class="fa fa-file-excel"></i></button>
+
+                                                }
+
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "WordNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-info" id="btnSubmitDash32"><i class="fa fa-file-word"></i></button>
+
+                                                }
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "PdfNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-danger" id="btnSubmitDash33"><i class="fa fa-file-pdf"></i></button>
+
+                                                }
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "EmailNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-orange" id="btnSubmitDash34"><i class="fa fa-envelope"></i></button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (Model.dsOut3.Tables.Count > 0)
+                                    {
+                                        <div class="table-responsive browser_users" id="ExportedGrid31">
+
+                                            <table id="datatable2" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">YEAR</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">JOBBING TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">JOBBING BROKRAGE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DELIVERY TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DELIVERY BROKRAGE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TOTAL TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TOTAL BROKRAGE</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach (DataRow dr in Model.dsOut3.Tables[0].Rows)
+                                                    {
+                                                        <tr>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[0]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[1]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[2]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[3]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[4]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[5]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[6]</td>
+
+
+
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    }
+
+                                </div>
+
+                            </div>
+                            <div class="tab-pane p-3" id="client-1" role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                            <div class="btn btn-info">Date Range  : @Model.DateFrom.ToString("dd-MM-yyyy")  to   @Model.DateTo.ToString("dd-MM-yyyy")</div>
+
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                <a href="javascript:void(0);" class="btn btn-dark" onclick="history.go(-1);"><i class="fa fa-arrow-left"></i></a>
+
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "ExcelNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-success" id="btnSubmitDash1"><i class="fa fa-file-excel"></i></button>
+
+                                                }
+
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "WordNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-info" id="btnSubmitDash2"><i class="fa fa-file-word"></i></button>
+
+                                                }
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "PdfNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-danger" id="btnSubmitDash3"><i class="fa fa-file-pdf"></i></button>
+
+                                                }
+                                            </div>
+                                            <div style="float:right;padding:2px 2px 2px 2px">
+
+                                                @using (Html.BeginForm("ExportDashReport", "ReportExport", new { @rtype = "EmailNetPos" }, FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="GridHtml" />
+                                                    <button type="submit" class="btn btn-orange" id="btnSubmitDash4"><i class="fa fa-envelope"></i></button>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (Model.dsOut4.Tables.Count > 0)
+                                    {
+                                        <div class="table-responsive table-box" id="ExportedGrid1">
+
+                                            <table id="datatable2" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">PARTY CODE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">PARTY NAME</th>                  
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">JOBBING TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">JOBBING BROKRAGE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DELIVERY TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">DELIVERY BROKRAGE</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TOTAL TURNOVER</th>
+                                                        <th style="border: 1px solid  #808080;text-align:center; background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">TOTAL BROKRAGE</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach (DataRow dr in Model.dsOut4.Tables[0].Rows)
+                                                    {
+                                                        <tr>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[0]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[1]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[2]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[3]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[4]</td>
+                                                            <td style="text-align: center;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[5]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[6]</td>
+                                                            <td style="text-align: left;font-size: 12px;border: 1px solid  #d3d3d3;">@dr.ItemArray[7]</td>
+
+
+                                                        </tr>
+                                                    }
+
+                                                    @{
+                                                        <tr style="background-color: antiquewhite;">
+                                                            <td style="text-align: center;font-size: 13px;border: 1px solid  #d3d3d3;"><strong>TOTAL</strong></td>
+                                                            <td style="text-align: center;font-size: 13px;border: 1px solid  #d3d3d3;"></td>
+                                                            <td style="text-align: center;font-size: 13px;border: 1px solid  #d3d3d3;"><strong>@Model.dsOut4.Tables[0].Compute("Sum(JOBB_TURN)", "").ToString()</strong></td>
+                                                            <td style="text-align: center;font-size: 13px;border: 1px solid  #d3d3d3;"><strong>@Model.dsOut4.Tables[0].Compute("Sum(JOBB_BROK)", "").ToString()</strong></td>
+                                                            <td style="text-align: center;font-size: 13px;border: 1px solid  #d3d3d3;"><strong>@Model.dsOut4.Tables[0].Compute("Sum(DELV_TURN)", "").ToString()</strong></td>
+                                                            <td style="text-align: center;font-size: 13px;border: 1px solid  #d3d3d3;"><strong>@Model.dsOut4.Tables[0].Compute("Sum(DELV_BROK)", "").ToString()</strong></td>
+                                                            <td style="text-align: left;font-size: 13px;border: 1px solid  #d3d3d3;"><strong>@Model.dsOut4.Tables[0].Compute("Sum(TOTALTURN)", "").ToString()</strong></td>
+                                                            <td style="text-align: left;font-size: 13px;border: 1px solid  #d3d3d3;"><strong>@Model.dsOut4.Tables[0].Compute("Sum(TOTALBROK)", "").ToString()</strong></td>
+                                                        </tr>
+                                                    }
+
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    }
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

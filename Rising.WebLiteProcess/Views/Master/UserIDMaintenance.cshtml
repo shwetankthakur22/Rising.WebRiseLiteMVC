@@ -1,0 +1,384 @@
+﻿@using Rising.WebRise.Models
+@model TradeUserIds
+@using System.Data
+@{
+    ViewBag.Title = "UserIDMaintenance";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="~/Content/assets/js/sweetalert.js"></script>
+
+
+@section Scripts {
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.editButton').click(function () {
+                $("#Exchnage").val("").html("");
+                $("#BranchCode").val("").html("");
+                $("#ClientCodeFrom").val("").html("");
+                $("#BrokerCode").val("").html("");
+                $("#ProClient").val("").html("");
+                $("#CTCLID").val("").html("");
+                $("#Prefix").val("").html("");
+
+                debugger
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '/Master/UserIDGetdata',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { id: id },
+                    success: function (user) {
+                        $("#Exch").val(user.Exchange).html(user.Exchange);
+                        $("#BCode").val(user.BranchCode).html(user.BranchCode);
+                        $("#CCode").val(user.ClientCodeFrom).html(user.ClientCodeFrom);
+                        $("#BrCode").val(user.BrokerCode).html(user.BrokerCode);
+                        $("#PClient").val(user.Proclient).html(user.Proclient);
+                        $("#CID").val(user.CTCLID).html(user.CTCLID);
+                        $("#Pix").val(user.Prefix).html(user.Prefix);
+
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        function clearTextBox() {
+            $('#__BranchCode').val('');
+            $('#__ClientCode').val('');
+            $('#__BrokerCode').val('');
+            $('#__ProClient').val('');
+            $('#__CTCLID').val('');
+            $('#__Prefix').val('');
+        }
+    </script>
+@if (TempData.ContainsKey("Message"))
+    {
+    <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+    </script>
+}
+@if (TempData.ContainsKey("DeleteMessage"))
+    {
+    <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+    </script>
+}
+}
+
+
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">USER ID MAINTENANCE</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    @using (Html.BeginForm("UserIDMaintenance", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="row" style="margin-bottom: 15px;">
+
+                            <div class="custom-control custom-checkbox custom-control-inline rtl-mr-0">
+                                <input type="checkbox" class="custom-control-input" checked id="customCheck5">
+                                <label class="custom-control-label" for="customCheck5">Branch Id</label>
+                            </div>
+                            <div class="custom-control custom-checkbox custom-control-inline rtl-mr-0">
+                                <input type="checkbox" class="custom-control-input" id="customCheck6">
+                                <label class="custom-control-label" for="customCheck6">Valid Code</label>
+                            </div>
+
+                            <div class="custom-control custom-checkbox custom-control-inline rtl-mr-0">
+                                <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                <label class="custom-control-label" for="customCheck7">Valid Branch/TM</label>
+                            </div>
+
+                            <div class="custom-control custom-checkbox custom-control-inline rtl-mr-0">
+                                <input type="checkbox" class="custom-control-input" id="customCheck8">
+                                <label class="custom-control-label" for="customCheck8">Valid Code For MG13 Import</label>
+                            </div>
+
+                            <div class="custom-control custom-checkbox custom-control-inline rtl-mr-0">
+                                <input type="checkbox" class="custom-control-input" id="customCheck9">
+                                <label class="custom-control-label" for="customCheck9">Valid Code For MG13 Import</label>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class=" form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                            </div>
+                            <div class="form-group col-md-3 col-12">
+
+                                @Html.LabelFor(m => m.BranchCode, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @id = "__BranchCode", @placeholder = "Enter User ID" })
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+
+                                @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.ClientCodeFrom, new { @class = "form-control", @id = "__ClientCode", })
+
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" style="margin-top: 38px;"></label>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-3 col-12">
+
+                                @Html.LabelFor(m => m.BrokerCode, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.BrokerCode, new { @class = "form-control", @id = "__BrokerCode", @placeholder = "Enter Broker Code" })
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.Proclient, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Proclient, new { @class = "form-control", @id = "__ProClient", @placeholder = "Enter Proclient Code" })
+
+                            </div>
+                            <div class="form-group col-md-3 mb-12">
+                                @Html.LabelFor(m => m.CTCLID, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.CTCLID, new { @class = "form-control", @id = "__CTCLID", @placeholder = "Enter CTCLId" })
+
+                            </div>
+
+                            <div class="form-group col-md-3 col-12">
+                                @Html.LabelFor(m => m.Prefix, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.Prefix, new { @class = "form-control", @id = "__Prefix", @placeholder = "Enter Prefix" })
+                            </div>
+                            <!-- end col -->
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-12 ">
+                                <button type="submit" class="btn btn-primary">Cancel</button>
+                                <button type="submit" class="btn btn-success pull-right">Save</button>
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+                <!-- container -->
+                <!--end footer-->
+                <div class="row mt-100">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                        <div class="card" id="ExportedGrid">
+                            <div class="box">
+                                @if (Model.result.Tables.Count > 0)
+                                {
+
+                                    <div>
+                                        <table class="table-bordered table-box table">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (var cl in Model.result.Tables[0].Columns)
+                                                    {
+                                                        <th class="table-header">@cl</th>
+
+                                                    }
+                                                    <th class="table-header">ACTION(EDIT)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow dr in Model.result.Tables[0].Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (var cl in dr.ItemArray)
+                                                        {
+                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</td>
+                                                        }
+                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">
+                                                            @*<button type="submit" id="btnedit" onclick="MaintenanceList(@Convert.ToString(dr[0]),@Convert.ToString(dr[1]),@Convert.ToString(dr[2]),@Convert.ToString(dr[3]),@Convert.ToString(dr[4]),@Convert.ToString(dr[5]),@Convert.ToString(dr[6]))" class="btn btn-success btn-xs">Edit</button>*@
+
+                                                            <button type="button" class="btn btn-primary editButton" data-toggle="modal" data-target="#UpdateFrom" id="edit" data-id="@Convert.ToString(dr[1])"><i class="dripicons dripicons-pencil"></i></button>
+                                                        </td>
+                                                    </tr>
+
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                }
+
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="UpdateFrom" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">USER ID MAINTENANCE</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+
+                    <div class="new-user-info">
+
+                        @using (Html.BeginForm("UserIDMaintenanceedit", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                        {
+
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                            <div class="row">
+                                <div class=" form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Exchange, new { @class = "form-control", @id = "Exch" })
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+
+                                    @Html.LabelFor(m => m.BranchCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @id = "BCode" })
+                                </div>
+                                <div class="form-group col-md-3 mb-12">
+
+                                    @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClientCodeFrom, new { @class = "form-control", @id = "CCode", @readonly = true })
+
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+
+                                    @Html.LabelFor(m => m.BrokerCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BrokerCode, new { @class = "form-control", @id = "BrCode", @placeholder = "Enter Broker Code" })
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col-md-3 mb-12">
+                                    @Html.LabelFor(m => m.Proclient, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Proclient, new { @class = "form-control", @id = "PClient", @readonly = true })
+
+                                </div>
+                                <div class="form-group col-md-3 mb-12">
+                                    @Html.LabelFor(m => m.CTCLID, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.CTCLID, new { @class = "form-control", @id = "CID", @placeholder = "Enter CTCLId" })
+
+                                </div>
+
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Prefix, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Prefix, new { @class = "form-control", @id = "Pix", @placeholder = "Enter Prefix" })
+                                </div>
+                                <!-- end col -->
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-12 ">
+
+
+                                    <input type="submit" id="btnSave" class="btn btn-danger" name="Submit" value="Delete" />
+                                    <input type="submit" id="btnCancel" class="btn btn-success pull-right" name="Submit" value="Update" />
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function MaintenanceList(uid, bcode, rtype, stn, pclient, rmark, fprefix, tordercv, rpro, brcode, ctlid, prefix) {
+        alert(uid);
+        debugger
+        $("#__userid").val(uid).html(uid);
+        $("#__BranchCode").val(bcode).html(bcode);
+        $("#__ClientCode").val(rtype).html(rtype);
+        $("#__txtStation").val(stn).html(stn);
+        $("#__ProClient").val(pclient).html(pclient);
+        $("#__Remark").val(rmark).html(rmark);
+        $("#__FixedPrefix").val(fprefix).html(fprefix);
+        $("#__Tordercv").val(tordercv).html(tordercv);
+        $("#__RemarkPro").val(rpro).html(rpro);
+        $("#__BrokerCode").val(brcode).html(brcode);
+        $("#__CTCLID").val(ctlid).html(ctlid);
+        $("#__Prefix").val(prefix).html(prefix)
+    }
+
+</script>
+
+@*<script>
+        $("#btnedit").click(function () {
+            debugger
+            var $row = $(this).closest("tr");
+            var $text = $row.find("#__userid").text();
+            var $text1 = $row.find("#__BranchCode").text();
+
+            // Let's test it out
+            alert($text);
+        });
+    </script>*@
+

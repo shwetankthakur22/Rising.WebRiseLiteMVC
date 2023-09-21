@@ -1,0 +1,433 @@
+﻿@using Rising.WebRise.Models
+@model BranchMaintenance
+@{
+    ViewBag.Title = "BranchMaintenance";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+@section Scripts {
+    <script>
+        debugger
+        $(document).ready(function () {
+            $('.bankdetails').click(function () {
+                $("#code").val("").html("");
+                $("#name").val("").html("");
+                $("#mgr").val("").html("");
+                $("#add1").val("").html("");
+                $("#add2").val("").html("");
+                $("#add3").val("").html("");
+                $("#add4").val("").html("");
+                $("#phn").val("").html("");
+                $("#fax").val("").html("");
+                $("#mail").val("").html("");
+                $("#icode").val("").html("");
+                $("#int").val("").html("");
+                $("#gc").val("").html("");
+                $("#ac").val("").html("");
+                $("#aoc").val("").html("");
+                $("#admin").val("").html("");
+                $("#gcode").val("").html("");
+                $("#rcode").val("").html("");
+                $("#rmcode").val("").html("");
+                $("#rrid").val("").html("");
+
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/GetBranchDetails/',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (branch) {
+                        debugger
+                        $("#bcode").val(branch.BranchCode).html(branch.BranchCode);
+                        $("#name").val(branch.Name).html(branch.Name);
+                        $("#manager").val(branch.Manager).html(branch.Manager);
+                        $("#address1").val(branch.Address1).html(branch.Address1);
+                        $("#address2").val(branch.Address2).html(branch.Address2);
+                        $("#address3").val(branch.Address3).html(branch.Address3);
+                        $("#address4").val(branch.Address4).html(branch.Address4);
+                        $("#phone").val(branch.Phone).html(branch.Phone);
+                        $("#faxno").val(branch.FaxNo).html(branch.FaxNo);
+                        $("#emailid").val(branch.EmailId).html(branch.EmailId);
+                        $("#gst").val(branch.GstRegNo).html(branch.GstRegNo);
+                        $("#introcode").val(branch.IntroCode).html(branch.IntroCode);
+                        $("#introducer").val(branch.Introducer).html(branch.Introducer);
+                        $("#grpcode").val(branch.GroupCode).html(branch.GroupCode);
+                        $("#openchrg").val(branch.AccOpenCharges).change();
+                        $("#accharge").val(branch.AccOpenCharg).html(branch.AccOpenCharg);
+                        $("#grpadmin").val(branch.GroupAdmin).html(branch.GroupAdmin);
+                        $("#regncode").val(branch.RegionCode).html(branch.RegionCode);
+                        $("#rmcode").val(branch.RMCode).html(branch.RMCode);
+                        $("#rwid").val(branch.Rwid).html(branch.Rwid);
+                        $('#BranchCodeFrom').modal('hide');
+
+                    }
+                });
+
+            });
+        });
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+}
+
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Branch Maintenance</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    @using (Html.BeginForm("BranchMaintenance", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                        
+
+                        <div class="box-body">
+                            <!-- Nav tabs -->
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab-1" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pills-home-tab-fill" data-toggle="pill" href="#BranchMaster" role="tab" aria-controls="pills-home" aria-selected="true">Option</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-profile-tab-fill" data-toggle="pill" href="#SubBranchMaster" role="tab" aria-controls="pills-profile" aria-selected="false">Sub Branch Master</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-home-tab-fill" data-toggle="pill" href="#RegionMaster" role="tab" aria-controls="pills-home" aria-selected="true">Region Master</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-profile-tab-fill" data-toggle="pill" href="#RmMaster" role="tab" aria-controls="pills-profile" aria-selected="false">RM Master</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-home-tab-fill" data-toggle="pill" href="#Mapping" role="tab" aria-controls="pills-home" aria-selected="true">Mapping</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-profile-tab-fill" data-toggle="pill" href="#BulkUpdate" role="tab" aria-controls="pills-profile" aria-selected="false">Bulk Update</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                           
+
+                            <div class="tab-content" id="pills-tabContent-1">
+                                <div class="tab-pane fade show active" id="BranchMaster" role="tabpanel" aria-labelledby="pills-home-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.BranchCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.DropDownListFor(m => m.BranchCode, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Manager, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Manager, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Address1, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Phone, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Enter Valid Phone No" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.FaxNo, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.FaxNo, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.EmailId, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", @placeholder = "Enter Email ID" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.IntroCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.IntroCode, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Introducer, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Introducer, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.GroupCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.GroupCode, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.AccOpenCharg, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.AccOpenCharg, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.AccOpenCharges, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.AccOpenCharges, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.GroupAdmin, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.GroupAdmin, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.GroupCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.GroupCode, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.RegionCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.RegionCode, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.RMCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.RMCode, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+
+                                            
+
+                                            <div class="box-footer">
+                                                <button type="submit" class="btn btn-danger">Cancel</button>
+                                                <button type="submit" class="btn btn-success pull-right">Save</button>
+                                            </div>
+
+
+                                        
+
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="SubBranchMaster" role="tabpanel" aria-labelledby="pills-profile-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.BranchCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.DropDownListFor(m => m.BranchCode, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.SubBranchName, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.SubBranchName, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Manager, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Manager, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Address1, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Phone, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Enter Valid Phone No" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.EmailId, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", @placeholder = "Enter Email ID" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.RMCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.RMCode, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            
+                                            <div class="box-footer">
+                                                <button type="submit" class="btn btn-danger">Cancel</button>
+                                                <button type="submit" class="btn btn-success pull-right">Save</button>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="RegionMaster" role="tabpanel" aria-labelledby="pills-profile-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.RegionCode, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.RegionCode, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.RegionDesc, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.RegionDesc, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.LabelFor(m => m.Zone, new { @class = "form-label" })
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            @Html.TextBoxFor(m => m.Zone, new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            
+                                            <div class="box-footer">
+                                                <button type="submit" class="btn btn-danger">Cancel</button>
+                                                <button type="submit" class="btn btn-success pull-right">Save</button>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="RmMaster" role="tabpanel" aria-labelledby="pills-profile-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                            
+                                            <div class="box-footer">
+                                                <button type="submit" class="btn btn-danger">Cancel</button>
+                                                <button type="submit" class="btn btn-success pull-right">Save</button>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="Mapping" role="tabpanel" aria-labelledby="pills-profile-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                           
+                                            <div class="box-footer">
+                                                <button type="submit" class="btn btn-danger">Cancel</button>
+                                                <button type="submit" class="btn btn-success pull-right">Save</button>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="BulkUpdate" role="tabpanel" aria-labelledby="pills-profile-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                            
+                                            <div class="box-footer">
+                                                <button type="submit" class="btn btn-danger">Cancel</button>
+                                                <button type="submit" class="btn btn-success pull-right">Save</button>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- Tab panes -->
+
+                        </div>
+                    }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

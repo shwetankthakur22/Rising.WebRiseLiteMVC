@@ -1,0 +1,70 @@
+﻿@using Rising.WebRise.Models
+@model StockEntryModification
+@using System.Data
+@{
+    ViewBag.Title = "StockValuationDateRange";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">STOCK VALUATION DATE RANGE</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("StockValuationDateRange", "Security", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.DateFrom, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DateFrom, null, new { @Value = Model.DateFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.DateTo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DateTo, null, new { @Value = Model.DateTo.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    @Html.LabelFor(m => m.ClientCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClientCode, null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-1 mb-3">
+                                    <label class="form-label" style="margin-top: 38px;"></label>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ClientName, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClientName, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ClosRateDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClosRateDate, null, new { @Value = Model.ClosRateDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ScripName, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ScripName, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="box-footer">
+                                <input type="submit" value="View" class="btn btn-success pull-right" />
+                                <a href="javascript:void(0);" class="btn btn-danger" onclick="history.go(-1);">Back</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

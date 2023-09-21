@@ -1,0 +1,356 @@
+﻿@using Rising.WebRise.Models
+@model StateMaster
+@using System.Data
+@{
+    ViewBag.Title = "StateMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            var text = $(".text");
+            text.focus();
+        });
+    </script>
+@if (TempData.ContainsKey("DeleteMessage"))
+    {
+    <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                         Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["DeleteMessage"]",
+                    timer: 3000,
+                    showConfirmButton: true,
+                })
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+    </script>
+}
+
+<script type=text/javascript>
+    var selectedElementId = null; // Store the ID of the currently selected element
+
+    function myStateFunction(idd) {
+        // Remove color from the previously selected element
+        if (selectedElementId) {
+            document.getElementById(selectedElementId).style.color = "";
+        }
+
+        // Apply color to the newly selected element
+        document.getElementById(idd).style.color = "red";
+
+        // Store the ID of the newly selected element
+        selectedElementId = idd;
+
+        var x = document.getElementById(idd).innerText;
+        debugger;
+        var y = idd.split("_");
+
+        $('#StateCode').val(x);
+        $('#StateName').val(y[0]);
+        $('#UnionTerritory').val(y[1]);
+        $('#StateId').val(y[2]);
+
+        document.getElementById("btnCloseState").click();
+    }
+</script>
+
+    <script>
+        function validateNumber(e) {
+            const pattern = /^[0-9]$/;
+
+            return pattern.test(e.key)
+        }
+    </script>
+    <script>
+    function onlyAlphabets(e, t) {
+        try {
+            if (window.event) {
+                var charCode = window.event.keyCode;
+            }
+            else if (e) {
+                var charCode = e.which;
+            }
+            else { return true; }
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 32)
+                return true;
+            else
+                return false;
+        }
+        catch (err) {
+            alert(err.Description);
+        }
+    }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.editButton').click(function () {
+                $("#StateCode").val("").html("");
+                $("#StateId").val("").html("");
+                $("#StateName").val("").html("");
+                $("#UnionTerritory").val("").html("");
+                debugger
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '/Master/GetStateDetails',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (state) {
+                        debugger
+                        $("#SteCode").val(state.StateCode).html(state.StateCode);
+                        $("#SteId").val(state.StateId).html(state.StateId);
+                        $("#SteName").val(state.StateName).html(state.StateName);
+                        $("#UT").val(state.UnionTerritory).html(state.UnionTerritory);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+         function clearTextBox() {
+             $('#StateCode').val('');
+             $('#StateId').val('');
+             $('#StartDate').val('');
+             $('#UnionTerritory').val('');
+         }
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    timer: 3000,
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">STATE MASTER</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("StateMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.StateCode, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(m => m.StateCode, null, new { @class = "text form-control" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#StateCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                    </div>
+                                    <div class="col-md-1">
+                                        @Html.LabelFor(m => m.StateId, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(m => m.StateId, null, new { @class = "form-control", onkeypress = "return validateNumber(event)" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.StateName, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.TextBoxFor(m => m.StateName, null, new { @class = "form-control", required = true, runat = "server", onkeypress = "return onlyAlphabets(event,this);" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.UnionTerritory, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(m => m.UnionTerritory, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="box-footer">
+                                    <input type="submit" value="Save" class="btn btn-primary pull-right" />
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                <div class="row mt-100">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+
+                        <div class="card" id="ExportedGrid">
+                            <div class="box">
+                                @if (Model.result.Tables.Count > 0)
+                                {
+                                    <div>
+                                        <table class="table data-table table-striped table-bordered dataTable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (var cl in Model.result.Tables[0].Columns)
+                                                    {
+                                                        <th class="table-header">@cl</th>
+
+                                                    }
+                                                    <th class="table-header">ACTION(EDIT)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow dr in Model.result.Tables[0].Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (var cl in dr.ItemArray)
+                                                        {
+                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</td>
+                                                        }
+                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">
+                                                            <button type="button" style="height:18px; width:18px" class="btn btn-sm editButton" data-toggle="modal" data-target="#UpdateFrom" id="edit" data-id="@Convert.ToString(dr["CODE"])"><i class="dripicons dripicons-pencil"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xl-12 col-lg-12">
+    <div class="card">
+        <div class="modal fade bd-example-modal-lg" id="UpdateFrom" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">State List</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <div class="new-user-info">
+                                @using (Html.BeginForm("StateMasteredit", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="row">
+                                        <div class=" form-group col-md-2">
+                                            @Html.LabelFor(m => m.StateCode, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.StateCode, new { @class = "form-control", @id = "SteCode" })
+                                        </div>
+                                        <div class="form-group col-md-4 mb-12">
+                                            @Html.LabelFor(m => m.StateName, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.StateName, new { @class = "form-control", @id = "SteName", runat = "server", onkeypress = "return onlyAlphabets(event,this);" })
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            @Html.LabelFor(m => m.UnionTerritory, new { @class = "form-label" })
+                                            @Html.DropDownListFor(m => m.UnionTerritory, new SelectList(new[] { "N", "Y" }), new { @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            @Html.LabelFor(m => m.StateId, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.StateId, null, new { @class = "form-control",@id= "SteId", onkeypress = "return validateNumber(event)", @readonly = true })
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:10px">
+                                        <div class="form-group col-12 ">
+                                            <input type="submit" id="btnSave" class="btn btn-danger" name="Submit" value="Delete" onclick="return confirm('Are you sure want to delete?')" />
+                                            <input type="submit" id="btnCancel" class="btn btn-primary pull-right" name="Submit" value="Update" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="StateCodeFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="exampleTo" class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>UT</th>
+                                <th>STATEID</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter2 = 0;
+                                List<StateMaster> StateDetails = Session["StateDetails"] as List<StateMaster>;
+                                foreach (StateMaster rw in StateDetails)
+                                {
+                                    string idd = @rw.StateName + "_" + @rw.UnionTerritory + "_" + @rw.StateId + "_" + @counter2;
+                                    <tr>
+                                        <th><a href="#"><literal id="@idd" onclick="myStateFunction('@idd')">@rw.StateCode</literal></a></th>
+                                        <td>@rw.StateName</td>
+                                        <td>@rw.UnionTerritory</td>
+                                        <td>@rw.StateId</td>
+                                    </tr>
+                                    counter2++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseState" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>

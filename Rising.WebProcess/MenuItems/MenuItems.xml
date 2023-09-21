@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Menus>
+  <MenuItem Key="UserIDMaintenance" MenuName="User ID Maintenance" ControllerName="Master" ActionName="UserIDMaintenance" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="TMMaster" MenuName="TM Master" ControllerName="Master" ActionName="TMMaster" ParentMenuName="Master" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+  
+  <MenuItem Key="TradeImport" MenuName="Trade Import" ControllerName="Process" ActionName="TradeImport" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="RateImport" MenuName="Rate Import" ControllerName="RateImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="STTImport" MenuName="STT Import" ControllerName="STTImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="StampDutyImport" MenuName="StampDuty Import" ControllerName="StampDutyImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="PositionImport" MenuName="Position Import" ControllerName="PositionImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+
+  <MenuItem Key="MarginImport" MenuName="Margin Import" ControllerName="MarginImport" ActionName="Index" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+  
+  
+  <MenuItem Key="TradeReport" MenuName="Trade Report" ControllerName="Report" ActionName="Index" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+ 
+  <MenuItem Key="DematLedger" MenuName="Demat Ledger" ControllerName="Report" ActionName="DematLedger" ParentMenuName="Report" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Cash Segment"> </MenuItem>
+  
+
+  <MenuItem Key="TradeImport" MenuName="Trade Import" ControllerName="Process" ActionName="TradeImportFO" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Future &#38; Option"> </MenuItem>
+  
+ 
+
+
+  <MenuItem Key="TradeImport" MenuName="Trade Import" ControllerName="Process" ActionName="TradeImportComm" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Commodity"> </MenuItem>
+
+
+
+  <MenuItem Key="TradeImport" MenuName="Trade Import" ControllerName="Process" ActionName="TradeImportCurr" ParentMenuName="Process" isView="True" isEdit="True" isDelete="True" isExport="True" Logo="fa fa-link" Group="Currency"> </MenuItem>
+  
+
+
+</Menus>
+

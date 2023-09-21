@@ -1,0 +1,204 @@
+﻿@model Rising.WebRise.Models.Reports.IncomeTaxTurnOver
+
+@{
+    ViewBag.Title = "TurnOver";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Income TurnOver Report</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    @using (Html.BeginForm("IncomeTaxTurnOver", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Exchange, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.Branch, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.Branch, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.DateFrm, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.DateFrm, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.To, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.To, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <!--Radio Button-->
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="custom-checkbox col-md-3">
+                                            <input type="checkbox" class="custom-control-input" checked id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Premium</label>
+                                        </div>
+                                        <div class="custom-checkbox col-md-9">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                            <label class="custom-control-label" for="customCheck2">Strikeprice+Premium</label>
+                                        </div>
+                                    </div>
+                                        <div class="row">
+                                        <div class="col-md-3">
+                                            @Html.CheckBoxFor(m => m.Exclude, new { @class = "" })
+                                            @Html.LabelFor(m => m.Exclude, new { @class = "me-30", @style = "" })
+                                        </div>
+                                            <div class="col-md-4">
+                                                @Html.CheckBoxFor(m => m.Consolidated, new { @class = "" })
+                                                @Html.LabelFor(m => m.Consolidated, new { @class = "me-30", @style = "" })
+                                            </div>
+                                            <div class="col-md-5">
+                                                @Html.CheckBoxFor(m => m.IncludeCustod, new { @class = "" })
+                                                @Html.LabelFor(m => m.IncludeCustod, new { @class = "me-30", @style = "" })
+                                            </div>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12 ">
+                                <button type="submit" class="btn btn-primary">Cancel</button>
+                                <button type="submit" class="btn btn-primary pull-right">Save</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- container -->
+                <!--end footer-->
+                <div class="row mt-100">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+                        <div class="card" id="ExportedGrid">
+                            <div class="box">
+                                <div>
+                                    <table class="table-bordered table-box table">
+                                        <thead>
+                                            <tr>
+                                                <th class="table-header">Trade Date</th>
+                                                <th class="table-header">Client Code</th>
+                                                <th class="table-header">Client Name</th>
+                                                <th class="table-header">Address</th>
+                                                <th class="table-header">Pincode</th>
+                                                <th class="table-header">Selling Turnover</th>
+                                                <th class="table-header">Buying Turnover</th>
+                                                <th class="table-header">Total Turnover</th>
+                                                <th class="table-header">Pan No.</th>
+                                                <th class="table-header">FName</th>
+                                                <th class="table-header">Ref. No.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="modal fade bd-example-modal-lg" id="UpdateFrom" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">TurnOver Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <div class="new-user-info">
+                        @using (Html.BeginForm("TurnOveredit", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="row">
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.TradeDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.TradeDate, new { @class = "form-control", @id = "Tdate" })
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ClientCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClientCode, new { @class = "form-control", @id = "CCode" })
+                                </div>
+                                <div class="form-group col-md-3 mb-12">
+                                    @Html.LabelFor(m => m.ClientName, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClientName, new { @class = "form-control", @id = "CName", @readonly = true })
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Address, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @id = "Add" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-3 mb-12">
+                                    @Html.LabelFor(m => m.Pincode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Pincode, new { @class = "form-control", @id = "Pinc"})
+                                </div>
+                                <div class="form-group col-md-3 mb-12">
+                                    @Html.LabelFor(m => m.SellingTurnover, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.SellingTurnover, new { @class = "form-control", @id = "SellTurn" })
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.BuyingTurnover, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.BuyingTurnover, new { @class = "form-control", @id = "BuyTurn" })
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.TotalTurnover, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.TotalTurnover, new { @class = "form-control", @id = "TotalTurn" })
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.PanNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.PanNo, new { @class = "form-control", @id = "PanNo" })
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.FName, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.FName, new { @class = "form-control", @id = "Fname" })
+                                </div>
+                                <div class="form-group col-md-3 col-12">
+                                    @Html.LabelFor(m => m.RefNo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.RefNo, new { @class = "form-control", @id = "RefNo" })
+                                </div>
+                                 end col 
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12 ">
+                                    <input type="submit" id="btnSave" class="btn btn-danger" name="Submit" value="Delete" onclick="return confirm('Are you sure want to delete?')" />
+                                    <input type="submit" id="btnCancel" class="btn btn-primary pull-right" name="Submit" value="Update" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>*@

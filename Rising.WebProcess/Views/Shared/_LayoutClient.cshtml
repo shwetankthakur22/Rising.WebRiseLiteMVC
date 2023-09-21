@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
+    <meta content="" name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Content/assets_new/images/logo.png">
+
+
+    <!-- App css -->
+   
+    <link href="~/Content/assets_new/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="~/Content/assets_new/css/icons.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/css/metisMenu.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/css/app.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/css/tabs.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets_new/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">  
+
+  
+ 
+   
+
+    <title>@ViewBag.Title - WebRise</title>
+    @using Rising.WebRise.Models
+    @using Rising.OracleDBHelper;
+
+
+    <style>
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+            .sticky + .content {
+                padding-top: 60px;
+            }
+    </style>
+
+
+
+    <script>
+        window.onscroll = function () { myFunction() };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+
+    <script>
+        $(function (e) {
+            $('#exampleFrom').DataTable();
+        });
+    </script>
+
+    <script>
+        $(function (e) {
+            $('#exampleTo').DataTable();
+        });
+    </script>
+
+    @*<script type="text/javascript">
+            function preventBack() { window.history.forward(); }
+            setTimeout("preventBack()", 0);
+            window.onunload = function () { null };
+        </script>*@
+
+    <script type=text/javascript>
+        $(document).ready(function () {
+            $('#ClientCodeFrom').change(function () {
+                var x = $('#ClientCodeFrom').val();
+                $('#ClientCodeTo').val(x);
+            });
+        });
+    </script>
+
+    <script type=text/javascript>
+        function myFunction(idd) {
+            document.getElementById(idd).style.color = "red";
+            var x = document.getElementById(idd).innerText;
+            $('#ClientCodeFrom').val(x);
+            $('#ClientCodeTo').val(x);
+            document.getElementById("btnCloseCodeFrom").click();
+        }
+    </script>
+
+    <script type=text/javascript>
+        function myFunction1(idd) {
+            document.getElementById(idd).style.color = "red";
+            var x = document.getElementById(idd).innerText;
+            $('#ClientCodeTo').val(x);
+            document.getElementById("btnCloseCodeTo").click();
+        }
+    </script>
+
+
+
+
+</head>
+<body data-layout="horizontal" class="">
+    <div>
+        @if (TempData["AlertMessage"] != null)
+        {
+            <script type="text/javascript">
+                alert("@TempData["AlertMessage"]");
+            </script>
+            TempData["AlertMessage"] = null;
+        }
+        @{
+            WebUser webUser = Session["WebUser"] as WebUser;
+            if (webUser.LoginValidationStatus == false)
+            {
+
+            }
+            else
+            {
+                <div class="topbar" style="height:95px;">
+                    <div class="brand" style="margin-top: 3px;margin-right: 20px;"><a href="@Url.Action("Index", "ClientHome")" class="logo"><span><img src="~/Content/assets_new/images/logo.jpg" alt="logo-small" style="height: 88px;"></span><span><img src="~/Content/assets_new/images/logo.png" alt="logo-large" class="logo-lg logo-light"></span></a></div>
+                    <nav class="navbar-custom">
+
+                        <ul class="list-unstyled topbar-nav float-right mb-0">
+            
+
+                            <li class="creat-btn">
+                                <div class="nav-link"><div class=""><i class="fas fa-user mr-2"></i>@Html.Label("" + webUser.UserName + "", new { @class = "profile_name" })</div></div>
+                            </li>
+
+                            <li class="creat-btn" style="margin-top: 15px;">
+                                <div class="nav-link">
+                                    <a class="btn btn-md btn-danger" href="@Url.Action("LogOut", "ClientHome")" role="button"><span style="color:white;">Logout</span></a>
+                                </div>
+                            </li>
+                            <li class="menu-item">
+                                <!-- Mobile menu toggle-->
+                                <a class="navbar-toggle nav-link" id="mobileToggle">
+                                    <div class="lines"><span></span> <span></span> <span></span></div>
+                                </a>
+                                <!-- End mobile menu toggle-->
+                            </li>
+                        </ul>
+
+                        <div class="navbar-custom-menu">
+                           
+                            <div id="navigation">
+                                <ul class="navigation-menu">
+                                    <li class="has-submenu">
+                                        <a href="@Url.Action("Index", "ClientHome")"><span><i class="ti ti-home"></i>Dashboard</span></a>
+                                    </li>
+                                    <li class="has-submenu">
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>Master</span></a>
+                                        <ul class="submenu">
+                                            @foreach (MenuItem menu in MvcApplication.MenuItems)
+                                            {
+                                                if (menu.Group == Session["SelectedDBGroup"].ToString() && menu.ParentMenuName == "Master")
+                                                {
+                                            <li><a href="@Url.Action(@menu.ActionName, @menu.ControllerName)">@menu.MenuName</a></li>}
+                                            }
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>Process</span></a>
+                                        <ul class="submenu">
+                                            @foreach (MenuItem menu in MvcApplication.MenuItems)
+                                            {
+                                                if (menu.Group == Session["SelectedDBGroup"].ToString() && menu.ParentMenuName =="Process")
+                                                {<li><a href="@Url.Action(@menu.ActionName, @menu.ControllerName)">@menu.MenuName</a></li>}                                                        
+                                            }
+                                        </ul>                                       
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>Report</span></a>
+                                        <ul class="submenu">
+                                            @foreach (MenuItem menu in MvcApplication.MenuItems)
+                                            {
+                                                if (menu.Group == Session["SelectedDBGroup"].ToString() && menu.ParentMenuName == "Report")
+                                                {
+                                            <li><a href="@Url.Action(@menu.ActionName, @menu.ControllerName)">@menu.MenuName</a></li>}
+                                            }
+                                        </ul>
+                                    </li>
+
+
+
+
+
+
+                                    <li class="has-submenu">
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>@Session["SelectedDBGroup"]</span></a>
+                                        <ul class="submenu">
+                                            @foreach (var dbl in MvcApplication.DBLists.Select(o => o.Group).Distinct())
+                                            {
+                                            <li><a href="@Url.Action("changeSegment1", "ClientHome", new RouteValueDictionary(new { id = dbl.Replace("&","---") }))">@dbl</a></li>
+                                            }
+                                        </ul>
+                                        <!--end submenu-->
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <a href="#"><span><i class="ti ti-angle-double-down"></i>2020-21</span></a>
+                                        <ul class="submenu">
+                                            <li><a href="#">2020-21</a></li>
+                                            <li><a href="#">2019-20</a></li>
+                                            <li><a href="#">2018-19</a></li>
+                                           
+                                        </ul>
+                                        <!--end submenu-->
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+        }
+        @RenderBody()
+        }
+
+
+    </div>
+    <script>
+   radiobtn = document.getElementById("rad1");
+   radiobtn.checked = true;
+    </script>
+    <script src="~/Content/assets_new/js/jquery.min.js"></script>
+    <script src="~/Content/assets_new/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/assets_new/js/metismenu.min.js"></script>
+    <script src="~/Content/assets_new/js/waves.js"></script>
+    <script src="~/Content/assets_new/js/jquery-ui.min.js"></script>
+    <script src="~/Content/assets_new/js/moment.js"></script>
+    <script src="~/Content/assets_new/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/assets_new/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/assets_new/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets_new/plugins/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/assets_new/pages/jquery.datatable.init.js"></script>
+    <script src="~/Content/assets_new/plugins/daterangepicker/daterangepicker.js"></script><!-- Plugins js -->
+    <script src="~/Content/assets_new/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/Content/assets_new/js/app.js"></script>
+    <script src="~/Content/assets_new/plugins/select2/select2.min.js"></script>
+    <script src="~/Content/assets_new/pages/jquery.forms-advanced.js"></script>
+    <script src="~/Content/assets_new/pages/jquery.tabledit.init.js"></script>
+    <script src="~/Content/assets_new/plugins/tiny-editable/mindmup-editabletable.js"></script>
+    <script src="~/Content/assets_new/plugins/tiny-editable/numeric-input-example.js"></script>
+    <script src="~/Content/assets_new/plugins/bootable/bootstable.js"></script>
+
+</body>
+</html>

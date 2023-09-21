@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title - WebRise</title>
+
+    <meta name="description" content="rising technosoft pvt. ltd">
+
+  
+    <!--=========================*
+                Favicon
+    *===========================-->
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/assets/images/logo.png">
+
+    <!--=========================*
+            Bootstrap Css
+    *===========================-->
+    <link rel="stylesheet" href="~/Content/assets/css/bootstrap.min.css">
+
+    <!--=========================*
+              Custom CSS
+    *===========================-->
+    <link rel="stylesheet" href="~/Content/assets/css/style.css">
+
+    <!--=========================*
+               Owl CSS
+    *===========================-->
+    <link href="~/Content/assets/css/owl.carousel.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/assets/css/owl.theme.default.min.css" rel="stylesheet" type="text/css">
+
+    <!--=========================*
+            Font Awesome
+    *===========================-->
+    <link rel="stylesheet" href="~/Content/assets/css/font-awesome.min.css">
+
+    <!--=========================*
+             Themify Icons
+    *===========================-->
+    <link rel="stylesheet" href="~/Content/assets/css/themify-icons.css">
+
+    <!--=========================*
+               Ionicons
+    *===========================-->
+    <link href="~/Content/assets/css/ionicons.min.css" rel="stylesheet" />
+
+    <!--=========================*
+              EtLine Icons
+    *===========================-->
+    <link href="~/Content/assets/css/et-line.css" rel="stylesheet" />
+
+    <!--=========================*
+              Feather Icons
+    *===========================-->
+    <link href="~/Content/assets/css/feather.css" rel="stylesheet" />
+
+    <!--=========================*
+              Modernizer
+    *===========================-->
+    <script src="~/Content/assets/js/modernizr-2.8.3.min.js"></script>
+
+    <!--=========================*
+               Metis Menu
+    *===========================-->
+    <link rel="stylesheet" href="~/Content/assets/css/metisMenu.css">
+
+    <!--=========================*
+               Slick Menu
+    *===========================-->
+    <link rel="stylesheet" href="~/Content/assets/css/slicknav.min.css">
+
+    <!--=========================*
+            Google Fonts
+    *===========================-->
+    <!-- Overpass USE: font-family: 'Overpass', sans-serif;-->
+    <link href="https://fonts.googleapis.com/css?family=Overpass:100,200,300,400,600,700,800,900&amp;display=swap" rel="stylesheet">
+
+    <!--=========================*
+                Scripts
+    *===========================-->
+    <!-- Jquery Js -->
+    <script src="~/Content/assets/js/jquery.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="~/Content/assets/js/popper.min.js"></script>
+    <script src="~/Content/assets/js/bootstrap.min.js"></script>
+    <!-- Owl Carousel Js -->
+    <script src="~/Content/assets/js/owl.carousel.min.js"></script>
+    <!-- Metis Menu Js -->
+    <script src="~/Content/assets/js/metisMenu.min.js"></script>
+    <!-- SlimScroll Js -->
+    <script src="~/Content/assets/js/jquery.slimscroll.min.js"></script>
+    <!-- Slick Nav -->
+    <script src="~/Content/assets/js/jquery.slicknav.min.js"></script>
+    <!-- Fancy Box Js -->
+    <script src="~/Content/assets/js/jquery.fancybox.pack.js"></script>
+    <!-- Main Js -->
+    <script src="~/Content/assets/js/main.js"></script>
+    
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+</head>
+<body style="overflow:hidden;">
+    @if (TempData["AlertMessage"] != null)
+    {
+        <script type="text/javascript">
+            alert("@TempData["AlertMessage"]");
+        </script>
+        TempData["AlertMessage"] = null;
+    }
+
+
+ 
+       
+            @RenderBody()
+       
+  
+
+
+    @*<footer style="padding: 1px;background: #065360;color: #fff;    position: fixed; width: 100%; z-index: 9999;">
+        <div class="row" style="padding:10px 20px 2px 20px;">
+            <div class="col-md-6" style="color: white;">
+                @if (Session["CompanyName"] != null)
+                {
+                    <img src="~/Content/img/Client_LOGO.jpg" style="height:45px;" />@Html.ActionLink(Session["CompanyName"].ToString(), "Index", "Login", new { area = "" }, new { @class = "navbar-brand", @style = "color:white;" })
+                }
+                else
+                {
+                    // Response.Redirect(Url.Action("Index", "Login"));
+                }
+            </div> <div class="col-md-6"> <p style="text-align: right;"><img src="~/Content/img/RISING_LOGO.png" style="height:45px;" />&copy; @DateTime.Now.Year - Rising TechnoSoft Pvt Ltd</p></div>
+        </div>
+    </footer>*@
+   
+
+
+
+
+
+</body>
+</html>

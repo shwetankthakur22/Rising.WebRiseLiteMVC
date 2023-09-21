@@ -1,0 +1,177 @@
+﻿@using Rising.WebRise.Models
+@model ShareTransferRequest
+
+@{
+    ViewBag.Title = "ShareTransferRequest";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <section id="Ledger">
+                    @using (Html.BeginForm("ShareTransferInput", "Demat", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                        @Html.AntiForgeryToken()
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12 col-xl-3"></div>
+                            <div class="col-md-12 col-xl-6">
+                                <div class="card">
+
+                                    <div class="card-header br-tr-7 br-tl-7" style="background-color:#088d9c">
+                                        <h3 class="card-title" style="color:white;">@Html.Label(("Share Transfer Request").ToString(), new { @class = "" })</h3>
+                                    </div>
+
+                                    <div class="card-body">                 
+
+                                            @if ((Session["CodeSearchFilterType"] as List<string>).Count > 0)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control" })
+
+
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label" style="margin-top: 25px;"></label>
+                                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#CodeFrom"><i class="fa fa-user"></i></button>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="row">
+                                                <div class="col-md-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(m => m.AsOnDate, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(m => m.AsOnDate, null, new { @Value = Model.AsOnDate.ToString("yyyy-MM-dd"), @class = "form-control fc-datepicker", @type = "date" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-6">
+                                                    <div class="form-group">
+                                                        @Html.LabelFor(m => m.TransferDate, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(m => m.TransferDate, null, new { @Value = Model.TransferDate.ToString("yyyy-MM-dd"), @class = "form-control fc-datepicker", @type = "date" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @*<div class="row">
+
+                <div class="col-md-4 col-lg-6">
+                    <div class="form-group">
+                        <table>
+                            @for (int i = 0; i < Model.BenCodes.Count; i++)
+                            {
+                                <tr>
+                                    <td> @Html.TextBoxFor(m => m.BenCodes.ElementAt(i).Key, new { @class = "form-control", @readonly = "true" })</td>
+                                    <td> @Html.TextBoxFor(m => m.BenCodes.ElementAt(i).Value, new { @class = "form-control" })</td>
+
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+
+            </div>*@
+
+
+                                        </div>
+                                    <div class="card-footer text-right">
+                                        <input type="submit" value="View" class="btn btn-primary" style="background-color:#088d9c" />
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-xl-3"></div>
+                        </div>
+                    }
+                </section>
+
+                <section id="Ledger12">
+                    <div class="card" id="ExportedGrid">
+                        <div class="card-body" style="padding: 0;">
+                            <div class="table-responsive">
+                                @if (Model.listShareTransferOutputRow != null)
+                                {
+                                    using (Html.BeginForm("ShareTransferSave", "Demat", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.HiddenFor(m => Model.AsOnDate)
+                                        @Html.HiddenFor(m => Model.TransferDate)
+                                        @Html.HiddenFor(m => Model.BenCodes)
+
+                                        <div class="card-footer text-right">
+                                            <input type="submit" value="Save" class="btn btn-primary" style="background-color:#088d9c" />
+
+                                        </div>
+                                            <table class="table table-striped table-bordered" style="width:100%">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">ClientCode</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">ClientName</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">DPCode</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">DPAcNo</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">ScripCode</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">ScripName</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">ScripISIN</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">Holding</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">TransferQty</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">BenCode</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">BenDPCode</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">BenDPAccountNo</th>
+                                                        <th style="border: 1px solid  #808080;background-color:gold;font-size: 12px;font-weight: bold;">SlipNo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @{
+
+                                                        for (int i = 0; i < Model.listShareTransferOutputRow.Count; i++)
+                                                        {
+
+                                                            <tr>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].ClientCode, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].ClientName, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].DPCode, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].DPAcNo, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].ScripCode, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].ScripName, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].ScripISIN, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].Holding, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].TransferQty, new { @class = "form-control" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].BenCode, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].BenDPCode, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].BenDPAcNo, new { @class = "form-control", @readonly = "true" })</td>
+                                                                <td> @Html.TextBoxFor(m => m.listShareTransferOutputRow[i].SlipNo, new { @class = "form-control", @readonly = "true" })</td>
+                                                               
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+
+                                                            }
+                                                        }
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

@@ -1,0 +1,93 @@
+﻿@using Rising.WebRise.Models
+@model DematHoldingInput
+
+@{
+    ViewBag.Title = "Demat Holding AsOnDate";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<script type=text/javascript>
+    $(document).ready(function () {
+        $('#DateTo').change(function () {
+            var x = $('#DateTo').val();
+            $('#DateClosing').val(x);
+        });
+    });
+</script>
+
+<div class="page-wrapper" style="margin-top: 72px;">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6" id="Ledger" style="margin: auto;">
+
+
+                <div class="card" style="margin-top:20px;">
+                    <div class="card-header" style="background-color:#eb2c2e">
+                        <h4 class="card-title" style="color:white">Demat Holding
+                            </h4>
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        @using (Html.BeginForm("DematHoldingReport", "Demat", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div>
+
+                                @if ((Session["CodeSearchFilterType"] as List<string>).Count > 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                            @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control" })
+
+
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <label class="form-label" style="margin-top: 25px;"></label>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#CodeFrom"><i class="fa fa-user"></i></button>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row" style="margin-top:10px">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        @Html.LabelFor(m => m.AsOnDate, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.AsOnDate, null, new { @Value = Model.AsOnDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <input type="submit" value="View" class="btn btn-primary px-4" style="margin-right: 5px;" />
+                                    <a href="javascript:void(0);" class="btn btn-red" onclick="history.go(-1);">Back</a>
+
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+﻿@using Rising.WebRise.Models
+@model CloseRateEntryIn
+@using System.Data
+@using Rising.WebRiseProcess.Models
+
+@{
+    ViewBag.Title = "CloseRateEntry";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<script>
+        function getDate() {
+            debugger
+            var input1 = document.getElementById("date-end");
+            var st1 = input1.value;
+            var st1_1;
+
+            if (st1.length === 10 && st1.indexOf("-") > 1) {
+                st1_1 = st1;
+            }
+            else {
+                if (st1.length === 6) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-20" + st1.substr(4, 2);
+                }
+                else if (st1.length === 5) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-200" + st1.substr(4, 2);
+                }
+                else if (st1.length === 7) {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-2" + st1.substr(4, 3);
+                }
+                else {
+                    st1_1 = st1.substr(0, 2) + "-" + st1.substr(2, 2) + "-" + st1.substr(4, 4);
+                }
+                var pattern = /(\d{2})\-(\d{2})\-(\d{4})/;
+                var dt1 = new Date(st1_1.replace(pattern, '$3-$2-$1'));
+                if (dt1 == "Invalid Date") {
+                    st1_1 = null; document.getElementById("date-end").focus();
+                    document.getElementById("date-end").style.backgroundColor = '#fff0e6';
+                    alert(dt1);
+                }
+                else {
+                    debugger
+                    document.getElementById("date-end").value = st1_1;
+                }
+            }
+            document.getElementById("date-end").value = st1_1;
+        }
+</script>
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">CLOSING RATE ENTRY</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+
+                    <!--end card-header-->
+                    @using (Html.BeginForm("CloseRateEntryReport", "Process", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.TrDate, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-4">
+
+                                        @{
+                                            // Get the current system date in MM/dd/yyyy format
+                                            string systemDate = DateTime.Now.ToString("dd-MM-yyyy");
+                                        }
+
+                                        @Html.TextBoxFor(m => m.TrDate, systemDate, new { @class = "form-control", @id = "date-end", @onChange = "getDate()" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.SessionId, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(m => m.SessionId, new SelectList(new[] { "1", "2" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.SymbolList, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-4">
+                                 @Html.DropDownListFor(m => m.SymbolList, ViewBag.SymbolList as SelectList, "Symbol", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer" style="margin-top: 15px;">
+                            <input type="submit" value="View" class="btn btn-sm btn-primary pull-right" />
+                         <input type="submit" value="Update" class="btn btn-sm btn-primary pull-right" onclick="updateClosePrices()" id="performBulkUpdate" />
+                        </div>
+                        if (Model.closeRateEntryOut != null)
+                        {
+
+                            <div class="page-wrapper">
+                                <!-- Page Content-->
+                                <div class="page-content">
+                                    <!-- Page-Title -->
+                                    @Html.Partial("_CloseRateEntryReport", Model.closeRateEntryOut)
+
+                                </div>
+                            </div>
+
+                        }
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

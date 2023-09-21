@@ -1,0 +1,176 @@
+﻿@using Rising.WebRise.Models
+@model Rising.WebRise.Models.TradeEdit
+
+@{
+    ViewBag.Title = "Trade Edit New";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    <style>
+        .table-box {
+            height: 443px;
+            overflow-y: scroll;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #808080;
+            border-collapse: collapse;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            color: #fff;
+            background: #00bcd4;
+        }
+    </style>
+
+}
+
+<div class="page-wrapper">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-11" id="Ledger" style="margin: auto;">
+                <div class="card" style="margin-top:20px;">
+                    <div class="card-header" style="background-color:#eb2c2e70;">
+                        <h4 class="card-title" style="color:black">Trade Edit New</h4>
+
+                    </div>
+                    <!--end card-header-->
+                    @using (Html.BeginForm("SaveTradeEdit", "TradeEdit", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+                        <div class="card-body">
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "col-sm-4 col-form-label" })
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control" })
+                                    <span class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#CodeFrom"><i class="fa fa-user"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.ScripCode, new { @class = "col-sm-4 col-form-label" })
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.ScripCode, new { @class = "form-control", @placeholder = "Enter Scrip Code" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.UserID, new { @class = "col-sm-4 col-form-label" })
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.UserID, new { @class = "form-control", @placeholder = "Enter ISIN" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.SettNo, new { @class = "col-sm-4 col-form-label" })
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.SettNo, new { @class = "form-control", @placeholder = "Enter SettNo" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.CtclID, new { @class = "col-sm-4 col-form-label" })
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.CtclID, new { @class = "form-control", @placeholder = "Enter Ref NO" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.TradeDate, new { @class = "col-sm-4 col-form-label" })
+                                <div class="col-sm-8">
+                                    @Html.TextBoxFor(m => m.TradeDate, new { @class = "form-control", @placeholder = "Enter Date From", @type = "date" })
+                                </div>
+                            </div>
+                           
+                            
+                            <div class="row">
+                                <div class="col-lg-12" style="margin: auto;">
+                                    <div class="card" id="ExportedGrid">
+                                        <div class="card-body" style="padding: 0;">
+                                            <div class="table-responsive table-box">
+                                                <table class="table table-striped table-bordered" style="width:100%">
+
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Client Code</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Client Name</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Scrip Code</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Scrip Name</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Qty</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">MktRate</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">NetRate</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Settno</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Order No</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Order Time</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Trade No</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">Trade Time</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">OrgClient</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">UserID</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">CtclID</th>
+                                                            <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color:white;">RowID</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        @{  
+                                                            int cnt = 0;
+                                                            foreach (TradeEditRow ter in Model.TradeEditRows)
+                                                            {
+                                                                <tr>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].ClientCode, new { @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].ClientName, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].ScripCode, new { @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].ScripName, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].Qty, new { @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].MktRate, new { @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].NetRate, new { @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.SettNo, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].OrderNo, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].OrderTime, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].TradeNo, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].TradeTime, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].OrgClient, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].UserID, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].CtclID, new { @readonly = true, @placeholder = "" })</td>
+                                                                    <td style="font-size:12px;border: 1px solid  #d3d3d3;"> @Html.TextBoxFor(m => m.TradeEditRows[cnt].RowID, new { @readonly = true, @placeholder = "" })</td>
+</tr>
+                                                                    cnt++;
+                                                                }
+                                                            }
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8 ml-auto"><button type="submit" class="btn btn-primary float-right">Submit</button></div>
+                        </div>
+                                                            }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

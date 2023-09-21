@@ -1,0 +1,93 @@
+﻿@using Rising.WebRise.Models
+@model GenericModel
+@{
+    ViewBag.Title = "AgeingReportInput";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="page-wrapper" style="margin-top: 72px;">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6" id="Ledger" style="margin: auto;margin-top: 20px;">
+
+
+                <div class="card">
+                    <div class="card-header" style="background-color:#eb2c2e">
+                        <h4 class="card-title" style="color:white">
+                            Ageing Input
+
+                        </h4>
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+
+                        @using (Html.BeginForm("AgeingReport", "BranchHome", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div>
+
+                                <div class="row" style="margin-top:10px">
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        @Html.LabelFor(m => m.AsOnDate, new { @class = "form-label", @style = "font-size: 14px;" })
+                                        @Html.TextBoxFor(m => m.AsOnDate, null, new { @Value = Model.AsOnDate.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:10px">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.LabelFor(m => m.Day1, new { @class = "form-label", @style = "font-size: 14px;" })
+                                        @Html.TextBoxFor(m => m.Day1, null, new { @class = "form-control", @Value = "30" })
+
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.LabelFor(m => m.Day2, new { @class = "form-label", @style = "font-size: 14px;" })
+                                        @Html.TextBoxFor(m => m.Day2, null, new { @class = "form-control", @Value = "60" })
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:10px">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.LabelFor(m => m.Day3, new { @class = "form-label", @style = "font-size: 14px;" })
+                                        @Html.TextBoxFor(m => m.Day3, null, new { @class = "form-control", @Value = "90" })
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.LabelFor(m => m.Day4, new { @class = "form-label", @style = "font-size: 14px;" })
+                                        @Html.TextBoxFor(m => m.Day4, null, new { @class = "form-control", @Value = "120" })
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <input type="submit" value="View" class="btn btn-primary px-4" style="margin-right: 5px;" />
+                                    <a href="javascript:void(0);" class="btn btn-red" onclick="history.go(-1);">Back</a>
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+

@@ -1,0 +1,104 @@
+﻿@using Rising.WebRise.Models
+@model ImportFileInput
+@{
+    ViewBag.Title = "TradeImportProcess";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<link href="~/Content/assets/sweetalert/css/sweetalert.css" rel="stylesheet" />
+<script src="~/Content/assets/sweetalert/js/sweetalert.js"></script>
+
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Trade Import</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("TradeImportProcess", "Process", new { @method = "TradeFile" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.TradeDate, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.TradeDate, null, new { @class = "form-control", @id = "date-end", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ImportBasis, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.ImportBasis, new SelectList(new[] { "Actual Code", "Short Name" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Session, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Session, new SelectList(new[] { "1", "2" }), new { @class = "form-control" })
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-6 col-12">
+                                    @Html.LabelFor(m => m.FilePath, new { @class = "form-label" })
+                                    <div class="custom-file">
+                                        <input id="file-upload" name="TradeFile" class="custom-file-input" type="file" />
+                                        <label class="custom-file-label" for="TradeFile">Choose file</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.procode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.procode, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.memberid, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.memberid, new { @class = "form-control" })
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.brokercode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.brokercode, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Imported, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Imported, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.Rejected, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Rejected, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12 ">
+                                    <button type="submit" class="btn btn-success">Import</button>
+                                    <button type="submit" class="btn btn-danger pull-right">Exit</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (TempData.ContainsKey("Message"))
+{
+    <script>
+        swal({
+            title: "@TempData["Message"]",
+            type: "@TempData["MessageType"]",
+            timer: 1000,
+            allowOutsideClick: true
+        });
+    </script>
+}

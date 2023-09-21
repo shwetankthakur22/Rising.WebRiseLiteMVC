@@ -1,0 +1,536 @@
+﻿@using Rising.WebRise.Models
+@using System.Data
+@model BankMaster
+@{
+    ViewBag.Title = "BankMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            var text = $(".text");
+            text.focus();
+        });
+    </script>
+<script>
+        var selectedElementId = null; // Store the ID of the currently selected element
+
+        function myBankFunction(idd) {
+
+            // Remove color from the previously selected element
+            if (selectedElementId) {
+                document.getElementById(selectedElementId).style.color = "";
+            }
+
+            // Apply color to the newly selected element
+            document.getElementById(idd).style.color = "red";
+
+            // Store the ID of the newly selected element
+            selectedElementId = idd;
+
+            var x = document.getElementById(idd).innerText;
+            debugger
+          //  var arry = $(idd).val();
+            var y = idd.split("_");
+
+
+            $('#IFSC').val(x);
+          //  $('#ClientCodeTo').val(x);
+            $('#BankName').val(y[0]);
+            $('#Micr').val(y[1]);
+            $('#pincode').val(y[2]);
+            //  $('#ClientCodeTo').val(x);
+            $('#StateCode').val(y[3]);
+            $('#city').val(y[4]);
+            $('#Address1').val(y[5]);
+            $('#Address2').val(y[6]);
+            $('#Address3').val(y[7]);
+
+
+            document.getElementById("btnCloseBank").click();
+        }
+</script>
+    <script>
+        $(document).ready(function () {
+            $('.editButton').click(function () {
+                $("#IFSC").val("").html("");
+                $("#BankName").val("").html("");
+                $("#Micr").val("").html("");
+                $("#city").val("").html("");
+                $("#pincode").val("").html("");
+                $("#StateCode").val("").html("");
+                $("#Address1").val("").html("");
+                $("#Address2").val("").html("");
+                $("#Address3").val("").html("");
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '/Master/GetBankDetails',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid : id },
+                    success: function (bank) {
+                        debugger
+                        $("#IFSCCOD").val(bank.IFSC).html(bank.IFSC);
+                        $("#BANKN").val(bank.BankName).html(bank.BankName);
+                        $("#MIC").val(bank.Micr).html(bank.Micr);
+                        $("#CIT").val(bank.city).html(bank.city);
+                        $("#PINCOD").val(bank.pincode).html(bank.pincode);
+                        $("#STATECOD").val(bank.StateCode).html(bank.StateCode);
+                        $("#AD1").val(bank.Address1).html(bank.Address1);
+                        $("#AD2").val(bank.Address2).html(bank.Address2);
+                        $("#AD3").val(bank.Address3).html(bank.Address3);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+         function clearTextBox() {
+             $("#BANKNAME").val("");
+                $("#MICR").val("");
+                $("#CITY").val("");
+                $("#PINCODE").val("");
+                $("#IFSCCODE").val("");
+                $("#STATECODE").val("");
+                $("#Address1").val("");
+                $("#Address2").val("");
+                $("#Address3").val("");
+         }
+    </script>
+    <script>
+        function onlyAlphabets(e, t) {
+            try {
+                if (window.event) {
+                    var charCode = window.event.keyCode;
+                }
+                else if (e) {
+                    var charCode = e.which;
+                }
+                else { return true; }
+                if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 32)
+                    return true;
+                else
+                    return false;
+            }
+            catch (err) {
+                alert(err.Description);
+            }
+        }
+    </script>
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                         Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["DeleteMessage"]",
+                    timer: 3000,
+                    showConfirmButton: true,
+                })
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+    @*<script>
+             $(".val").bind("keypress", function (event) {
+                var charCode = event.which;
+
+                if (charCode == 8 || charCode == 0) {
+                    return;
+                }
+                else {
+                    var keyChar = String.fromCharCode(charCode);
+                    return /[a-zA-Z0-9]/.test(keyChar);
+                }
+            });
+        </script>*@
+    <script>
+    $("#IFSCCOD").bind("keypress", function (event) {
+            var charCode = event.which;
+
+            if (charCode == 8 || charCode == 0) {
+                return;
+            }
+            else {
+                var keyChar = String.fromCharCode(charCode);
+                return /[a-zA-Z0-9]/.test(keyChar);
+            }
+        });
+    </script>
+    <script>
+    $("#IFSC").bind("keypress", function (event) {
+            var charCode = event.which;
+
+            if (charCode == 8 || charCode == 0) {
+                return;
+            }
+            else {
+                var keyChar = String.fromCharCode(charCode);
+                return /[a-zA-Z0-9]/.test(keyChar);
+            }
+        });
+    </script>
+    <script>
+        function validateNumber(e) {
+            const pattern = /^[0-9]$/;
+
+            return pattern.test(e.key)
+        }
+    </script>
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    timer: 3000,
+                    showConfirmButton: false,
+                })
+            });
+        </script>
+    }
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">BANK MASTER</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("BankMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.IFSC, new { @class = "text form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.IFSC, null, new { maxlength = 11, minlength = 11, @class = "form-control", @required = true, @placeholder = "Enter 11 Digit IFSC" })
+                                    </div>
+                                    <div class="col-md-2" style="padding-bottom:2px">
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#BankCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Micr, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Micr, null, new { maxlength = 9, minlength = 9, @class = "form-control", @required = true, onkeypress = "return validateNumber(event)", @placeholder = "Enter 9 Digit MICR" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.BankName, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.BankName, null, new { @class = "form-control", runat = "server", onkeypress = "return onlyAlphabets(event,this);", @required = true })
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.pincode, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.pincode, null, new { maxlength = 6, minlength = 6, @class = "form-control", @required = true, onkeypress = "return validateNumber(event)" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.city, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.city, null, new { @class = "form-control", runat = "server", onkeypress = "return onlyAlphabets(event,this);", @required = true })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Address1, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Address1, null, new { @class = "form-control", @required = true })
+                                        @Html.TextBoxFor(m => m.Address2, null, new { @class = "form-control" })
+                                        @Html.TextBoxFor(m => m.Address3, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.StateCode, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.StateCode, null, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Name, null, new { @class = "form-control", runat = "server", onkeypress = "return onlyAlphabets(event,this);" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Password, null, new { @class = "form-control", @placeholder = "Enter Password" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(m => m.FileUpload, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="custom-file">
+                                            <input id="file-upload" name="TradeFile" class="custom-file-input" type="file" />
+                                            <label class="custom-file-label" for="TradeFile">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-9">
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group col-12 ">
+                                            <button type="submit" class="btn btn-primary mt-1" id="success">Import</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                            <div class="row">
+                                <div class="form-group col-12 ">
+                                    <button type="submit" class="btn btn-primary mt-1" id="success">Save</button>
+                                </div>
+                            </div>
+                    }
+                </div>
+                <div class="row mt-100">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin: auto;">
+                        <div class="card" id="ExportedGrid">
+                            <div class="box">
+                                @if (Model.result.Tables.Count > 0)
+                                {
+                                    <div>
+                                        <table class="table data-table table-striped table-bordered dataTable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (var cl in Model.result.Tables[0].Columns)
+                                                    {
+                                                        <th class="table-header">@cl</th>
+
+                                                    }
+                                                    <th class="table-header">ACTION(EDIT)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow dr in Model.result.Tables[0].Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (var cl in dr.ItemArray)
+                                                        {
+                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@cl</td>
+                                                        }
+                                                        <td style="border: 1px solid  #d3d3d3;font-size: 12px">
+                                                            @*<button type="submit" id="btnedit" onclick="MaintenanceList(@Convert.ToString(dr[0]),@Convert.ToString(dr[1]),@Convert.ToString(dr[2]),@Convert.ToString(dr[3]),@Convert.ToString(dr[4]),@Convert.ToString(dr[5]),@Convert.ToString(dr[6]))" class="btn btn-success btn-xs">Edit</button>*@
+                                                            <button type="submit" style="height:18px; width:18px" class="btn btn-sm editButton" data-toggle="modal" data-target="#UpdateFrom" id="edit" data-id="@Convert.ToString(dr[0])"><i class="dripicons dripicons-pencil"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                </div>
+            </div>
+            <!-- container -->
+            <!--end footer-->
+        </div>
+    </div>
+</div>
+<div class="col-xl-12 col-lg-12">
+    <div class="card">
+        <div class="modal fade bd-example-modal-lg" id="UpdateFrom" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">BANK MASTER</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <div class="new-user-info">
+                                @using (Html.BeginForm("EditBankMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.BankName, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.BankName, null, new { @class = "form-control", @id = "BANKN", runat = "server", onkeypress = "return onlyAlphabets(event,this);" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.IFSC, new { @class = "val form-label", maxlength = 11 })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.IFSC, null, new { maxlength = 11, minlength = 11, @class = "form-control", @id = "IFSCCOD", @placeholder = "Enter 11 Digit IFSC", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.Micr, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.Micr, null, new { maxlength = 9, minlength = 9, @class = "form-control", @id = "MIC", onkeypress = "return validateNumber(event)", @placeholder = "Enter 9 Digit MICR" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.StateCode, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.StateCode, null, new { @class = "form-control", @id = "STATECOD", onkeypress = "return validateNumber(event)" })
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.city, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.city, null, new { @class = "form-control", @id = "CIT", runat = "server", onkeypress = "return onlyAlphabets(event,this);" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.pincode, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.pincode, null, new { @class = "form-control", @id = "PINCOD", onkeypress = "return validateNumber(event)" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-6 col-12">
+                                                    @Html.LabelFor(m => m.Address1, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    @Html.TextBoxFor(m => m.Address1, null, new { @class = "form-control", @id = "AD1" })
+                                                    @Html.TextBoxFor(m => m.Address2, null, new { @class = "form-control", @id = "AD2" })
+                                                    @Html.TextBoxFor(m => m.Address3, null, new { @class = "form-control", @id = "AD3" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:10px">
+                                        <div class="form-group col-12 ">
+                                            <input type="submit" id="btnSave" class="btn btn-danger" name="Submit" value="Delete" onclick="return confirm('Are you sure want to delete?')" />
+                                            <input type="submit" id="btnCancel" class="btn btn-primary pull-right" name="Submit" value="Update" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="BankCodeFrom" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="exampleTo" class="table data-table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+
+
+                                <th>IFSCCODE</th>
+                                <th>BANKNAME</th>
+                                <th>MICR</th>
+                                <th>PINCODE</th>
+                                <th>STATECODE</th>
+                                <th>CITY</th>
+                                <th>ADD1</th>
+                                <th>ADD2</th>
+                                <th>ADD3</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter1 = 0;
+                                List<BankMaster> BankDetails = Session["BankDetails"] as List<BankMaster>;
+                                foreach (BankMaster rw in BankDetails)
+                                {
+                                    string idd = @rw.BankName + "_" + @rw.Micr + "_" + @rw.pincode + "_" + @rw.StateCode + "_" + @rw.city + "_" + @rw.Address1 + "_" + @rw.Address2 + "_" + @rw.Address3 + "_" + @counter1;
+
+
+                                    <tr>
+                                        <th><a href="#"><literal id="@idd" onclick="myBankFunction('@idd')">@rw.IFSC</literal></a></th>
+                                        <td>@rw.BankName</td>
+                                        <td>@rw.Micr</td>
+                                        <td>@rw.pincode</td>
+                                        <td>@rw.StateCode</td>
+                                        <td>@rw.city</td>
+                                        <td>@rw.Address1</td>
+                                        <td>@rw.Address2</td>
+                                        <td>@rw.Address3</td>
+
+                                    </tr>
+                                    counter1++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloseBank" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+

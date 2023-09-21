@@ -1,0 +1,285 @@
+﻿@model Rising.WebRise.Models.NetPositionOutput
+
+@{
+    ViewBag.Title = "Net Position";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    <style>
+        .table-box {
+            height: 500px;
+            overflow-y: scroll;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #808080;
+            border-collapse: collapse;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            color: #fff;
+            background: #00bcd4;
+        }
+    </style>
+}
+
+<div class="page-wrapper" style="margin-top: 72px;">
+    <!-- Page Content-->
+    <div class="page-content">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+
+
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-11 col-md-11 col-sm-11" id="Ledger" style="margin: auto;margin-top: 20px;">
+
+
+                <div class="card">
+                    <div class="card-header" style="background-color:#eb2c2e70;">
+                        <h4 class="card-title" style="color:black">Net Position</h4>
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                @{if (Model.AsOnDate == false)
+                                    {
+                                <div class="btn btn-info">Date Range  : @Model.DateFrom.ToString("dd-MM-yyyy")  to   @Model.DateTo.ToString("dd-MM-yyyy")</div>
+
+                                    }
+                                    else
+                                    {
+                                <div class="btn btn-info">As On Date - @Model.DateTo.ToString("dd-MMM-yyyy")</div>
+
+                                    }}
+
+                            </div>
+                            <div class="col-lg-3" >
+                                <div class="btn btn-danger">ClosingRateDate - @Model.ActualDateClosing.ToString("dd-MMM-yyyy")</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    <a href="javascript:void(0);" class="btn btn-dark" onclick="history.go(-1);"><i class="fa fa-arrow-left"></i></a>
+
+                                </div>
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    @using (Html.BeginForm("ExportExcel", "ReportExport", FormMethod.Post))
+                                    {
+                                    <input type="hidden" name="GridHtml1" />
+                                    <button type="submit" class="btn btn-success" id="btnSubmit1"><i class="fa fa-file-excel"></i></button>
+
+                                    }
+
+                                </div>
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    @using (Html.BeginForm("ExportWord", "ReportExport", FormMethod.Post))
+                                    {
+                                    <input type="hidden" name="GridHtml2" />
+                                    <button type="submit" class="btn btn-info" id="btnSubmit2"><i class="fa fa-file-word"></i></button>
+
+                                    }
+                                </div>
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    @using (Html.BeginForm("ExportPdf", "ReportExport", FormMethod.Post))
+                                    {
+                                    <input type="hidden" name="GridHtml3" />
+                                    <button type="submit" class="btn btn-danger" id="btnSubmit3"><i class="fa fa-file-pdf"></i></button>
+
+                                    }
+                                </div>
+                                <div style="float:right;padding:2px 2px 2px 2px">
+
+                                    @using (Html.BeginForm("SendEmail", "ReportExport", FormMethod.Post))
+                                    {
+                                    <input type="hidden" name="GridHtml4" />
+                                    <button type="submit" class="btn btn-orange" id="btnSubmit4"><i class="fa fa-envelope"></i></button>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12" style="margin: auto;">
+                                <div class="card" id="ExportedGrid">
+                                    <div class="card-body" style="padding: 0;">
+                                        <div class="table-responsive browser_users">
+                                            <div class="analytic-dash-activity" data-simplebar>
+                                                <div class="activity">
+                                                    <table class="table table-striped table-bordered" style="width:1200px">
+                                                        <thead>
+                                                            <tr>
+                                                                @if (Model.isCapital == true)
+                                                                {
+                                                                    <th colspan="3" style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;"></th>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <th colspan="4" style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;"></th>
+
+                                                                }
+
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;text-align:center;color: white;" colspan="3">PURCHASE</th>
+
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;text-align:center;color: white;" colspan="3">SALE</th>
+
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;text-align:center;color: white;" colspan="5">NET</th>
+
+                                                            </tr>
+
+                                                            <tr>
+
+
+                                                                @if (Model.isCapital == true)
+                                                                {
+                                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Scrip Name</th>
+                                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Scrip Code</th>
+                                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">ISIN Code</th>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Scrip Name</th>
+
+                                                                    <th style="border: 1px solid  #808080;background-color:#6594d7;color:white;font-size: 12px;font-weight: bold;">Expiry</th>
+                                                                    <th style="border: 1px solid  #808080;background-color:#6594d7;color:white;font-size: 12px;font-weight: bold;">Strike</th>
+                                                                    <th style="border: 1px solid  #808080;background-color:#6594d7;color:white;font-size: 12px;font-weight: bold;">Opt</th>
+
+
+                                                                }
+
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Qty</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Value</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">AvgRate</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Qty</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Value</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">AvgRate</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Qty</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Value</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">AvgRate</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">CloseRate</th>
+                                                                <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">MTM</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+
+                                                                foreach (Rising.WebRise.Models.NetPositionOutputRow rw in Model.listNetPositionOutputRow)
+                                                                {
+                                                                    <tr>
+
+                                                                        @if (Model.isCapital == true)
+                                                                        {
+                                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@rw.ScripName</td>
+                                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@rw.ScripExpiry</td>
+                                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@rw.ScripInstrument</td>
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@rw.ScripCode</td>
+
+                                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@rw.ScripExpiry</td>
+                                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@rw.ScripStrike</td>
+                                                                            <td style="border: 1px solid  #d3d3d3;font-size: 12px">@rw.ScripOption</td>
+
+                                                                        }
+                                                                        <td style="text-align: right;font-size: 12px;border: 1px solid  #d3d3d3;">@rw.PurQty</td>
+                                                                        <td style="text-align: right;font-size: 12px;border: 1px solid  #d3d3d3;">@rw.PurValue</td>
+                                                                        <td style="text-align: right;font-size: 12px;border: 1px solid  #d3d3d3;">@rw.PurAvgRate</td>
+
+                                                                        <td style="text-align: right;font-size: 12px;border: 1px solid  #d3d3d3;">@rw.SaleQty</td>
+                                                                        <td style="text-align: right;font-size: 12px;border: 1px solid  #d3d3d3;">@rw.SaleValue</td>
+                                                                        <td style="text-align: right;font-size: 12px;border: 1px solid  #d3d3d3;">@rw.SaleAvgRate</td>
+
+                                                                        <td style="text-align: right;font-size: 12px; background-color:lightcyan;border: 1px solid #d3d3d3;">@rw.NetQty</td>
+                                                                        <td style="text-align: right;font-size: 12px; background-color:lightcyan;border: 1px solid  #d3d3d3;">@rw.NetValue</td>
+                                                                        <td style="text-align: right;font-size: 12px; background-color:lightcyan;border: 1px solid  #d3d3d3;">@rw.NetAvgRate</td>
+                                                                        <td style="text-align: right;font-size: 12px;border: 1px solid  #d3d3d3;">@rw.CloseRate</td>
+                                                                        <td style="text-align: right;font-size: 12px;border: 1px solid  #d3d3d3;">@rw.MTM</td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+
+
+                                                    <table class="table table-striped table-bordered" width="100%">
+                                                        <caption></caption>
+
+                                                        <tbody style="font-size:13px">
+                                                            <tr></tr>
+                                                            <tr>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>NSE Tax</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.NSETax</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>Stamp Duty</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.StampDuty</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>Brok</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.Brok</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>Demat</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.Demat</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>Tax1</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.Tax1</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>Tax2</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.Tax2</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>Tax3</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.Tax3</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>STT </strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.STTAmt</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>CGST</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.CGST</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>SGST</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.SGST</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong>IGST</strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;">@Model.IGST</td>
+                                                                <td colspan="2" style="border: 1px solid #d3d3d3; color:blue;"><strong></strong></td>
+                                                                <td colspan="2" style="text-align: right;border: 1px solid #d3d3d3;"></td>
+                                                            </tr>
+
+                                                        </tbody>
+
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

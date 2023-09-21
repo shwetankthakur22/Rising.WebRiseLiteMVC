@@ -1,0 +1,147 @@
+﻿@using Rising.WebRise.Models
+@model TaxMaster
+@using System.Data
+@{
+    ViewBag.Title = "TaxMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+@section Scripts {
+
+    @if (TempData.ContainsKey("Message"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: "@TempData["Message"]",
+                    showConfirmButton: false,
+                })
+
+            });
+        </script>
+    }
+    @if (TempData.ContainsKey("DeleteMessage"))
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        Swal.fire("@TempData["DeleteMessage"]", {
+                            icon: "success",
+                        });
+                    } else {
+                        Swal.fire("Your file is safe!");
+                    }
+                });
+
+            });
+        </script>
+    }
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">TAX MASTER</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("TaxMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="custom-control custom-radio custom-radio-color custom-control-inline rtl-mr-0">
+                                    @Html.RadioButtonFor(m => m.Client, new { @class = "", @id = "customRadio01" })
+                                    @Html.LabelFor(m => m.Client, new { @class = "custom-control-label" })
+                                </div>
+                                <div class="custom-control custom-radio custom-radio-color custom-control-inline">
+                                    @Html.RadioButtonFor(m => m.State, new { @class = "", @id = "customRadio02" })
+                                    @Html.LabelFor(m => m.State, new { @class = "custom-control-label" })
+                                </div>
+                                <div class="custom-control custom-radio custom-radio-color custom-control-inline">
+                                    @Html.RadioButtonFor(m => m.Branch, new { @class = "", @id = "customRadio03" })
+                                    @Html.LabelFor(m => m.Branch, new { @class = "custom-control-label" })
+                                </div>
+                                <div class="custom-control custom-radio custom-radio-color custom-control-inline">
+                                    @Html.RadioButtonFor(m => m.Common, new { @class = "", @id = "customRadio04" })
+                                    @Html.LabelFor(m => m.Common, new { @class = "custom-control-label" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.ClientCode, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.ClientCode, null, new { @class = "form-control", @id = "bname" })
+                                </div>
+                                <div class="col-md-1 mb-3">
+                                    <label class="form-label" style="margin-top: 48px;"></label>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ClientCodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                </div>
+
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.TaxType, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.TaxType, null, new { @class = "form-control", @id = "taxtype" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px;">
+
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.DateFrom, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DateFrom, null, new { @Value = Model.DateFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                </div>
+                                <div class="col-md-3 col-12">
+                                    @Html.LabelFor(m => m.DateTo, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.DateTo, null, new { @Value = Model.DateTo.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                </div>
+                            </div>
+                            <p>Option Only</p>
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="radio d-inline-block mr-2 rtl-mr-0">
+                                    @Html.RadioButtonFor(m => m.Premium, new { @id = "radio1", @checked = "" })
+                                    @Html.LabelFor(m => m.Premium, new { @class = "" })
+                                </div>
+                                <div class="radio d-inline-block mr-2 rtl-mr-0">
+                                    @Html.RadioButtonFor(m => m.Strikeprice, new { @id = "radio2" })
+                                    @Html.LabelFor(m => m.Strikeprice, new { @class = "" })
+                                </div>
+                                <div class="radio d-inline-block mr-2 rtl-mr-0">
+                                    @Html.RadioButtonFor(m => m.StrikePremium, new { @id = "radio3" })
+                                    @Html.LabelFor(m => m.StrikePremium, new { @class = "" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 15px; display:none;">
+                                <div class="col-md-4 col-12">
+                                    @Html.LabelFor(m => m.Rwid, new { @class = "form-label" })
+                                    @Html.TextBoxFor(m => m.Rwid, null, new { @class = "form-control", @id = "rwid" })
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input type="submit" value="Save" name="Submit" class="btn btn-success pull-right" />
+                                <input type="submit" class="btn btn-danger pull-left" name="Submit" value="Delete" />
+                                <a href="javascript:void(0);" class="btn btn-dark" style="float: right;" onclick="history.go(-1);">Back</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,786 @@
+﻿@using Rising.WebRise.Models
+@model ClientMaster
+
+@{
+    ViewBag.Title = "ClientMaster";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Client Master</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("ClientMaster", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="box-body">
+                            <!-- Nav tabs -->
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab-1" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pills-home-tab-fill" data-toggle="pill" href="#PersonalDetails" role="tab" aria-controls="pills-home" aria-selected="true">Personal Details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-profile-tab-fill" data-toggle="pill" href="#ExchangeWiseParameters" role="tab" aria-controls="pills-profile" aria-selected="false">Exchange Wise Parameters</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-profile-tab-fill" data-toggle="pill" href="#BankDetails" role="tab" aria-controls="pills-profile" aria-selected="false">Bank Details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-profile-tab-fill" data-toggle="pill" href="#CompanyRegistrationDetails" role="tab" aria-controls="pills-profile" aria-selected="false">Company Registration Details</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                           
+                            <div class="tab-content" id="pills-tabContent-1">
+                                <div class="tab-pane fade show active" id="PersonalDetails" role="tabpanel" aria-labelledby="pills-home-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                           <div class="row">
+                                               <div class="col-md-12">
+                                                   <div class="row">
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.ClientCode, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-3">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.ClientCode, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-1">
+                                                           <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                                       </div>
+                                                       <div class="col-md-5">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.ClientName, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.Group, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.Group, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.acGroup, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.acGroup, null, new { @class = "form-control" })
+                                                       </div>
+                                                       
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.acOpenDate, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.acOpenDate, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-12">
+                                                           <div class="row">
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.Name, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.Name, null, new { @class = "form-control" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.Dob, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.Dob, null, new { @class = "form-control" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.Gender, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.DropDownListFor(m => m.PersonalDetails.Gender, new SelectList(new[] { "M", "F", "Other" }), new { @class = "form-control" })
+                                                               </div>
+                                                              
+                                                           </div>
+                                                       </div>
+
+                                                       <div class="col-md-12">
+                                                           <div class="row">
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.Martial, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.DropDownListFor(m => m.PersonalDetails.Martial, new SelectList(new[] { "Married", "Unmarried", "Other" }), new { @class = "form-control" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.FatherName, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.FatherName, null, new { @class = "form-control" })
+                                                               </div>
+                                                           </div>
+                                                       </div>
+
+                                                      
+
+                                                      <div class="col-md-12">
+                                                          <div class="row">
+                                                              <div class="col-md-2">
+                                                                  @Html.LabelFor(m => m.PersonalDetails.Phone, new { @class = "form-label" })
+                                                              </div>
+                                                              <div class="col-md-2">
+                                                                  @Html.TextBoxFor(m => m.PersonalDetails.Phone, null, new { @class = "form-control" })
+                                                              </div>
+                                                              <div class="col-md-2">
+                                                                  @Html.LabelFor(m => m.PersonalDetails.mobileNo, new { @class = "form-label" })
+                                                              </div>
+                                                              <div class="col-md-2">
+                                                                  @Html.TextBoxFor(m => m.PersonalDetails.mobileNo, null, new { @class = "form-control" })
+                                                              </div>
+                                                              <div class="col-md-2">
+                                                                  @Html.LabelFor(m => m.PersonalDetails.EmailId, new { @class = "form-label" })
+                                                              </div>
+                                                              <div class="col-md-2">
+                                                                  @Html.TextBoxFor(m => m.PersonalDetails.EmailId, null, new { @class = "form-control" })
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                       
+                                                       
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.Address1, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.Address1, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.Address2, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.Address2, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.Address3, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.Address3, null, new { @class = "form-control" })
+                                                       </div>
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.PAddress1, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.PAddress1, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.PAddress2, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.PAddress2, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.PAddress3, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.PAddress3, null, new { @class = "form-control" })
+                                                       </div>
+
+                                                       <div class="col-md-12">
+                                                           <div class="row">
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.City, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.City, null, new { @class = "form-control" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.State, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.State, null, new { @class = "form-control" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.Country, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.Country, null, new { @class = "form-control" })
+                                                               </div>
+                                                           </div>
+                                                       </div>
+
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.perPinCode, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.perPinCode, null, new { @class = "form-control" })
+                                                       </div>
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.perState, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.perState, null, new { @class = "form-control" })
+                                                       </div>
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.PinCode, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.PinCode, null, new { @class = "form-control" })
+                                                       </div>
+                                                      
+
+
+
+                                                      
+                                                      
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.StateCode, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.DropDownListFor(m => m.PersonalDetails.StateCode, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                                       </div>
+
+                                                       
+                                                       
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.AccountGroup, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.DropDownListFor(m => m.PersonalDetails.AccountGroup, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-12">
+                                                           <div class="row">
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.BranchCode, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.BranchCode, null, new { @class = "form-control" })
+                                                               </div>
+                                                               <div class="col-md-1">
+                                                                   <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#BranchCode"><i class="ri-search-fill pr-0"></i></button>
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.SubBranch, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.SubBranch, null, new { @class = "form-control" })
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                      
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.gstSateCode, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.gstSateCode, null, new { @class = "form-control" })
+                                                       </div>
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.gstType, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.gstType, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.gstRegNo, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.gstRegNo, null, new { @class = "form-control" })
+                                                       </div>
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.fileNo, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.fileNo, null, new { @class = "form-control" })
+                                                       </div>
+
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.PanNo, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.PanNo, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.ContractType, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.DropDownListFor(m => m.PersonalDetails.ContractType, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                                       </div>
+
+
+                                                       <div class="col-md-12">
+                                                           <div class="row">
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.RMCode, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.RMCode, null, new { @class = "form-control" })
+                                                               </div>
+
+                                                               <div class="col-md-1">
+                                                                   <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#RMCode"><i class="ri-search-fill pr-0"></i></button>
+                                                               </div>
+
+                                                               <div class="col-md-2">
+                                                                   @Html.LabelFor(m => m.PersonalDetails.RiskCategory, new { @class = "form-label" })
+                                                               </div>
+                                                               <div class="col-md-2">
+                                                                   @Html.TextBoxFor(m => m.PersonalDetails.RiskCategory, null, new { @class = "form-control" })
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                       
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.category, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.category, null, new { @class = "form-control" })
+                                                       </div>
+
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.ClientEnable, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.DropDownListFor(m => m.PersonalDetails.ClientEnable, new SelectList(new[] { " " }), new { @class = "form-control" })
+                                                       </div>
+
+
+
+                                                      
+
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.CIN, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.CIN, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.Reason, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.Reason, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.Remark, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.Remark, null, new { @class = "form-control" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.LabelFor(m => m.PersonalDetails.AccountGroup, new { @class = "form-label" })
+                                                       </div>
+                                                       <div class="col-md-2">
+                                                           @Html.TextBoxFor(m => m.PersonalDetails.AccountGroup, null, new { @class = "form-control", @placeholder = "Sundry Debtors/Creditord" })
+                                                       </div>
+
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade show" id="ExchangeWiseParameters" role="tabpanel" aria-labelledby="pills-home-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Exchange, new { @class = "form-label" })
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        @Html.DropDownListFor(m => m.PersonalDetails.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                                    </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.ShortCode, new { @class = "form-label" })
+                                                    </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.ShortCode, null, new { @class = "form-control" })
+                                                </div>
+
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.BrokerageMethod, new { @class = "form-label" })
+                                                    </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.BrokerageMethod, new SelectList(new[] { "Charge" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.ContractG, new { @class = "form-label" })
+                                                    </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.ContractG, new SelectList(new[] { "Charge" }), new { @class = "form-control" })
+                                                </div>
+
+
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.CashAcc, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.CashAcc, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.DailyMTMAc, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.DailyMTMAc, null, new { @class = "form-control" })
+                                                </div>
+
+
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.DailyMarginAcc, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.DailyMarginAcc, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Interestamt, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Interestamt, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Interest, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Interest, null, new { @class = "form-control" })
+                                                </div>
+
+
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Securityacc, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Securityacc, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Dealercd, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Dealercd, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Introducercd, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Introducercd, null, new { @class = "form-control" })
+                                                </div>
+
+
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Tax1, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.Tax1, new SelectList(new[] { "C", "P", "N" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Tax2, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.Tax2, new SelectList(new[] { "C", "P", "N" }), new { @class = "form-control" })
+                                                </div>
+
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Tax3, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.Tax3, new SelectList(new[] { "C", "P", "N" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Tax4, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.Tax4, new SelectList(new[] { "C", "P", "N" }), new { @class = "form-control" })
+                                                </div>
+
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.brokapp, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.brokapp, new SelectList(new[] { "N" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.InterestApp, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.InterestApp, new SelectList(new[] { "N" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.OpeningBal, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.OpeningBal, new SelectList(new[] { "N" }), new { @class = "form-control" })
+                                                </div>
+                                                
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.stampda, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.stampda, new SelectList(new[] { "N" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.marginposting, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.marginposting, new SelectList(new[] { "N" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.brokerageutd, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.brokerageutd, new SelectList(new[] { "1" }), new { @class = "form-control" })
+                                                </div>
+
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Transactioin, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.Transactioin, new SelectList(new[] { "1" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Custodian, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.Custodian, new SelectList(new[] { "1" }), new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.UCCUploded, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-1 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.UCCUploded, new SelectList(new[] { "1" }), new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            
+                                                
+                                            
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                
+
+                                                
+                                                
+                                            </div>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                
+                                                
+
+                                                
+                                                
+                                            </div>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                               
+                                               
+                                            </div>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                
+
+                                               
+                                               
+                                            </div>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                               
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade show" id="BankDetails" role="tabpanel" aria-labelledby="pills-home-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.bankacc, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.bankacc, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.actype, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.DropDownListFor(m => m.PersonalDetails.actype, new SelectList(new[] { "Saving", "Current" }), new { @class = "form-control" })
+                                                </div>
+
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.bankname, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.bankname, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Address1, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Address1, null, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.MICR, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.MICR, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.IFSC, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.IFSC, null, new { @class = "form-control" })
+                                                </div>
+                                                </div>
+                                           </section>
+                                     </div>
+                                 </div>
+                                <div class="tab-pane fade show" id="CompanyRegistrationDetails" role="tabpanel" aria-labelledby="pills-home-tab-fill">
+                                    <div class="p-15">
+                                        <section>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.InCorporationDate, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.InCorporationDate, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.regNo, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.regNo, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.regAuth, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.regAuth, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.regplace, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.regplace, null, new { @class = "form-control" })
+                                                </div>
+                                                
+                                             </div>
+
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.contactP1, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.contactP1, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.contactP2, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.contactP2, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.contactP1Deg, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.contactP1Deg, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.contactP2Deg, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.contactP2Deg, null, new { @class = "form-control" })
+                                                </div>
+                                               
+                                            </div>
+
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.contactP1Add, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.contactP1Add, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.contactP2Add, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.contactP2Add, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.ContactP2PhnNo, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.ContactP2PhnNo, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.ContactP2Emailo, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.ContactP2Emailo, null, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.ContactP2Pan, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.ContactP2Pan, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.DirecNm, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.DirecNm, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.DirecAdd, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.DirecAdd, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Direcphn, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Direcphn, null, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 10px;">                                              
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.DirPanNo, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.DirPanNo, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.DirEmail, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.DirEmail, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Din1, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Din1, null, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.LabelFor(m => m.PersonalDetails.Din2, new { @class = "form-label" })
+                                                </div>
+                                                <div class="col-md-3 col-12">
+                                                    @Html.TextBoxFor(m => m.PersonalDetails.Din2, null, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 

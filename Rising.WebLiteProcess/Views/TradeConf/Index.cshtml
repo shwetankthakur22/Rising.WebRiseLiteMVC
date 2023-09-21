@@ -1,0 +1,362 @@
+﻿@using Rising.WebRise.Models
+@model TradeConfInput
+
+@{
+    ViewBag.Title = "Trade Confirmation";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">TRADE CONFIRMATION</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <!--end card-header-->
+                    @using (Html.BeginForm("Confirmation", "TradeConf", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control",@required = true })
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                    </div>
+                                    <div class="col-md-5">
+                                        @Html.TextBoxFor(m => m.ClientName, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.SessionId, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(m => m.SessionId, new SelectList(new[] { "1", "2" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.CheckBoxFor(m => m.IgnoreId, new { @class = "" })
+                                        @Html.LabelFor(m => m.IgnoreId, new { @class = "", @style = "me-30" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.DateFrom, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.DateFrom, null, new { @Value = Model.DateFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.DateTo, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.DateTo, null, new { @Value = Model.DateTo.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="col-md-2" style="display:none">
+                                        @Html.LabelFor(m => m.FinAsOn, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3" style="display:none">
+                                        @Html.TextBoxFor(m => m.FinAsOn, null, new { @Value = Model.FinAsOn.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Branch, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.Branch, null, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.Group, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.Group, null, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.Contract, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.Contract, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.LabelFor(m => m.ExpireDate, new { @class = "form-label" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.DropDownListFor(m => m.ExpireDate, new SelectList(new[] { "", "" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.UserId, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.UserId, null, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.LabelFor(m => m.CtclId, new { @class = "form-label" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.TextBoxFor(m => m.CtclId, null, new { @class = "form-control" })
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div> <!--Row-->
+                            </div>     <!--Col-->
+                            <!--Right Side Menu-->
+                            <div class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.IncludeCLTrxn, new { @class = "" })
+                                            @Html.LabelFor(m => m.IncludeCLTrxn, new { @class = "me-30", @style = "" })
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px" checked>
+                                            @Html.CheckBoxFor(m => m.IgnoreBFCF, new { @class = "" })
+                                            @Html.LabelFor(m => m.IgnoreBFCF, new { @class = "", @style = "me-30" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.ExchangeTrades, new { @class = "" })
+                                            @Html.LabelFor(m => m.ExchangeTrades, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.ShowActualQty, new { @class = "" })
+                                            @Html.LabelFor(m => m.ShowActualQty, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.WithoutTaxes, new { @class = "" })
+                                            @Html.LabelFor(m => m.WithoutTaxes, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.MergeSameMktRate, new { @class = "" })
+                                            @Html.LabelFor(m => m.MergeSameMktRate, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.OutstandingTrade, new { @class = "" })
+                                            @Html.LabelFor(m => m.OutstandingTrade, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.CustodianTrade, new { @class = "" })
+                                            @Html.LabelFor(m => m.CustodianTrade, new { @class = "me-30", @style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.DateContractWise, new { @class = "" })
+                                            @Html.LabelFor(m => m.DateContractWise, new { @class = "", @style = "me-30" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.ContractDateWise, new { @class = "" })
+                                            @Html.LabelFor(m => m.ContractDateWise, new { @class = "", @style = "me-30" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.MsOutlook, new { @class = "" })
+                                            @Html.LabelFor(m => m.MsOutlook, new { @class = "", @style = "me-30" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="c-inputs-stacked" style="padding-top: 5px">
+                                            @Html.CheckBoxFor(m => m.OutlookExpress, new { @class = "" })
+                                            @Html.LabelFor(m => m.OutlookExpress, new { @class = "", @style = "me-30" })
+
+                                        </div>
+                                    </div>
+
+                                </div>      <!--Row>-->
+                            </div>      <!--Col-->
+
+
+
+
+
+
+
+
+                            @*<div class="row">
+                                    <div class="col-md-4 col-12">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "form-label" })
+                                        @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "INX" }), new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        @Html.LabelFor(m => m.ClientCodeFrom, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.ClientCodeFrom, null, new { @class = "form-control" })
+
+
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label" style="margin-top: 38px;"></label>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CodeFrom"><i class="ri-search-fill pr-0"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-3 col-12">
+                                        @Html.LabelFor(m => m.Branch, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.Branch, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        @Html.LabelFor(m => m.DateFrom, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.DateFrom, null, new { @Value = Model.DateFrom.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        @Html.LabelFor(m => m.DateTo, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.DateTo, null, new { @Value = Model.DateTo.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        @Html.LabelFor(m => m.FinAsOn, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.FinAsOn, null, new { @Value = Model.FinAsOn.ToString("yyyy-MM-dd"), @class = "form-control", @id = "date-end", @type = "date" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3 col-12">
+                                        @Html.LabelFor(m => m.Group, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.Group, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        @Html.LabelFor(m => m.SymbolList, new { @class = "form-label" })
+                                        @Html.DropDownList("Symbol", Model.SymbolList, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        @Html.LabelFor(m => m.UserId, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.UserId, null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        @Html.LabelFor(m => m.CtclId, new { @class = "form-label" })
+                                        @Html.TextBoxFor(m => m.CtclId, null, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-12">
+                                        <div class="c-inputs-stacked" style="padding-top: 30px">
+                                            @Html.CheckBoxFor(m => m.IncludeCLTrxn, new { @class = "" })
+                                            <strong>@Html.LabelFor(m => m.IncludeCLTrxn, new { @class = "me-30", @style = "" })</strong>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="c-inputs-stacked" style="padding-top: 30px">
+                                            @Html.CheckBoxFor(m => m.IgnoreBFCF, new { @class = "" })
+                                            <strong>@Html.LabelFor(m => m.IgnoreBFCF, new { @class = "", @style = "me-30" }) </strong>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="c-inputs-stacked" style="padding-top: 30px">
+                                            @Html.CheckBoxFor(m => m.ExchangeTrades, new { @class = "" })
+                                            <strong>@Html.LabelFor(m => m.ExchangeTrades, new { @class = "me-30", @style = "" })</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="c-inputs-stacked" style="padding-top: 30px">
+                                            @Html.CheckBoxFor(m => m.ShowActualQty, new { @class = "" })
+                                            <strong>@Html.LabelFor(m => m.ShowActualQty, new { @class = "me-30", @style = "" }) </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-12">
+                                        <div class="c-inputs-stacked" style="padding-top: 30px">
+                                            @Html.CheckBoxFor(m => m.WithoutTaxes, new { @class = "" })
+                                            <strong>@Html.LabelFor(m => m.WithoutTaxes, new { @class = "me-30", @style = "" })</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="c-inputs-stacked" style="padding-top: 30px">
+                                            @Html.CheckBoxFor(m => m.MergeSameMktRate, new { @class = "" })
+                                            <strong>@Html.LabelFor(m => m.MergeSameMktRate, new { @class = "me-30", @style = "" }) </strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="c-inputs-stacked" style="padding-top: 30px">
+                                            @Html.CheckBoxFor(m => m.OutstandingTrade, new { @class = "" })
+                                            <strong>@Html.LabelFor(m => m.OutstandingTrade, new { @class = "me-30", @style = "" })</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="c-inputs-stacked" style="padding-top: 30px">
+                                            @Html.CheckBoxFor(m => m.CustodianTrade, new { @class = "" })
+                                            <strong>@Html.LabelFor(m => m.CustodianTrade, new { @class = "me-30", @style = "" }) </strong>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+
+
+
+
+
+
+
+
+                            <div class="box-footer">
+                                <input type="submit" value="View" class="btn btn-success pull-right" />
+                                <a href="javascript:void(0);" class="btn btn-primary" onclick="history.go(-1);">Back</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

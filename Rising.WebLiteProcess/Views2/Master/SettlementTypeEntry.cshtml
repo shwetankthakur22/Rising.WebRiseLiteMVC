@@ -1,0 +1,195 @@
+﻿@using Rising.WebRise.Models
+@model SettlementSchedule
+@using System.Data
+@{
+    ViewBag.Title = "SettlementTypeEntry";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+
+@section Scripts {
+    <script>
+            debugger
+            $(".selectsttl").click(function () {
+                $("#DescOfSettlement").val("").html("");
+                $("#PayinGap").val("").html("");        
+                $("#SettType").val("").html("");
+                $("#SettlementPeriodGap").val("").html("");
+                $("#PayoutGap").val("").html("");
+                $("#BrokrageDebitNote").val("").html("");
+
+                var id = $(this).data("model-id");
+                debugger
+                $.ajax({
+                    url: '/Master/ScheduleSelect/' ,
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { rid: id },
+                    success: function (scheduletype) {
+                        debugger
+                        $("#dsc").val(scheduletype.DescOfSettlement).html(scheduletype.DescOfSettlement);
+                        $("#Paygap").val(scheduletype.PayoutGap).html(scheduletype.PayoutGap);
+                        $("#sttype").val(scheduletype.SettType).html(scheduletype.SettType);
+                        $("#stlpgap").val(scheduletype.PayinGap).html(scheduletype.PayinGap);
+                        $("#poutgap").val(scheduletype.SettlementPeriodGap).html(scheduletype.SettlementPeriodGap);
+                        $("#BrokrageDebitNote").val(scheduletype.BrokrageDebitNote).html(scheduletype.BrokrageDebitNote);
+                        $('#exampleModalLarge').modal('hide');
+
+                    }
+                });
+
+            });
+        </script>
+   
+}
+
+@*Settlement type entry*@
+
+<div class="page-content" style="margin-top:115px;">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-12" style="margin-left:auto;margin-right:auto;">
+                <div class="card">
+                    <div class="card-header" style="background-color:#fbd857;">
+                        <h4 class="card-title">Settlement Type Entry/Edit</h4>
+                    </div>
+                    @using (Html.BeginForm("SettlementTypeEntry", "Master", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.Exchange, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.DropDownListFor(m => m.Exchange, new SelectList(new[] { "NSE", "BSE", "NFO" }), new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.DescOfSettlement, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.DescOfSettlement, new { @class = "form-control", @id = "dsc" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.PayinGap, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.PayinGap, new { @class = "form-control", @id = "Paygap" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.BrokrageDebitNote, new { @class = "col-sm-4 my-2 col-form-label" })
+                                        <div class="col-md-8">
+                                            <div class="form-check-inline my-1">
+                                                <div class="custom-control custom-radio">
+                                                    @Html.RadioButtonFor(m => m.BrokrageDebitNote, new { @class = "" })@Html.Label("Yes")
+
+                                                </div>
+                                                <div class="form-check-inline my-1">
+                                                    <div class="custom-control custom-radio">
+                                                        @Html.RadioButtonFor(m => m.BrokrageDebitNote, new { @class = "" })@Html.Label("No")
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.SettType, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-7">
+                                            @Html.TextBoxFor(m => m.SettType, new { @class = "form-control", @id = "sttype" })
+
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="button" data-toggle="modal" data-target="#exampleModalLarge" class="btn btn-primary btn-icon-square-sm"><i class="fa fa-search"></i></button>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.SettlementPeriodGap, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.SettlementPeriodGap, new { @class = "form-control", @id = "stlpgap" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(m => m.PayoutGap, new { @class = "col-sm-4 col-form-label" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(m => m.PayoutGap, new { @class = "form-control", @id = "poutgap" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="alert alert-outline-danger">@ViewData["error"]</div>
+                            <div class="row">
+                                <div class="col-sm-8 ml-auto">
+                                    <button type="submit" id="btnsave" class="btn btn-primary float-right">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="modal fade bd-example-modal-lg" id="exampleModalLarge" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title m-0" id="myLargeModalLabel">Type</h6>
+                                    <button type="button" class="close" data-target="#CompanyProfile" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="la la-times"></i></span></button>
+                                </div>
+                                <!--end modal-header-->
+                                <div class="modal-body">
+                                    <div class="table-responsive">
+                                        <table id="datatable" class="table dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Select</</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Sett Type</</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Settlement Description</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Gap To</</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Payin Gap</</th>
+                                                    <th style="border: 1px solid  #808080;background-color:#6496d8;font-size: 12px;font-weight: bold;color: white;">Payout Gap</</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+
+                                                    foreach (DataRow rw in Model.result.Tables[0].Rows)
+                                                    {
+                                                        <tr>
+                                                            <td><button type="button"  class="selectsttl" data-model-id="@rw["ID"]">Select</button></td>
+                                                            <td>@rw["SETTTYPE"]</td>
+                                                            <td>@rw["SETTDES"]</td>
+                                                            <td>@rw["TOGAP"]</td>
+                                                            <td>@rw["PAYINGAP"]</td>
+                                                            <td>@rw["PAYOUTGAP"]</td>
+                                                        </tr>
+
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--end row-->
+                                </div>
+                                <!--end modal-body-->
+                                <div class="modal-footer"><button type="button" id="btnCloseCodeFrom" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button></div>
+                                <!--end modal-footer-->
+                            </div>
+                            <!--end modal-content-->
+                        </div>
+                        <!--end modal-dialog-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
